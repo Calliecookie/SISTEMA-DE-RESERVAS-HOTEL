@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="es-PE" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{componentes/cabeza :: cabeza('Habitación', 'publico')}"></head>
+<body th:attr="data-habitacion-id=${habitacionId}">
+<header th:replace="~{componentes/barra :: barra}"></header>
+<main>
+  <div class="contenedor ficha" data-ficha aria-live="polite"></div>
+</main>
+<footer th:replace="~{componentes/pie :: pie}"></footer>
+<script type="module" th:src="@{/recursos/js/habitacion.js}"></script>
+</body>
+</html>

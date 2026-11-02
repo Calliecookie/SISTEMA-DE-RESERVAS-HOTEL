@@ -1,0 +1,14 @@
+target/
+.env
+*.log
+nb-configuration.xml
+nbproject/
+nbactions.xml
+.idea/
+*.iml
+.vscode/
+.DS_Store
+almacenamiento/comprobantes/*
+almacenamiento/imagenes/*
+almacenamiento/registros/*
+!almacenamiento/**/.gitkeep

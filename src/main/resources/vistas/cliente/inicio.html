@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es-PE" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{componentes/cabeza :: cabeza('Inicio', 'publico')}"></head>
+<body>
+<header th:replace="~{componentes/barra :: barra}"></header>
+<main>
+  <section class="portada">
+    <div class="contenedor">
+      <div class="portada__rejilla">
+        <div class="portada__texto">
+          <h1 class="portada__titulo">Tu casa bajo el sol de los Andes</h1>
+          <p class="portada__bajada">Elige tus fechas, mira qué habitaciones están libres y reserva en pocos pasos.</p>
+        </div>
+        <div class="puerta">
+          <div class="puerta__sol"><svg th:replace="~{componentes/icono :: icono('sol')}"></svg></div>
+          <img class="puerta__foto" alt="Habitación con cama amplia y luz natural" width="960" height="1056" fetchpriority="high"
+               src="https://commons.wikimedia.org/wiki/Special:FilePath/Hotel_room_at_Brahe_Ensuite.jpg?width=960" data-foto>
+        </div>
+      </div>
+      <form class="buscador" th:action="@{/habitaciones}" method="get" data-buscador>
+        <label class="campo"><span class="campo__etiqueta">Entrada</span><input class="entrada" type="date" name="fechaEntrada" required></label>
+        <label class="campo"><span class="campo__etiqueta">Salida</span><input class="entrada" type="date" name="fechaSalida" required></label>
+        <label class="campo"><span class="campo__etiqueta">Huéspedes</span>
+          <select class="entrada" name="capacidad"><option value="1">1 huésped</option><option value="2" selected>2 huéspedes</option><option value="3">3 huéspedes</option><option value="4">4 huéspedes</option><option value="5">5 huéspedes</option><option value="6">6 huéspedes</option></select>
+        </label>
+        <button class="boton boton--acento" type="submit"><svg th:replace="~{componentes/icono :: icono('buscar')}"></svg>Ver disponibilidad</button>
+      </form>
+    </div>
+  </section>
+  <section class="seccion contenedor">
+    <div class="seccion__cabecera">
+      <div>
+        <h2 class="seccion__titulo">Habitaciones para esta noche</h2>
+        <p class="seccion__texto">Precios por noche. El IGV se suma al confirmar tu reserva.</p>
+      </div>
+      <a class="boton boton--secundario" th:href="@{/habitaciones}">Ver todas</a>
+    </div>
+    <div class="rejilla-habitaciones rejilla-habitaciones--tres" data-destacadas aria-live="polite"></div>
+  </section>
+</main>
+<footer th:replace="~{componentes/pie :: pie}"></footer>
+<script type="module" th:src="@{/recursos/js/inicio.js}"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es-PE" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title th:text="${status == 404} ? 'Página no encontrada' : (${status == 403} ? 'Acceso restringido' : 'No se pudo completar la operación')">Error</title>
+  <link rel="icon" type="image/svg+xml" th:href="@{/recursos/imagenes/favicon.svg}">
+  <link rel="stylesheet" th:href="@{/recursos/css/tokens.css}">
+  <link rel="stylesheet" th:href="@{/recursos/css/base.css}">
+  <link rel="stylesheet" th:href="@{/recursos/css/componentes.css}">
+</head>
+<body>
+<main class="contenedor vacio">
+  <img th:src="@{/recursos/imagenes/logo.svg}" alt="" width="64" height="64">
+  <h1 class="vacio__titulo" th:text="${status == 404} ? 'No encontramos esta página' : (${status == 403} ? 'No tienes acceso a esta sección' : 'No se pudo completar la operación')">Error</h1>
+  <p class="vacio__texto" th:text="${status == 404} ? 'Revisa la dirección o vuelve al inicio.' : (${status == 403} ? 'Inicia sesión con una cuenta autorizada.' : 'Intenta de nuevo en unos minutos.')">Detalle</p>
+  <a class="boton boton--primario" th:href="@{/}">Ir al inicio</a>
+</main>
+</body>
+</html>

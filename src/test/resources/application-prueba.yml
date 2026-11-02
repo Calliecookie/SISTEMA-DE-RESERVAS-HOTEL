@@ -1,0 +1,50 @@
+spring:
+  datasource:
+    url: ${PRUEBA_BD_URL:jdbc:mysql://localhost:3306/hotel_reservas_prueba?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf8&serverTimezone=America/Lima}
+    username: ${PRUEBA_BD_USUARIO:root}
+    password: ${PRUEBA_BD_CONTRASENA:}
+    hikari:
+      maximum-pool-size: 25
+  mail:
+    host: localhost
+    port: 3025
+    username: ""
+    password: ""
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+
+hotel:
+  url-publica: http://localhost:8080
+  almacenamiento:
+    ruta: target/almacenamiento-pruebas
+  factiliza:
+    url-base: http://localhost:39091/v1
+    token: token-de-prueba
+    permitir-manual: true
+    segundos-espera: 3
+  paypal:
+    entorno: sandbox
+    url-base: http://localhost:39092
+    cliente-id: cliente-de-prueba
+    secreto: secreto-de-prueba
+    moneda: USD
+    segundos-espera: 3
+  correo:
+    habilitado: true
+    remitente: reservas@prueba.pe
+    nombre-remitente: Hotel de Prueba
+    asincrono: false
+  trafico:
+    habilitado: false
+  tareas:
+    habilitadas: false
+  demostracion:
+    habilitada: false
+
+logging:
+  file:
+    name: target/pruebas.log

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="es-PE" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{componentes/cabeza :: cabeza('Detalle de reserva', 'publico')}"></head>
+<body th:attr="data-codigo=${codigo}">
+<header th:replace="~{componentes/barra :: barra}"></header>
+<main>
+  <div class="contenedor reserva-pagina">
+    <a class="enlace texto-sm" th:href="@{/mi-cuenta}">Volver a mi cuenta</a>
+    <h1 class="reserva-pagina__titulo" th:text="'Reserva ' + ${codigo}">Reserva</h1>
+    <div class="superficie superficie--relleno" data-detalle aria-live="polite"></div>
+  </div>
+</main>
+<footer th:replace="~{componentes/pie :: pie}"></footer>
+<script type="module" th:src="@{/recursos/js/reserva-cliente.js}"></script>
+</body>
+</html>

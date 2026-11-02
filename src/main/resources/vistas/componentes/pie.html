@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es-PE" xmlns:th="http://www.thymeleaf.org">
+<body>
+<footer th:fragment="pie" class="pie">
+  <div class="contenedor pie__interior">
+    <div>
+      <p class="pie__titulo" th:text="${hotel?.nombre}">Hotel Inti Wasi</p>
+      <p>Inti Wasi significa casa del sol en quechua.</p>
+    </div>
+    <ul class="pie__lista">
+      <li><svg th:replace="~{componentes/icono :: icono('ubicacion')}"></svg><span th:text="${hotel?.direccion}">Dirección</span></li>
+      <li><svg th:replace="~{componentes/icono :: icono('telefono')}"></svg><span th:text="${hotel?.telefono}">Teléfono</span></li>
+      <li><svg th:replace="~{componentes/icono :: icono('correo')}"></svg><span th:text="${hotel?.correo}">Correo</span></li>
+    </ul>
+    <ul class="pie__lista">
+      <li><a th:href="@{/habitaciones}">Habitaciones</a></li>
+      <li><a th:href="@{/creditos}">Créditos de las fotografías</a></li>
+    </ul>
+  </div>
+</footer>
+</body>
+</html>

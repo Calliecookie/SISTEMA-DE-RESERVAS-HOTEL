@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es-PE" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+<header th:fragment="barra" class="barra">
+  <div class="contenedor barra__interior">
+    <a class="marca" th:href="@{/}">
+      <img th:src="@{/recursos/imagenes/logo.svg}" alt="" width="36" height="36">
+      <span th:text="${hotel?.nombre}">Hotel Inti Wasi</span>
+    </a>
+    <button class="boton boton--fantasma boton--icono barra__menu" type="button" data-alternar-menu aria-label="Abrir menú" aria-expanded="false">
+      <svg th:replace="~{componentes/icono :: icono('menu')}"></svg>
+    </button>
+    <nav class="barra__enlaces" aria-label="Principal" data-menu>
+      <a class="barra__enlace" th:href="@{/habitaciones}">Habitaciones</a>
+      <a class="barra__enlace" th:href="@{/carrito}">
+        Mi reserva
+        <span class="barra__contador oculto" data-contador-carrito>0</span>
+      </a>
+      <a sec:authorize="isAnonymous()" class="barra__enlace" th:href="@{/ingresar}">Iniciar sesión</a>
+      <a sec:authorize="isAnonymous()" class="boton boton--primario boton--compacto" th:href="@{/registro}">Crear cuenta</a>
+      <a sec:authorize="hasRole('CLIENTE')" class="barra__enlace" th:href="@{/mi-cuenta}">Mi cuenta</a>
+      <a sec:authorize="hasRole('ADMINISTRADOR')" class="barra__enlace" th:href="@{/administracion}">Panel</a>
+      <a sec:authorize="hasRole('TRABAJADOR')" class="barra__enlace" th:href="@{/trabajador}">Panel</a>
+      <form sec:authorize="isAuthenticated()" th:action="@{/salir}" method="post">
+        <button class="boton boton--fantasma boton--compacto" type="submit">Cerrar sesión</button>
+      </form>
+    </nav>
+  </div>
+</header>
+</body>
+</html>

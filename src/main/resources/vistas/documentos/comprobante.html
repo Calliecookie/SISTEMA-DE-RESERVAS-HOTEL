@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es-PE">
+<head>
+<meta charset="UTF-8"/>
+<title th:text="${numero}">Comprobante</title>
+<style>
+@page { size: A4; margin: 16mm; }
+body { font-family: Inter, sans-serif; font-size: 10pt; color: #1A2024; line-height: 1.45; }
+table { width: 100%; border-collapse: collapse; }
+.cabecera td { vertical-align: top; }
+.logo { width: 52px; height: 52px; }
+.hotel { font-size: 15pt; font-weight: 700; color: #1B2A4E; }
+.suave { color: #5A6368; }
+.documento { text-align: right; }
+.documento-titulo { font-size: 12pt; font-weight: 700; color: #A8174A; }
+.bloque { margin-top: 18px; }
+.titulo { font-weight: 600; color: #1B2A4E; border-bottom: 1px solid #DCDFE0; padding-bottom: 4px; margin-bottom: 6px; }
+.datos td { padding: 2px 0; width: 50%; }
+.detalle th { text-align: left; font-size: 9pt; color: #5A6368; border-bottom: 1px solid #DCDFE0; padding: 6px 4px; }
+.detalle td { padding: 7px 4px; border-bottom: 1px solid #ECEEEE; }
+.derecha { text-align: right; }
+.totales { width: 45%; margin-left: 55%; margin-top: 10px; }
+.totales td { padding: 3px 4px; }
+.total td { font-size: 12pt; font-weight: 700; border-top: 1px solid #1B2A4E; padding-top: 6px; color: #1B2A4E; }
+.estado { font-weight: 600; }
+.nota { margin-top: 26px; padding: 9px 10px; background: #F5F6F6; font-size: 8.5pt; color: #5A6368; }
+</style>
+</head>
+<body>
+<table class="cabecera">
+  <tr>
+    <td style="width: 62px;"><img class="logo" th:src="${logo}" alt="Logotipo"/></td>
+    <td>
+      <div class="hotel" th:text="${hotel.nombre}">Hotel</div>
+      <div class="suave">RUC <span th:text="${hotel.ruc}">RUC</span></div>
+      <div class="suave" th:text="${hotel.direccion}">Dirección</div>
+      <div class="suave"><span th:text="${hotel.telefono}">Teléfono</span>, <span th:text="${hotel.correo}">Correo</span></div>
+    </td>
+    <td class="documento">
+      <div class="documento-titulo">Comprobante de reserva</div>
+      <div th:text="${numero}">Número</div>
+      <div class="suave">Emitido el <span th:text="${emision}">Fecha</span></div>
+    </td>
+  </tr>
+</table>
+<div class="bloque">
+  <div class="titulo">Datos del cliente</div>
+  <table class="datos">
+    <tr><td>Nombre: <span th:text="${cliente}">Cliente</span></td><td>DNI: <span th:text="${dni}">DNI</span></td></tr>
+    <tr><td>Correo: <span th:text="${correo}">Correo</span></td><td>Código de reserva: <strong th:text="${codigo}">Código</strong></td></tr>
+  </table>
+</div>
+<div class="bloque">
+  <div class="titulo">Estancia</div>
+  <table class="datos">
+    <tr><td>Entrada: <span th:text="${entrada}">Entrada</span></td><td>Salida: <span th:text="${salida}">Salida</span></td></tr>
+    <tr><td>Noches: <span th:text="${noches}">1</span></td><td>Huéspedes: <span th:text="${huespedes}">1</span></td></tr>
+  </table>
+</div>
+<div class="bloque">
+  <div class="titulo">Habitaciones reservadas</div>
+  <table class="detalle">
+    <thead><tr><th>Habitación</th><th>Categoría</th><th class="derecha">Huéspedes</th><th class="derecha">Noches</th><th class="derecha">Precio por noche</th><th class="derecha">Subtotal</th></tr></thead>
+    <tbody>
+      <tr th:each="linea : ${lineas}">
+        <td th:text="${linea.habitacion}">Habitación</td>
+        <td th:text="${linea.categoria}">Categoría</td>
+        <td class="derecha" th:text="${linea.huespedes}">1</td>
+        <td class="derecha" th:text="${linea.noches}">1</td>
+        <td class="derecha" th:text="${linea.precio}">0</td>
+        <td class="derecha" th:text="${linea.subtotal}">0</td>
+      </tr>
+    </tbody>
+  </table>
+  <table class="totales">
+    <tr><td>Subtotal</td><td class="derecha" th:text="${subtotal}">0</td></tr>
+    <tr th:if="${hayDescuento}"><td>Descuento</td><td class="derecha" th:text="${descuento}">0</td></tr>
+    <tr><td>IGV (<span th:text="${porcentajeImpuesto}">18</span> %)</td><td class="derecha" th:text="${impuesto}">0</td></tr>
+    <tr class="total"><td>Total</td><td class="derecha" th:text="${total}">0</td></tr>
+  </table>
+</div>
+<div class="bloque">Estado del pago: <span class="estado" th:text="${estadoPago}">Pendiente</span></div>
+<div class="nota">Este documento acredita tu reserva. No es un comprobante de pago electrónico ante SUNAT.</div>
+</body>
+</html>

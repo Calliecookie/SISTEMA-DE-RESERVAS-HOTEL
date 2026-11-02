@@ -1,0 +1,13 @@
+@media print {
+  @page { margin: 14mm; }
+  body { background: #FFFFFF; color: #000000; }
+  .lateral, .barra, .pie, .barra-filtros, .pestanas, .no-imprimir, .notificaciones, .boton-lateral { display: none !important; }
+  .panel { display: block; }
+  .panel__principal { padding: 0; }
+  .superficie, .indicador { border-color: #C4C9CC; break-inside: avoid; }
+  .tabla { font-size: 9.5pt; }
+  .tabla thead { display: table-header-group; }
+  .tabla tr { break-inside: avoid; }
+  .encabezado-impresion { display: block !important; margin-bottom: 8mm; }
+}
+.encabezado-impresion { display: none; }

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es-PE" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{componentes/cabeza :: cabeza(${titulo}, 'panel')}"></head>
+<body class="panel">
+<aside th:replace="~{componentes/lateral :: lateral(${seccion})}"></aside>
+<main class="panel__principal">
+  <header th:replace="~{componentes/lateral :: cabecera(${titulo})}"></header>
+  <div class="panel__seccion">
+    <div class="indicadores" data-resumen aria-live="polite"></div>
+    <section class="superficie">
+      <form class="barra-filtros" data-filtros>
+        <label class="campo"><span class="campo__etiqueta">Buscar</span><input class="entrada" type="search" name="busqueda" placeholder="Código, cliente, DNI o correo" maxlength="60" autocomplete="off"></label>
+        <label class="campo"><span class="campo__etiqueta">Estado</span><select class="entrada" name="estado"><option value="">Todos</option><option value="PENDIENTE">Pendiente</option><option value="PAGADO">Pagado</option><option value="CONFIRMADO">Confirmado</option><option value="ENTREGADO">Entregado</option><option value="FINALIZADO">Finalizado</option><option value="CANCELADO">Cancelado</option><option value="EXPIRADO">Expirado</option></select></label>
+        <label class="campo"><span class="campo__etiqueta">Método de pago</span><select class="entrada" name="metodoPago"><option value="">Todos</option><option value="EFECTIVO">Efectivo</option><option value="PAYPAL">PayPal</option><option value="YAPE">Yape</option></select></label>
+        <label class="campo"><span class="campo__etiqueta">Desde</span><input class="entrada" type="date" name="fechaDesde"></label>
+        <label class="campo"><span class="campo__etiqueta">Hasta</span><input class="entrada" type="date" name="fechaHasta"></label>
+      </form>
+      <div class="tabla-envoltura" data-tabla aria-live="polite"></div>
+      <div data-paginacion></div>
+    </section>
+  </div>
+</main>
+<script type="module" th:src="@{/recursos/js/ventas.js}"></script>
+</body>
+</html>

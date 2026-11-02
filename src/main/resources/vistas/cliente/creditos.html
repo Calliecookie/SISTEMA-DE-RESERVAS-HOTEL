@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es-PE" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{componentes/cabeza :: cabeza('Créditos', 'publico')}"></head>
+<body>
+<header th:replace="~{componentes/barra :: barra}"></header>
+<main>
+  <div class="contenedor seccion texto-legal">
+    <h1>Créditos de las fotografías</h1>
+    <p>Las fotografías del catálogo se cargan desde Wikimedia Commons y conservan la licencia libre indicada en cada archivo. Consulta el autor y la licencia en su página.</p>
+    <ul th:with="base='https://commons.wikimedia.org/wiki/File:'">
+      <li th:each="archivo : ${ {'Room_in_Hotel.jpg','UMass_Hotel_room.JPG','Hotel_Room_with_queen_size_bed.jpg','Hotel_room_interior_at_hotel_Radisson_Blu_Oulu.jpg','Bedroom_hotel_interior_with_open_door_window._(51536308276).jpg','Mitsui_Garden_Hotel_Kanazawa_Moderate_Double_bedroom_20200103-001.jpg','Hotel_room_at_Brahe_Ensuite.jpg','Hotel_room_interior_at_apartment_hotel_Ona_Cala_Pí_Club,_Mallorca,_Spain.jpg','Bridal_Tea_House_Hotel_-_Modern_Family_Room.jpg','Bedroom_Efteling_Loonsche_Land_Hotel.jpg'} }">
+        <a class="enlace" th:href="${base + archivo}" rel="noopener noreferrer" target="_blank" th:text="${archivo}">Archivo</a>
+      </li>
+    </ul>
+  </div>
+</main>
+<footer th:replace="~{componentes/pie :: pie}"></footer>
+
+</body>
+</html>
