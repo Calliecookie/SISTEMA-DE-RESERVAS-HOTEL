@@ -7,7 +7,7 @@ Duración sugerida: 20 minutos.
 1. Ejecuta `esquema.sql` y `datos-iniciales.sql`.
 2. Activa `DEMO_HABILITADA=true` y arranca el sistema una vez.
 3. Abre dos navegadores: uno como cliente y otro como administrador.
-4. Prueba tu internet, porque las fotos del catálogo se cargan desde Wikimedia Commons.
+4. Las fotos del catálogo vienen incluidas en el proyecto, así que la demostración no depende de internet. Factiliza, PayPal y el correo sí lo necesitan.
 5. Si la red es compartida, sube los límites de tráfico.
 
 ## Apertura (2 minutos)

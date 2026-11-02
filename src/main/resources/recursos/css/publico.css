@@ -114,7 +114,7 @@
 .acceso__arte .puerta { width: min(78%, 30rem); aspect-ratio: 4 / 5; background: var(--anil-950); }
 @media (min-width: 960px) { .acceso { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .acceso__arte { display: flex; } }
 
-.cuenta { display: grid; gap: var(--espacio-5); padding-block: var(--espacio-6) var(--espacio-8); align-items: start; }
+.cuenta { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--espacio-5); padding-block: var(--espacio-6) var(--espacio-8); align-items: start; }
 @media (min-width: 960px) { .cuenta { grid-template-columns: 22rem minmax(0, 1fr); } }
 
 .pie { padding-block: var(--espacio-6); background: var(--anil-900); color: var(--anil-100); font-size: var(--texto-sm); }

@@ -4,26 +4,20 @@ Plataforma web para reservar habitaciones en línea y administrar la operación 
 
 ## Estado de verificación
 
-**El proyecto aún no se ha compilado con Spring ni ejecutado contra MySQL.** El entorno donde se desarrolló no tenía acceso a Maven Central, MySQL, ni al computador del autor.
+Verificado el 2 de noviembre de 2026 en Linux con JDK 21, Maven 3.9, MySQL 8.0.46, Chromium y Tomcat 10.1.61.
 
 | Verificación | Resultado |
 |---|---|
-| 26 pruebas de lógica pura: importes, estados, fechas, tráfico | Ejecutadas y aprobadas, sobre sustitutos mínimos de Spring y JUnit |
-| Sintaxis y símbolos propios de Java | Revisados con `javac`, sin las librerías de Spring |
-| Sintaxis e importaciones de JavaScript | Revisadas |
-| Interfaz en Chromium, escritorio y móvil | Revisada con una API simulada |
-| Llamadas del frontend frente a rutas de la API | Revisadas: todas coinciden |
-| Entidades frente a columnas SQL | Revisadas: todas coinciden |
-| Paleta de gráficos: daltonismo y contraste | Validada |
-| Compilación real con Maven | **Pendiente** |
-| Pruebas de integración y concurrencia con MySQL | **Pendiente** |
-| Generación real de PDF y Excel | **Pendiente** |
-| Envío real de correo | **Pendiente** |
-| Factiliza y PayPal con credenciales reales | **Pendiente** |
-| Despliegue en Tomcat 10.1 | **Pendiente** |
-| Fotografías de Wikimedia Commons: carga y licencia de cada archivo | **Pendiente** |
-
-Al compilar por primera vez pueden aparecer errores que no se detectaron sin las librerías reales. Empieza por `mvn -DskipTests package` y luego `mvn test`.
+| Compilación con Maven | Aprobada |
+| 103 pruebas automatizadas: 30 unitarias y 73 de integración contra MySQL, incluida la concurrencia de reservas | Aprobadas |
+| Comprobantes PDF y reportes en PDF y Excel | Generados y revisados |
+| Envío de correo con el comprobante adjunto | Verificado con un servidor SMTP de pruebas (GreenMail) |
+| Recorrido de las 21 pantallas de los tres roles en Chromium, escritorio y móvil | Sin errores de JavaScript, respuestas fallidas, imágenes rotas ni desborde horizontal |
+| Flujo completo en el navegador: reserva, pago en efectivo, confirmación del trabajador, comprobante y exportación de reportes | Aprobado |
+| Despliegue del WAR en Tomcat 10.1 con la ruta `/sistema-reservas-hotel` | Aprobado |
+| Fotografías: carga y licencia de cada archivo | 12 fotos con licencia CC BY o CC BY-SA, incluidas en el proyecto y atribuidas en `/creditos` |
+| Envío por un servidor SMTP real | **Pendiente**: requiere tu cuenta de correo |
+| Factiliza y PayPal con credenciales reales | **Pendiente**: requieren tus credenciales. Las pruebas usan servidores simulados con las respuestas documentadas |
 
 ## Tecnologías
 
