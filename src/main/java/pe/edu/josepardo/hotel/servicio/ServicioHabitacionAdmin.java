@@ -24,7 +24,7 @@ import pe.edu.josepardo.hotel.repositorio.RepositorioHabitacion;
 public class ServicioHabitacionAdmin {
 
     private static final String PATRON_IMAGEN =
-            "^(/imagenes/[A-Za-z0-9.-]+|https://(commons|upload)\\.wikimedia\\.org/\\S+)$";
+            "^(/imagenes/[A-Za-z0-9.-]+|https://(commons|upload|thumb)\\.wikimedia\\.org/\\S+)$";
 
     private final RepositorioHabitacion repositorio;
     private final RepositorioCategoria repositorioCategoria;

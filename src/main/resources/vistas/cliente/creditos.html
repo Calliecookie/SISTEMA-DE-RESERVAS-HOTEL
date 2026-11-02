@@ -6,10 +6,25 @@
 <main>
   <div class="contenedor seccion texto-legal">
     <h1>Créditos de las fotografías</h1>
-    <p>Las fotografías del catálogo se cargan desde Wikimedia Commons y conservan la licencia libre indicada en cada archivo. Consulta el autor y la licencia en su página.</p>
+    <p>Las fotografías del catálogo provienen de Wikimedia Commons y se usan bajo la licencia libre que su autor indicó en cada archivo. Se incluyen en el sitio sin modificaciones, en la versión de 960 píxeles de ancho que genera Wikimedia.</p>
     <ul th:with="base='https://commons.wikimedia.org/wiki/File:'">
-      <li th:each="archivo : ${ {'Room_in_Hotel.jpg','UMass_Hotel_room.JPG','Hotel_Room_with_queen_size_bed.jpg','Hotel_room_interior_at_hotel_Radisson_Blu_Oulu.jpg','Bedroom_hotel_interior_with_open_door_window._(51536308276).jpg','Mitsui_Garden_Hotel_Kanazawa_Moderate_Double_bedroom_20200103-001.jpg','Hotel_room_at_Brahe_Ensuite.jpg','Hotel_room_interior_at_apartment_hotel_Ona_Cala_Pí_Club,_Mallorca,_Spain.jpg','Bridal_Tea_House_Hotel_-_Modern_Family_Room.jpg','Bedroom_Efteling_Loonsche_Land_Hotel.jpg'} }">
-        <a class="enlace" th:href="${base + archivo}" rel="noopener noreferrer" target="_blank" th:text="${archivo}">Archivo</a>
+      <li th:each="foto : ${ {
+          {'Room_in_Hotel.jpg', 'Виктор Пинчук', 'CC BY-SA 4.0', 'https://creativecommons.org/licenses/by-sa/4.0/deed.es'},
+          {'UMass_Hotel_room.JPG', 'Ktr101', 'CC BY-SA 4.0', 'https://creativecommons.org/licenses/by-sa/4.0/deed.es'},
+          {'Hotel_Room_with_queen_size_bed.jpg', 'Tim36272', 'CC BY-SA 3.0', 'https://creativecommons.org/licenses/by-sa/3.0/deed.es'},
+          {'Hotel_room_interior_at_hotel_Radisson_Blu_Oulu.jpg', 'JIP', 'CC BY-SA 3.0', 'https://creativecommons.org/licenses/by-sa/3.0/deed.es'},
+          {'Bedroom_hotel_interior_with_open_door_window._(51536308276).jpg', 'Nenad Stojkovic', 'CC BY 2.0', 'https://creativecommons.org/licenses/by/2.0/deed.es'},
+          {'Mitsui_Garden_Hotel_Kanazawa_Moderate_Double_bedroom_20200103-001.jpg', 'J o', 'CC BY-SA 4.0', 'https://creativecommons.org/licenses/by-sa/4.0/deed.es'},
+          {'Hotel_room_at_Brahe_Ensuite.jpg', 'JIP', 'CC BY-SA 4.0', 'https://creativecommons.org/licenses/by-sa/4.0/deed.es'},
+          {'Hotel_room_interior_at_apartment_hotel_Ona_Cala_Pí_Club,_Mallorca,_Spain.jpg', 'JIP', 'CC BY-SA 3.0', 'https://creativecommons.org/licenses/by-sa/3.0/deed.es'},
+          {'Bridal_Tea_House_Hotel_-_Modern_Family_Room.jpg', 'Cherryc032188', 'CC BY-SA 3.0', 'https://creativecommons.org/licenses/by-sa/3.0/deed.es'},
+          {'Bedroom_Efteling_Loonsche_Land_Hotel.jpg', 'Eliedion', 'CC BY-SA 4.0', 'https://creativecommons.org/licenses/by-sa/4.0/deed.es'},
+          {'Bedroom''s_Pardoes_suite_Efteling_hotel.jpg', 'Eliedion', 'CC BY-SA 4.0', 'https://creativecommons.org/licenses/by-sa/4.0/deed.es'},
+          {'Living_room''s_Pardoes_suite_Efteling_hotel.jpg', 'Eliedion', 'CC BY-SA 4.0', 'https://creativecommons.org/licenses/by-sa/4.0/deed.es'}
+        } }">
+        <a class="enlace" th:href="${base + foto[0]}" rel="noopener noreferrer" target="_blank" th:text="${#strings.replace(foto[0], '_', ' ')}">Archivo</a>
+        <span th:text="${' · ' + foto[1] + ' · '}"> · Autor · </span>
+        <a class="enlace" th:href="${foto[3]}" rel="noopener noreferrer license" target="_blank" th:text="${foto[2]}">Licencia</a>
       </li>
     </ul>
   </div>

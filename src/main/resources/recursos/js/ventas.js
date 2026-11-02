@@ -16,4 +16,7 @@ iniciarListaReservas({
       tarjeta('lista', 'Reservas encontradas', datos.cantidadOperaciones),
     ].join('');
   },
+  alFallar: () => {
+    resumen.innerHTML = '';
+  },
 });

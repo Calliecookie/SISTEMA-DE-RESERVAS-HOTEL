@@ -156,4 +156,5 @@ Necesitan libres los puertos 3025, 39091 y 39092.
 | No puedo iniciar sesión como administrador | Revisa el registro de arranque: la contraseña debe tener 10 caracteres, letras y números |
 | PayPal o Yape no aparecen | Revisa *Administración > Configuración > Estado de las integraciones* |
 | El navegador pierde la sesión con HTTP | Usa `SESION_COOKIE_SEGURA=false` en local |
-| Las fotos no aparecen | Las del catálogo vienen de Wikimedia Commons y requieren internet. Puedes subir fotos propias desde el panel |
+| Las fotos no aparecen | Las del catálogo vienen incluidas en el proyecto. Si cambiaste una por una URL de Wikimedia Commons, esa sí requiere internet |
+| Las tildes se ven como `Ã¡` | La base se cargó con un cliente en `latin1`. Ejecuta de nuevo `esquema.sql` y `datos-iniciales.sql`: ambos empiezan con `SET NAMES utf8mb4` |

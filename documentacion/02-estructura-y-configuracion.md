@@ -30,6 +30,7 @@ sistema-reservas-hotel/
 │   │   ├── fuentes/
 │   │   ├── iconos/
 │   │   └── imagenes/
+│   │       └── habitaciones/
 │   └── vistas/
 │       ├── administrador/
 │       ├── cliente/

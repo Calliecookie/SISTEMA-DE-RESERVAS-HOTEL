@@ -14,7 +14,7 @@
         <div class="puerta">
           <div class="puerta__sol"><svg th:replace="~{componentes/icono :: icono('sol')}"></svg></div>
           <img class="puerta__foto" alt="Habitación con cama amplia y luz natural" width="960" height="1056" fetchpriority="high"
-               src="https://commons.wikimedia.org/wiki/Special:FilePath/Hotel_room_at_Brahe_Ensuite.jpg?width=960" data-foto>
+               th:src="@{/recursos/imagenes/habitaciones/hotel-room-at-brahe-ensuite.jpg}" data-foto>
         </div>
       </div>
       <form class="buscador" th:action="@{/habitaciones}" method="get" data-buscador>

@@ -4,10 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.icegreen.greenmail.junit5.GreenMailExtension;
 import com.icegreen.greenmail.util.ServerSetupTest;
 import jakarta.mail.internet.MimeMessage;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.time.LocalDate;
@@ -18,9 +14,8 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.io.ByteArrayResource;
+import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -36,12 +31,12 @@ import pe.edu.josepardo.hotel.servicio.Carrito;
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("prueba")
+@Import(CargadorEsquemaPrueba.class)
 abstract class BasePruebaIntegracion {
 
     protected static final String CONTRASENA = "Clave12345";
     protected static final ServidorSimulado FACTILIZA = new ServidorSimulado(39091);
     protected static final ServidorSimulado PAYPAL = new ServidorSimulado(39092);
-    private static boolean esquemaCargado;
     private static String hashContrasena;
 
     @RegisterExtension
@@ -67,11 +62,8 @@ abstract class BasePruebaIntegracion {
     @BeforeEach
     void prepararDatos() throws Exception {
         synchronized (BasePruebaIntegracion.class) {
-            if (!esquemaCargado) {
-                ejecutarScript("base-datos/esquema.sql");
-                ejecutarScript("base-datos/datos-iniciales.sql");
+            if (hashContrasena == null) {
                 hashContrasena = codificador.encode(CONTRASENA);
-                esquemaCargado = true;
             }
         }
         try (Connection conexion = origenDatos.getConnection(); Statement sentencia = conexion.createStatement()) {
@@ -88,15 +80,6 @@ abstract class BasePruebaIntegracion {
         FACTILIZA.reiniciar();
         PAYPAL.reiniciar();
         CORREO.purgeEmailFromAllMailboxes();
-    }
-
-    private void ejecutarScript(String ruta) throws IOException, java.sql.SQLException {
-        String contenido = Files.readString(Path.of(ruta), StandardCharsets.UTF_8)
-                .replaceFirst("(?s)CREATE DATABASE.*?;", "")
-                .replaceFirst("USE hotel_reservas;", "");
-        try (Connection conexion = origenDatos.getConnection()) {
-            ScriptUtils.executeSqlScript(conexion, new ByteArrayResource(contenido.getBytes(StandardCharsets.UTF_8)));
-        }
     }
 
     protected Usuario crearUsuario(String correo, Rol rol) {

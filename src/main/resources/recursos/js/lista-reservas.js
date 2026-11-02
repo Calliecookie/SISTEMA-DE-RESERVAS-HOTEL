@@ -1,7 +1,7 @@
 import { consulta, datosFormulario, debounce, errorCarga, esqueletoTabla, paginar, vacio } from './nucleo.js';
 import { activarFilas, cabeceraReservas, filaReserva } from './detalle-reserva.js';
 
-export function iniciarListaReservas({ obtener, alCargar }) {
+export function iniciarListaReservas({ obtener, alCargar, alFallar }) {
   const filtros = document.querySelector('[data-filtros]');
   const tabla = document.querySelector('[data-tabla]');
   const paginacion = document.querySelector('[data-paginacion]');
@@ -25,6 +25,7 @@ export function iniciarListaReservas({ obtener, alCargar }) {
       if (error.name !== 'AbortError') {
         tabla.innerHTML = errorCarga();
         paginacion.innerHTML = '';
+        alFallar?.(error);
       }
     }
   }

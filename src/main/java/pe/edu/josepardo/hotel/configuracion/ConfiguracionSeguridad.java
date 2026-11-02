@@ -27,7 +27,7 @@ public class ConfiguracionSeguridad {
             "default-src 'self'",
             "script-src 'self'",
             "style-src 'self'",
-            "img-src 'self' data: https://commons.wikimedia.org https://upload.wikimedia.org",
+            "img-src 'self' data: https://commons.wikimedia.org https://upload.wikimedia.org https://thumb.wikimedia.org",
             "font-src 'self'",
             "connect-src 'self'",
             "object-src 'none'",

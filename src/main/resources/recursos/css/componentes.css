@@ -115,7 +115,7 @@ textarea.entrada { min-height: 6rem; resize: vertical; }
 .aviso--error { background: var(--color-error-tenue); color: var(--color-error); }
 .aviso--exito { background: var(--color-exito-tenue); color: var(--color-exito); }
 
-.tabla-envoltura { overflow-x: auto; }
+.tabla-envoltura { position: relative; overflow-x: auto; }
 .tabla { font-size: var(--texto-sm); }
 .tabla th {
   padding: var(--espacio-3) var(--espacio-4);
@@ -132,7 +132,7 @@ textarea.entrada { min-height: 6rem; resize: vertical; }
 .tabla tbody tr.fila-accion:hover { background: var(--color-primario-tenue); }
 .tabla .derecha { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .tabla__acciones { display: flex; justify-content: flex-end; gap: var(--espacio-1); }
-.tabla__miniatura { width: 56px; height: 42px; border-radius: var(--radio-sm); object-fit: cover; background: var(--color-superficie-alterna); }
+.tabla__miniatura { width: 56px; min-width: 56px; height: 42px; border-radius: var(--radio-sm); object-fit: cover; background: var(--color-superficie-alterna); }
 
 .paginacion { display: flex; align-items: center; justify-content: space-between; gap: var(--espacio-3); padding: var(--espacio-3) var(--espacio-4); border-top: 1px solid var(--piedra-100); font-size: var(--texto-sm); color: var(--color-texto-suave); }
 .paginacion__botones { display: flex; gap: var(--espacio-1); }
