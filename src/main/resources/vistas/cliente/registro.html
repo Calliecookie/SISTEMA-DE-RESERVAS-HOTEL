@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es-PE" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{componentes/cabeza :: cabeza('Crear cuenta', 'publico')}"></head>
+<body>
+<header th:replace="~{componentes/barra :: barra}"></header>
+<main class="acceso">
+  <div class="acceso__formulario">
+    <div class="acceso__caja">
+      <h1 class="acceso__titulo">Crea tu cuenta</h1>
+      <form class="formulario" data-formulario-registro novalidate>
+        <div class="campo" data-campo="dni">
+          <label class="campo__etiqueta" for="dni">DNI</label>
+          <div class="campo-grupo">
+            <input class="entrada" id="dni" name="dni" inputmode="numeric" maxlength="8" autocomplete="off" required>
+            <button class="boton boton--secundario" type="button" data-consultar-dni>Verificar</button>
+          </div>
+          <span class="campo__ayuda" data-estado-dni>Usaremos tu DNI para completar tu nombre.</span>
+          <span class="campo__error"></span>
+        </div>
+        <div class="formulario__fila formulario__fila--2">
+          <div class="campo" data-campo="nombres"><label class="campo__etiqueta" for="nombres">Nombres</label><input class="entrada" id="nombres" name="nombres" maxlength="100" readonly required><span class="campo__error"></span></div>
+          <div class="campo" data-campo="apellidos"><label class="campo__etiqueta" for="apellidos">Apellidos</label><input class="entrada" id="apellidos" name="apellidos" maxlength="120" readonly required><span class="campo__error"></span></div>
+        </div>
+        <div class="campo" data-campo="correo"><label class="campo__etiqueta" for="correo">Correo electrónico</label><input class="entrada" id="correo" type="email" name="correo" autocomplete="email" maxlength="150" required><span class="campo__error"></span></div>
+        <div class="campo" data-campo="contrasena"><label class="campo__etiqueta" for="contrasena">Contraseña</label><input class="entrada" id="contrasena" type="password" name="contrasena" autocomplete="new-password" required><span class="campo__ayuda">Mínimo 8 caracteres, con letras y números.</span><span class="campo__error"></span></div>
+        <div class="campo" data-campo="confirmacion"><label class="campo__etiqueta" for="confirmacion">Confirma tu contraseña</label><input class="entrada" id="confirmacion" type="password" name="confirmacion" autocomplete="new-password" required><span class="campo__error"></span></div>
+        <button class="boton boton--acento boton--ancho" type="submit">Crear cuenta</button>
+      </form>
+      <p class="acceso__pie">¿Ya tienes cuenta? <a class="enlace" th:href="@{/ingresar}">Inicia sesión</a></p>
+    </div>
+  </div>
+  <div class="acceso__arte" aria-hidden="true"><div class="puerta"><div class="puerta__sol"><svg th:replace="~{componentes/icono :: icono('sol')}"></svg></div></div></div>
+</main>
+<script type="module" th:src="@{/recursos/js/registro.js}"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="es-PE" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{componentes/cabeza :: cabeza(${titulo}, 'panel')}"></head>
+<body class="panel">
+<aside th:replace="~{componentes/lateral :: lateral(${seccion})}"></aside>
+<main class="panel__principal">
+  <header th:replace="~{componentes/lateral :: cabecera(${titulo})}"></header>
+  <div class="panel__seccion">
+    <div class="encabezado-impresion"><strong th:text="${hotel?.nombre}">Hotel</strong> <span th:text="${hotel?.ruc}">RUC</span></div>
+    <div class="pestanas" role="tablist" aria-label="Reportes" data-pestanas></div>
+    <section class="superficie"><form class="barra-filtros" data-filtros></form></section>
+    <div class="indicadores" data-indicadores aria-live="polite"></div>
+    <section class="superficie" data-seccion-grafico><div class="bloque__cabecera"><h2 class="bloque__titulo" data-titulo-grafico>Gráfico</h2></div><div class="bloque__cuerpo" data-grafico></div></section>
+    <section class="superficie"><div class="bloque__cabecera"><h2 class="bloque__titulo" data-titulo-tabla>Detalle</h2></div><div class="tabla-envoltura" data-tabla></div></section>
+  </div>
+</main>
+<script type="module" th:src="@{/recursos/js/reportes.js}"></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es-PE" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="cabeza(titulo, estilos)">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title th:text="${titulo} + ' | ' + ${hotel?.nombre ?: 'Hotel Inti Wasi'}">Hotel</title>
+  <meta name="description" content="Reserva tu habitación en línea, consulta disponibilidad por fechas y recibe tu comprobante por correo.">
+  <meta name="contexto" th:content="@{/}">
+  <meta th:if="${_csrf != null}" name="_csrf" th:content="${_csrf.token}">
+  <meta th:if="${_csrf != null}" name="_csrf_header" th:content="${_csrf.headerName}">
+  <meta sec:authorize="hasRole('CLIENTE')" name="rol" content="CLIENTE">
+  <meta sec:authorize="hasRole('TRABAJADOR')" name="rol" content="TRABAJADOR">
+  <meta sec:authorize="hasRole('ADMINISTRADOR')" name="rol" content="ADMINISTRADOR">
+  <link rel="icon" type="image/svg+xml" th:href="@{/recursos/imagenes/favicon.svg}">
+  <link rel="stylesheet" th:href="@{/recursos/css/tokens.css}">
+  <link rel="stylesheet" th:href="@{/recursos/css/base.css}">
+  <link rel="stylesheet" th:href="@{/recursos/css/componentes.css}">
+  <link rel="stylesheet" th:href="@{'/recursos/css/' + ${estilos} + '.css'}">
+  <link rel="stylesheet" th:href="@{/recursos/css/impresion.css}">
+  <script type="module" th:src="@{/recursos/js/nucleo.js}"></script>
+</head>
+</html>

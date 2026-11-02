@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es-PE" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{componentes/cabeza :: cabeza('Recuperar contraseña', 'publico')}"></head>
+<body>
+<header th:replace="~{componentes/barra :: barra}"></header>
+<main class="acceso">
+  <div class="acceso__formulario">
+    <div class="acceso__caja">
+      <h1 class="acceso__titulo">Recupera tu contraseña</h1>
+      <p class="texto-suave" data-indicacion>Te enviaremos un código de 6 dígitos a tu correo.</p>
+      <form class="formulario" data-paso="solicitar" novalidate>
+        <div class="campo" data-campo="correo"><label class="campo__etiqueta" for="correo">Correo electrónico</label><input class="entrada" id="correo" type="email" name="correo" autocomplete="email" required><span class="campo__error"></span></div>
+        <button class="boton boton--acento boton--ancho" type="submit">Enviar código</button>
+      </form>
+      <form class="formulario oculto" data-paso="verificar" novalidate>
+        <div class="campo" data-campo="codigo"><label class="campo__etiqueta" for="codigo">Código</label><input class="entrada" id="codigo" name="codigo" inputmode="numeric" maxlength="6" autocomplete="one-time-code" required><span class="campo__error"></span></div>
+        <button class="boton boton--acento boton--ancho" type="submit">Verificar código</button>
+      </form>
+      <form class="formulario oculto" data-paso="restablecer" novalidate>
+        <div class="campo" data-campo="contrasena"><label class="campo__etiqueta" for="contrasena">Nueva contraseña</label><input class="entrada" id="contrasena" type="password" name="contrasena" autocomplete="new-password" required><span class="campo__ayuda">Mínimo 8 caracteres, con letras y números.</span><span class="campo__error"></span></div>
+        <div class="campo" data-campo="confirmacion"><label class="campo__etiqueta" for="confirmacion">Confirma tu contraseña</label><input class="entrada" id="confirmacion" type="password" name="confirmacion" autocomplete="new-password" required><span class="campo__error"></span></div>
+        <button class="boton boton--acento boton--ancho" type="submit">Guardar contraseña</button>
+      </form>
+      <p class="acceso__pie"><a class="enlace" th:href="@{/ingresar}">Volver a iniciar sesión</a></p>
+    </div>
+  </div>
+  <div class="acceso__arte" aria-hidden="true"><div class="puerta"><div class="puerta__sol"><svg th:replace="~{componentes/icono :: icono('sol')}"></svg></div></div></div>
+</main>
+<script type="module" th:src="@{/recursos/js/recuperar.js}"></script>
+</body>
+</html>

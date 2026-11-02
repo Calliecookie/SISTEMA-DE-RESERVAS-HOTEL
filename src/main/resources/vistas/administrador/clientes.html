@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es-PE" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{componentes/cabeza :: cabeza(${titulo}, 'panel')}"></head>
+<body class="panel">
+<aside th:replace="~{componentes/lateral :: lateral(${seccion})}"></aside>
+<main class="panel__principal">
+  <header th:replace="~{componentes/lateral :: cabecera(${titulo})}"></header>
+  <div class="panel__seccion">
+    <section class="superficie">
+      <form class="barra-filtros" data-filtros>
+        <label class="campo"><span class="campo__etiqueta">Buscar</span><input class="entrada" type="search" name="busqueda" placeholder="Nombre, DNI o correo" maxlength="60" autocomplete="off"></label>
+      </form>
+      <div class="tabla-envoltura" data-tabla aria-live="polite"></div>
+      <div data-paginacion></div>
+    </section>
+  </div>
+</main>
+<script type="module" th:src="@{/recursos/js/clientes-admin.js}"></script>
+</body>
+</html>

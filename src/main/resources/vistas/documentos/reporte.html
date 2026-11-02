@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es-PE">
+<head>
+<meta charset="UTF-8"/>
+<title th:text="${reporte.titulo}">Reporte</title>
+<style>
+@page { size: A4 landscape; margin: 14mm; @bottom-right { content: "Página " counter(page) " de " counter(pages); font-family: Inter, sans-serif; font-size: 8pt; color: #5A6368; } }
+body { font-family: Inter, sans-serif; font-size: 9.5pt; color: #1A2024; line-height: 1.4; }
+.hotel { font-weight: 600; color: #5A6368; }
+h1 { margin: 2px 0; font-size: 16pt; color: #1B2A4E; }
+.suave { color: #5A6368; }
+.indicadores { width: 100%; margin: 12px 0; border-collapse: collapse; }
+.indicadores td { padding: 8px 10px; border: 1px solid #DCDFE0; }
+.etiqueta { font-size: 8.5pt; color: #5A6368; }
+.valor { font-size: 12pt; font-weight: 700; }
+.detalle { width: 100%; border-collapse: collapse; }
+.detalle th { text-align: left; font-size: 8.5pt; color: #5A6368; border-bottom: 1px solid #C4C9CC; padding: 6px; }
+.detalle td { padding: 6px; border-bottom: 1px solid #ECEEEE; }
+.detalle thead { display: table-header-group; }
+.detalle tr { page-break-inside: avoid; }
+.derecha { text-align: right; }
+</style>
+</head>
+<body>
+<div class="hotel" th:text="${hotel.nombre}">Hotel</div>
+<h1 th:text="${reporte.titulo}">Reporte</h1>
+<div class="suave"><span th:text="${reporte.subtitulo}">Periodo</span>. Generado el <span th:text="${emision}">Fecha</span></div>
+<table class="indicadores">
+  <tr>
+    <td th:each="indicador : ${reporte.indicadores}">
+      <div class="etiqueta" th:text="${indicador.etiqueta}">Etiqueta</div>
+      <div class="valor" th:text="${indicador.valor}">Valor</div>
+    </td>
+  </tr>
+</table>
+<table class="detalle">
+  <thead><tr><th th:each="columna : ${columnas}" th:classappend="${columna.alineacion == 'derecha'} ? 'derecha'" th:text="${columna.titulo}">Columna</th></tr></thead>
+  <tbody>
+    <tr th:each="fila : ${filas}">
+      <td th:each="celda : ${fila}" th:classappend="${celda.alineacion == 'derecha'} ? 'derecha'" th:text="${celda.valor}">Valor</td>
+    </tr>
+  </tbody>
+</table>
+</body>
+</html>

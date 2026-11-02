@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es-PE" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{componentes/cabeza :: cabeza(${titulo}, 'panel')}"></head>
+<body class="panel">
+<aside th:replace="~{componentes/lateral :: lateral(${seccion})}"></aside>
+<main class="panel__principal">
+  <header th:replace="~{componentes/lateral :: cabecera(${titulo})}"></header>
+  <div class="panel__seccion">
+    <div class="bloques bloques--iguales">
+      <section class="superficie superficie--relleno"><h2 class="bloque__titulo">Datos del hotel y reglas</h2><form class="formulario" data-configuracion novalidate></form></section>
+      <div class="panel__seccion">
+        <section class="superficie superficie--relleno"><h2 class="bloque__titulo">Estado de las integraciones</h2><div data-integraciones></div></section>
+        <section class="superficie superficie--relleno"><h2 class="bloque__titulo">Código QR de Yape</h2><div class="formulario" data-qr></div></section>
+      </div>
+    </div>
+  </div>
+</main>
+<script type="module" th:src="@{/recursos/js/configuracion.js}"></script>
+</body>
+</html>

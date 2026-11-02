@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es-PE" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+<aside th:fragment="lateral(seccion)" class="lateral" data-lateral>
+  <a class="marca" th:href="@{/}">
+    <img th:src="@{/recursos/imagenes/logo-claro.svg}" alt="" width="36" height="36">
+    <span th:text="${hotel?.nombre}">Hotel Inti Wasi</span>
+  </a>
+  <nav class="lateral__enlaces" aria-label="Panel">
+    <th:block sec:authorize="hasRole('ADMINISTRADOR')">
+      <a class="lateral__enlace" th:classappend="${seccion == 'dashboard'} ? 'lateral__enlace--actual'" th:href="@{/administracion}"><svg th:replace="~{componentes/icono :: icono('tablero')}"></svg>Dashboard</a>
+    </th:block>
+    <a class="lateral__enlace" th:classappend="${seccion == 'operacion'} ? 'lateral__enlace--actual'" th:href="@{/trabajador}"><svg th:replace="~{componentes/icono :: icono('conserje')}"></svg>Operación del día</a>
+    <a sec:authorize="hasRole('TRABAJADOR')" class="lateral__enlace" th:classappend="${seccion == 'reservas'} ? 'lateral__enlace--actual'" th:href="@{/trabajador/reservas}"><svg th:replace="~{componentes/icono :: icono('lista')}"></svg>Reservas</a>
+    <th:block sec:authorize="hasRole('ADMINISTRADOR')">
+      <a class="lateral__enlace" th:classappend="${seccion == 'reservas'} ? 'lateral__enlace--actual'" th:href="@{/administracion/reservas}"><svg th:replace="~{componentes/icono :: icono('lista')}"></svg>Reservas</a>
+      <a class="lateral__enlace" th:classappend="${seccion == 'ventas'} ? 'lateral__enlace--actual'" th:href="@{/administracion/ventas}"><svg th:replace="~{componentes/icono :: icono('recibo')}"></svg>Ventas</a>
+      <a class="lateral__enlace" th:classappend="${seccion == 'reportes'} ? 'lateral__enlace--actual'" th:href="@{/administracion/reportes}"><svg th:replace="~{componentes/icono :: icono('grafico')}"></svg>Reportes</a>
+      <a class="lateral__enlace" th:classappend="${seccion == 'habitaciones'} ? 'lateral__enlace--actual'" th:href="@{/administracion/habitaciones}"><svg th:replace="~{componentes/icono :: icono('cama')}"></svg>Habitaciones</a>
+      <a class="lateral__enlace" th:classappend="${seccion == 'categorias'} ? 'lateral__enlace--actual'" th:href="@{/administracion/categorias}"><svg th:replace="~{componentes/icono :: icono('etiquetas')}"></svg>Categorías</a>
+      <a class="lateral__enlace" th:classappend="${seccion == 'clientes'} ? 'lateral__enlace--actual'" th:href="@{/administracion/clientes}"><svg th:replace="~{componentes/icono :: icono('usuarios')}"></svg>Clientes</a>
+      <a class="lateral__enlace" th:classappend="${seccion == 'usuarios'} ? 'lateral__enlace--actual'" th:href="@{/administracion/usuarios}"><svg th:replace="~{componentes/icono :: icono('llave')}"></svg>Usuarios</a>
+      <a class="lateral__enlace" th:classappend="${seccion == 'configuracion'} ? 'lateral__enlace--actual'" th:href="@{/administracion/configuracion}"><svg th:replace="~{componentes/icono :: icono('ajustes')}"></svg>Configuración</a>
+      <a class="lateral__enlace" th:classappend="${seccion == 'auditoria'} ? 'lateral__enlace--actual'" th:href="@{/administracion/auditoria}"><svg th:replace="~{componentes/icono :: icono('historial')}"></svg>Auditoría</a>
+    </th:block>
+  </nav>
+  <div class="lateral__pie">
+    <p class="lateral__usuario"><strong sec:authentication="principal.nombreCompleto">Usuario</strong><span sec:authentication="principal.rol.etiqueta">Rol</span></p>
+    <form th:action="@{/salir}" method="post">
+      <button class="lateral__enlace boton--ancho" type="submit"><svg th:replace="~{componentes/icono :: icono('salir')}"></svg>Cerrar sesión</button>
+    </form>
+  </div>
+</aside>
+<header th:fragment="cabecera(titulo)" class="panel__cabecera">
+  <div class="panel__titulo-fila">
+    <button class="boton boton--secundario boton--icono boton-lateral" type="button" data-alternar-lateral aria-label="Abrir menú del panel">
+      <svg th:replace="~{componentes/icono :: icono('menu')}"></svg>
+    </button>
+    <h1 class="panel__titulo" th:text="${titulo}">Panel</h1>
+  </div>
+  <div class="panel__acciones" data-acciones-cabecera></div>
+</header>
+</body>
+</html>

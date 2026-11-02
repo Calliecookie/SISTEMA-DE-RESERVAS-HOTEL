@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es-PE" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{componentes/cabeza :: cabeza('Habitaciones', 'publico')}"></head>
+<body>
+<header th:replace="~{componentes/barra :: barra}"></header>
+<main>
+  <div class="contenedor catalogo">
+    <form class="superficie filtros" data-filtros>
+      <h1 class="filtros__titulo">Busca tu habitación</h1>
+      <label class="campo"><span class="campo__etiqueta">Buscar</span>
+        <input class="entrada" type="search" name="busqueda" placeholder="Nombre o número" maxlength="60" autocomplete="off"></label>
+      <div class="formulario__fila">
+        <label class="campo"><span class="campo__etiqueta">Entrada</span><input class="entrada" type="date" name="fechaEntrada"></label>
+        <label class="campo"><span class="campo__etiqueta">Salida</span><input class="entrada" type="date" name="fechaSalida"></label>
+      </div>
+      <label class="campo"><span class="campo__etiqueta">Categoría</span>
+        <select class="entrada" name="categoriaId" data-categorias><option value="">Todas</option></select></label>
+      <div class="formulario__fila formulario__fila--2">
+        <label class="campo"><span class="campo__etiqueta">Precio mínimo</span><input class="entrada" type="number" name="precioMinimo" min="0" step="10" inputmode="numeric"></label>
+        <label class="campo"><span class="campo__etiqueta">Precio máximo</span><input class="entrada" type="number" name="precioMaximo" min="0" step="10" inputmode="numeric"></label>
+      </div>
+      <label class="campo"><span class="campo__etiqueta">Capacidad mínima</span>
+        <select class="entrada" name="capacidad"><option value="">Cualquiera</option><option value="1">1 huésped</option><option value="2">2 huéspedes</option><option value="3">3 huéspedes</option><option value="4">4 huéspedes</option><option value="5">5 huéspedes</option><option value="6">6 huéspedes</option></select></label>
+      <label class="casilla"><input type="checkbox" name="soloDisponibles" value="true"> Solo disponibles</label>
+      <button class="boton boton--fantasma" type="reset">Limpiar filtros</button>
+    </form>
+    <section aria-label="Resultados">
+      <div class="catalogo__barra">
+        <p class="texto-suave texto-sm" data-resumen aria-live="polite">Buscando habitaciones</p>
+        <label class="campo-grupo texto-sm"><span class="oculto-visual">Ordenar</span>
+          <select class="entrada" name="orden" form="" data-orden><option value="">Disponibles primero</option><option value="precio_asc">Precio: menor a mayor</option><option value="precio_desc">Precio: mayor a menor</option></select>
+        </label>
+      </div>
+      <div class="rejilla-habitaciones" data-resultados></div>
+      <div data-paginacion></div>
+    </section>
+  </div>
+</main>
+<footer th:replace="~{componentes/pie :: pie}"></footer>
+<script type="module" th:src="@{/recursos/js/catalogo.js}"></script>
+</body>
+</html>

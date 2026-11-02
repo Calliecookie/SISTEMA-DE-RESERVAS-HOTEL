@@ -1,0 +1,104 @@
+@font-face { font-family: "Inter"; font-weight: 400; font-display: swap; src: url("../fuentes/Inter-Regular.woff") format("woff"); }
+@font-face { font-family: "Inter"; font-weight: 500; font-display: swap; src: url("../fuentes/Inter-Medium.woff") format("woff"); }
+@font-face { font-family: "Inter"; font-weight: 600; font-display: swap; src: url("../fuentes/Inter-SemiBold.woff") format("woff"); }
+@font-face { font-family: "Inter"; font-weight: 700; font-display: swap; src: url("../fuentes/Inter-Bold.woff") format("woff"); }
+@font-face { font-family: "Lora"; font-weight: 500; font-display: swap; src: url("../fuentes/Lora-Medium.woff") format("woff"); }
+@font-face { font-family: "Lora"; font-weight: 600; font-display: swap; src: url("../fuentes/Lora-SemiBold.woff") format("woff"); }
+
+:root {
+  --anil-950: #0F1830;
+  --anil-900: #131E3A;
+  --anil-800: #1B2A4E;
+  --anil-700: #27386A;
+  --anil-600: #3C5AA6;
+  --anil-100: #E2E7F3;
+  --anil-50: #F1F3F9;
+  --cochinilla-800: #7C0F33;
+  --cochinilla-700: #93123F;
+  --cochinilla-600: #A8174A;
+  --cochinilla-100: #F8E3EA;
+  --oro-500: #D9A021;
+  --oro-100: #FBF1DA;
+  --piedra-0: #FFFFFF;
+  --piedra-50: #F5F6F6;
+  --piedra-100: #ECEEEE;
+  --piedra-200: #DCDFE0;
+  --piedra-300: #C4C9CC;
+  --piedra-500: #7A8388;
+  --piedra-600: #5A6368;
+  --piedra-800: #2C3438;
+  --piedra-900: #1A2024;
+
+  --color-fondo: var(--piedra-50);
+  --color-superficie: var(--piedra-0);
+  --color-superficie-alterna: var(--piedra-100);
+  --color-borde: var(--piedra-200);
+  --color-borde-fuerte: var(--piedra-300);
+  --color-texto: var(--piedra-900);
+  --color-texto-suave: var(--piedra-600);
+  --color-texto-invertido: var(--piedra-0);
+  --color-primario: var(--anil-800);
+  --color-primario-hover: var(--anil-700);
+  --color-primario-activo: var(--anil-900);
+  --color-primario-tenue: var(--anil-50);
+  --color-acento: var(--cochinilla-600);
+  --color-acento-hover: var(--cochinilla-700);
+  --color-acento-activo: var(--cochinilla-800);
+  --color-acento-tenue: var(--cochinilla-100);
+  --color-sol: var(--oro-500);
+  --color-foco: var(--anil-600);
+
+  --color-exito: #17694F;
+  --color-exito-tenue: #DEF2EA;
+  --color-advertencia: #8A5A00;
+  --color-advertencia-tenue: #FBEFD5;
+  --color-error: #B3261E;
+  --color-error-tenue: #FBE6E4;
+  --color-info: #2A4A91;
+  --color-info-tenue: #E2E9F7;
+
+  --grafico-1: #3C5AA6;
+  --grafico-2: #D2691E;
+  --grafico-3: #1F9E89;
+  --grafico-4: #C2255C;
+
+  --fuente-texto: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --fuente-titulo: "Lora", Georgia, "Times New Roman", serif;
+  --texto-xs: 0.75rem;
+  --texto-sm: 0.875rem;
+  --texto-base: 1rem;
+  --texto-lg: 1.125rem;
+  --texto-xl: 1.375rem;
+  --texto-2xl: 1.75rem;
+  --texto-3xl: 2.25rem;
+  --texto-4xl: 3rem;
+  --texto-5xl: clamp(2.75rem, 6vw, 4.5rem);
+
+  --espacio-1: 0.25rem;
+  --espacio-2: 0.5rem;
+  --espacio-3: 0.75rem;
+  --espacio-4: 1rem;
+  --espacio-5: 1.5rem;
+  --espacio-6: 2rem;
+  --espacio-7: 3rem;
+  --espacio-8: 4.5rem;
+  --espacio-9: 6.5rem;
+
+  --radio-sm: 4px;
+  --radio-md: 6px;
+  --radio-lg: 10px;
+  --radio-xl: 16px;
+  --radio-total: 999px;
+
+  --sombra-sm: 0 1px 2px rgba(19, 30, 58, 0.08);
+  --sombra-md: 0 6px 18px rgba(19, 30, 58, 0.1);
+  --sombra-lg: 0 18px 48px rgba(19, 30, 58, 0.22);
+
+  --transicion-rapida: 120ms ease-out;
+  --transicion-media: 200ms cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  --ancho-contenido: 1200px;
+  --ancho-lateral: 248px;
+  --marco-puerta: polygon(13% 0, 87% 0, 100% 100%, 0 100%);
+  --marco-puerta-suave: polygon(4% 0, 96% 0, 100% 100%, 0 100%);
+}

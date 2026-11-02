@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="es-PE" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{componentes/cabeza :: cabeza('Operación del día', 'panel')}"></head>
+<body class="panel">
+<aside th:replace="~{componentes/lateral :: lateral('operacion')}"></aside>
+<main class="panel__principal">
+  <header th:replace="~{componentes/lateral :: cabecera('Operación del día')}"></header>
+  <div class="panel__seccion">
+    <div class="indicadores" data-indicadores aria-live="polite"></div>
+    <div class="bloques bloques--iguales">
+      <section class="superficie"><div class="bloque__cabecera"><h2 class="bloque__titulo">Pagos por verificar</h2></div><div class="tabla-envoltura" data-lista="pagosPorVerificar"></div></section>
+      <section class="superficie"><div class="bloque__cabecera"><h2 class="bloque__titulo">Pagadas por confirmar</h2></div><div class="tabla-envoltura" data-lista="porConfirmar"></div></section>
+      <section class="superficie"><div class="bloque__cabecera"><h2 class="bloque__titulo">Llegadas</h2></div><div class="tabla-envoltura" data-lista="llegadasHoy"></div></section>
+      <section class="superficie"><div class="bloque__cabecera"><h2 class="bloque__titulo">Salidas</h2></div><div class="tabla-envoltura" data-lista="salidasHoy"></div></section>
+    </div>
+  </div>
+</main>
+<script type="module" th:src="@{/recursos/js/operaciones.js}"></script>
+</body>
+</html>

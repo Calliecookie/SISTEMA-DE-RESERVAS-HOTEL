@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es-PE">
+<body style="margin:0;padding:24px;background:#F5F6F6;font-family:Arial,Helvetica,sans-serif;color:#1A2024;">
+  <table role="presentation" width="100%" style="max-width:520px;margin:0 auto;background:#FFFFFF;border:1px solid #DCDFE0;border-radius:10px;">
+    <tr><td style="padding:24px;">
+      <h1 style="margin:0 0 12px;font-size:20px;color:#1B2A4E;" th:text="${hotel}">Hotel</h1>
+      <p>Hola, <span th:text="${nombre}">cliente</span>:</p>
+      <p>Tu código para recuperar la contraseña es:</p>
+      <p style="font-size:30px;font-weight:bold;letter-spacing:6px;color:#A8174A;" th:text="${codigo}">000000</p>
+      <p>Vence en <span th:text="${minutos}">10</span> minutos. Si no lo solicitaste, ignora este mensaje.</p>
+    </td></tr>
+  </table>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es-PE" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{componentes/cabeza :: cabeza('Iniciar sesión', 'publico')}"></head>
+<body>
+<header th:replace="~{componentes/barra :: barra}"></header>
+<main class="acceso">
+  <div class="acceso__formulario">
+    <div class="acceso__caja">
+      <h1 class="acceso__titulo">Inicia sesión</h1>
+      <div class="aviso aviso--error oculto" data-error role="alert"></div>
+      <form class="formulario" data-formulario-acceso novalidate>
+        <label class="campo"><span class="campo__etiqueta">Correo electrónico</span>
+          <input class="entrada" type="email" name="correo" autocomplete="username" required></label>
+        <label class="campo"><span class="campo__etiqueta">Contraseña</span>
+          <input class="entrada" type="password" name="contrasena" autocomplete="current-password" required></label>
+        <button class="boton boton--acento boton--ancho" type="submit">Iniciar sesión</button>
+      </form>
+      <p class="acceso__pie"><a class="enlace" th:href="@{/recuperar-contrasena}">Olvidé mi contraseña</a></p>
+      <p class="acceso__pie">¿Aún no tienes cuenta? <a class="enlace" th:href="@{/registro}">Crea una cuenta</a></p>
+    </div>
+  </div>
+  <div class="acceso__arte" aria-hidden="true"><div class="puerta"><div class="puerta__sol"><svg th:replace="~{componentes/icono :: icono('sol')}"></svg></div></div></div>
+</main>
+<script type="module" th:src="@{/recursos/js/acceso.js}"></script>
+</body>
+</html>

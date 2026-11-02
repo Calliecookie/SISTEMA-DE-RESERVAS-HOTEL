@@ -1,0 +1,138 @@
+spring:
+  application:
+    name: sistema-reservas-hotel
+  config:
+    import:
+      - optional:file:.env[.properties]
+      - optional:file:${user.home}/.hotel-reservas/.env[.properties]
+  datasource:
+    url: ${BD_URL:jdbc:mysql://localhost:3306/hotel_reservas?useUnicode=true&characterEncoding=utf8&serverTimezone=America/Lima}
+    username: ${BD_USUARIO:root}
+    password: ${BD_CONTRASENA:}
+    hikari:
+      maximum-pool-size: 12
+      connection-timeout: 5000
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 20
+  thymeleaf:
+    prefix: classpath:/vistas/
+    suffix: .html
+    encoding: UTF-8
+    cache: ${VISTAS_EN_CACHE:true}
+  web:
+    resources:
+      static-locations: classpath:/recursos/
+      cache:
+        cachecontrol:
+          max-age: 7d
+  mvc:
+    static-path-pattern: /recursos/**
+  servlet:
+    multipart:
+      max-file-size: 2MB
+      max-request-size: 3MB
+  mail:
+    host: ${SMTP_SERVIDOR:localhost}
+    port: ${SMTP_PUERTO:587}
+    username: ${SMTP_USUARIO:}
+    password: ${SMTP_CONTRASENA:}
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          auth: ${SMTP_AUTENTICACION:true}
+          starttls:
+            enable: ${SMTP_STARTTLS:true}
+          connectiontimeout: 8000
+          timeout: 8000
+          writetimeout: 8000
+
+server:
+  port: ${PUERTO:8080}
+  max-http-request-header-size: 8KB
+  tomcat:
+    threads:
+      max: ${TOMCAT_HILOS_MAXIMOS:100}
+    max-connections: ${TOMCAT_CONEXIONES_MAXIMAS:2000}
+    accept-count: 50
+    connection-timeout: 5s
+    keep-alive-timeout: 15s
+    max-keep-alive-requests: 100
+    max-http-form-post-size: 256KB
+    max-swallow-size: 3MB
+  error:
+    whitelabel:
+      enabled: false
+    include-message: never
+    include-stacktrace: never
+  servlet:
+    session:
+      timeout: 30m
+      cookie:
+        name: SESION_HOTEL
+        http-only: true
+        secure: ${SESION_COOKIE_SEGURA:false}
+        same-site: lax
+      tracking-modes: cookie
+
+hotel:
+  almacenamiento:
+    ruta: ${ALMACENAMIENTO_RUTA:${user.home}/.hotel-reservas/almacenamiento}
+  factiliza:
+    url-base: ${FACTILIZA_URL_BASE:https://api.factiliza.com/v1}
+    token: ${FACTILIZA_TOKEN:}
+    permitir-manual: ${FACTILIZA_PERMITIR_MANUAL:true}
+    segundos-espera: ${FACTILIZA_SEGUNDOS_ESPERA:8}
+  url-publica: ${URL_PUBLICA:http://localhost:8080}
+  paypal:
+    entorno: ${PAYPAL_ENTORNO:sandbox}
+    url-base: ${PAYPAL_URL_BASE:}
+    cliente-id: ${PAYPAL_CLIENTE_ID:}
+    secreto: ${PAYPAL_SECRETO:}
+    moneda: ${PAYPAL_MONEDA:USD}
+    segundos-espera: ${PAYPAL_SEGUNDOS_ESPERA:15}
+  trafico:
+    habilitado: ${TRAFICO_HABILITADO:true}
+    limite-por-minuto: ${TRAFICO_LIMITE_POR_MINUTO:300}
+    limite-api-por-minuto: ${TRAFICO_LIMITE_API_POR_MINUTO:120}
+    excesos-para-bloquear: ${TRAFICO_EXCESOS_PARA_BLOQUEAR:3}
+    minutos-bloqueo: ${TRAFICO_MINUTOS_BLOQUEO:10}
+    maximo-ips-seguidas: ${TRAFICO_MAXIMO_IPS:100000}
+    exportaciones-simultaneas: ${TRAFICO_EXPORTACIONES_SIMULTANEAS:4}
+    proxies-confiables: ${TRAFICO_PROXIES_CONFIABLES:}
+  correo:
+    habilitado: ${CORREO_HABILITADO:false}
+    remitente: ${CORREO_REMITENTE:}
+    nombre-remitente: ${CORREO_NOMBRE_REMITENTE:Hotel Inti Wasi}
+    asincrono: ${CORREO_ASINCRONO:true}
+  seguridad:
+    maximo-intentos-acceso: 5
+    minutos-bloqueo-acceso: 15
+    minutos-validez-codigo: 10
+    maximo-intentos-codigo: 5
+  tareas:
+    milisegundos-expiracion: ${TAREA_EXPIRACION_MS:60000}
+    habilitadas: ${TAREAS_HABILITADAS:true}
+  administrador-inicial:
+    correo: ${ADMIN_INICIAL_CORREO:}
+    contrasena: ${ADMIN_INICIAL_CONTRASENA:}
+    nombres: ${ADMIN_INICIAL_NOMBRES:Administrador}
+    apellidos: ${ADMIN_INICIAL_APELLIDOS:General}
+  demostracion:
+    habilitada: ${DEMO_HABILITADA:false}
+    contrasena: ${DEMO_CONTRASENA:}
+
+logging:
+  file:
+    name: ${REGISTROS_RUTA:${user.home}/.hotel-reservas/almacenamiento/registros/aplicacion.log}
+  level:
+    root: INFO
+    org.hibernate.SQL: WARN

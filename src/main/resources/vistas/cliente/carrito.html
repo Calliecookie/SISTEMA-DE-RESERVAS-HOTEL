@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="es-PE" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{componentes/cabeza :: cabeza('Mi reserva', 'publico')}"></head>
+<body>
+<header th:replace="~{componentes/barra :: barra}"></header>
+<main>
+  <div class="contenedor reserva-pagina">
+    <h1 class="reserva-pagina__titulo">Mi reserva</h1>
+    <ol class="pasos" data-pasos aria-label="Etapas de la reserva"></ol>
+    <div data-etapa aria-live="polite"></div>
+  </div>
+</main>
+<footer th:replace="~{componentes/pie :: pie}"></footer>
+<script type="module" th:src="@{/recursos/js/carrito.js}"></script>
+</body>
+</html>

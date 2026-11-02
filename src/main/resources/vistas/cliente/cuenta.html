@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es-PE" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{componentes/cabeza :: cabeza('Mi cuenta', 'publico')}"></head>
+<body>
+<header th:replace="~{componentes/barra :: barra}"></header>
+<main>
+  <div class="contenedor cuenta">
+    <div class="panel__seccion">
+      <section class="superficie superficie--relleno" aria-labelledby="titulo-perfil">
+        <h1 class="resumen__titulo" id="titulo-perfil">Mis datos</h1>
+        <div data-perfil></div>
+      </section>
+      <section class="superficie superficie--relleno" aria-labelledby="titulo-contrasena">
+        <h2 class="resumen__titulo" id="titulo-contrasena">Cambiar contraseña</h2>
+        <form class="formulario" data-contrasena novalidate>
+          <div class="campo" data-campo="actual"><label class="campo__etiqueta" for="actual">Contraseña actual</label><input class="entrada" id="actual" type="password" name="actual" autocomplete="current-password" required><span class="campo__error"></span></div>
+          <div class="campo" data-campo="nueva"><label class="campo__etiqueta" for="nueva">Nueva contraseña</label><input class="entrada" id="nueva" type="password" name="nueva" autocomplete="new-password" required><span class="campo__error"></span></div>
+          <div class="campo" data-campo="confirmacion"><label class="campo__etiqueta" for="confirmacion">Confirma la contraseña</label><input class="entrada" id="confirmacion" type="password" name="confirmacion" autocomplete="new-password" required><span class="campo__error"></span></div>
+          <button class="boton boton--secundario" type="submit">Actualizar contraseña</button>
+        </form>
+      </section>
+    </div>
+    <section class="superficie" aria-labelledby="titulo-reservas">
+      <div class="bloque__cabecera"><h2 class="bloque__titulo" id="titulo-reservas">Mis reservas</h2></div>
+      <div data-reservas aria-live="polite"></div>
+      <div data-paginacion></div>
+    </section>
+  </div>
+</main>
+<footer th:replace="~{componentes/pie :: pie}"></footer>
+<script type="module" th:src="@{/recursos/js/cuenta.js}"></script>
+</body>
+</html>
