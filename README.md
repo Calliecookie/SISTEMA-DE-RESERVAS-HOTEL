@@ -2,6 +2,8 @@
 
 Plataforma web para reservar habitaciones en línea y administrar la operación de un hotel. Proyecto de la unidad didáctica Taller de Programación Web, IESTP "José Pardo", 2026-II.
 
+**Versión 2.0.0** (9 de noviembre de 2026). Las novedades y correcciones están en el [registro de cambios](CHANGELOG.md).
+
 ## Estado de verificación
 
 Verificado el 2 de noviembre de 2026 en Linux con JDK 21, Maven 3.9, MySQL 8.0.46, Chromium y Tomcat 10.1.61.
@@ -56,6 +58,7 @@ Si ya tenías la base creada con la versión anterior, ejecuta una vez `mysql -u
 
 | Documento | Contenido |
 |---|---|
+| [Registro de cambios](CHANGELOG.md) | Novedades y correcciones de cada versión |
 | [Análisis y diseño](documentacion/01-analisis-y-diseno.md) | Requerimientos, reglas de negocio y diagramas |
 | [Estructura y configuración](documentacion/02-estructura-y-configuracion.md) | Módulos, dependencias y variables |
 | [Instalación](documentacion/03-instalacion.md) | MySQL, Tomcat, SMTP, Factiliza, PayPal y Yape |
