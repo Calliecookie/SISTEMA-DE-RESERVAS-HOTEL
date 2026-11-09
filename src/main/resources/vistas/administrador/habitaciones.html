@@ -9,7 +9,9 @@
     <section class="superficie">
       <form class="barra-filtros" data-filtros>
         <label class="campo"><span class="campo__etiqueta">Buscar</span><input class="entrada" type="search" name="busqueda" placeholder="Número, nombre o categoría" maxlength="60" autocomplete="off"></label>
+        <label class="campo"><span class="campo__etiqueta">Estado</span><select class="entrada" name="estado"><option value="">Todos</option><option value="DISPONIBLE">Disponible</option><option value="RESERVADA">Reservada</option><option value="OCUPADA">Ocupada</option><option value="MANTENIMIENTO">En mantenimiento</option><option value="FUERA_DE_SERVICIO">Fuera de servicio</option></select></label>
       </form>
+      <p class="superficie__nota texto-sm texto-suave" data-resumen-estados aria-live="polite"></p>
       <div class="tabla-envoltura" data-tabla aria-live="polite"></div>
       <div data-paginacion></div>
     </section>

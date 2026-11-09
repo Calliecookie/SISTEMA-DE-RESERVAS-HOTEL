@@ -37,7 +37,7 @@ async function cargar() {
       ? datos.actividadReciente.map((item) => `<li><strong>${esc(textoAccion(item.accion))}</strong><br>
           <span class="texto-suave">${esc(item.usuario)}, ${fechaHora(item.creadoEn)}</span></li>`).join('')
       : '<li class="texto-suave">Aún no hay actividad registrada.</li>';
-    recientes.innerHTML = `<div class="tabla-envoltura"><table class="tabla">${cabeceraReservas}<tbody>${datos.reservasRecientes.map(filaReserva).join('')}</tbody></table></div>`;
+    recientes.innerHTML = `<div class="tabla-envoltura"><table class="tabla">${cabeceraReservas}<tbody>${datos.reservasRecientes.map((reserva) => filaReserva(reserva)).join('')}</tbody></table></div>`;
   } catch {
     indicadores.innerHTML = '';
     recientes.innerHTML = errorCarga();

@@ -22,6 +22,9 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import org.apache.pdfbox.Loader;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -79,6 +82,10 @@ class ReservaPrueba extends BasePruebaIntegracion {
         String archivo = jdbc.queryForObject("SELECT ruta_archivo FROM comprobantes", String.class);
         byte[] pdf = Files.readAllBytes(Path.of("target/almacenamiento-pruebas/comprobantes", archivo));
         assertEquals("%PDF", new String(pdf, 0, 4));
+        try (PDDocument documento = Loader.loadPDF(pdf)) {
+            String texto = new PDFTextStripper().getText(documento).replaceAll("\\s+", " ");
+            assertTrue(texto.contains("SON: MIL OCHOCIENTOS CINCO CON 40/100 SOLES"), "La boleta debe mostrar el total en letras");
+        }
         assertEquals(1, correosRecibidos().length);
         assertEquals("c@prueba.pe", correosRecibidos()[0].getAllRecipients()[0].toString());
         assertEquals("ENVIADO", jdbc.queryForObject("SELECT correo_estado FROM comprobantes", String.class));

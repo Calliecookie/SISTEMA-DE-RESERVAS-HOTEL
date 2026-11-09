@@ -16,8 +16,10 @@ import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
+@DynamicUpdate
 @Table(name = "habitaciones")
 public class Habitacion extends EntidadAuditable {
 
@@ -45,8 +47,8 @@ public class Habitacion extends EntidadAuditable {
     private BigDecimal precioNoche;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "estado_operativo", nullable = false, length = 20)
-    private EstadoOperativoHabitacion estadoOperativo = EstadoOperativoHabitacion.OPERATIVA;
+    @Column(name = "estado", nullable = false, length = 20)
+    private EstadoHabitacion estado = EstadoHabitacion.DISPONIBLE;
 
     @Column(name = "imagen_principal", length = 500)
     private String imagenPrincipal;
@@ -62,7 +64,7 @@ public class Habitacion extends EntidadAuditable {
     private Set<Caracteristica> caracteristicas = new HashSet<>();
 
     public boolean esReservable() {
-        return activo && estadoOperativo == EstadoOperativoHabitacion.OPERATIVA;
+        return activo && estado.admiteReservas();
     }
 
     public Long getId() {
@@ -121,12 +123,12 @@ public class Habitacion extends EntidadAuditable {
         this.precioNoche = precioNoche;
     }
 
-    public EstadoOperativoHabitacion getEstadoOperativo() {
-        return estadoOperativo;
+    public EstadoHabitacion getEstado() {
+        return estado;
     }
 
-    public void setEstadoOperativo(EstadoOperativoHabitacion estadoOperativo) {
-        this.estadoOperativo = estadoOperativo;
+    public void setEstado(EstadoHabitacion estado) {
+        this.estado = estado;
     }
 
     public String getImagenPrincipal() {

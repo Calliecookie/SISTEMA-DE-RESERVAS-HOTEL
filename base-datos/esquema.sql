@@ -91,7 +91,7 @@ CREATE TABLE habitaciones (
   descripcion VARCHAR(600) NOT NULL,
   capacidad INT NOT NULL,
   precio_noche DECIMAL(10, 2) NOT NULL,
-  estado_operativo VARCHAR(20) NOT NULL DEFAULT 'OPERATIVA',
+  estado VARCHAR(20) NOT NULL DEFAULT 'DISPONIBLE',
   imagen_principal VARCHAR(500) NULL,
   activo BOOLEAN NOT NULL DEFAULT TRUE,
   creado_en DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -101,8 +101,8 @@ CREATE TABLE habitaciones (
   CONSTRAINT fk_habitaciones_categoria FOREIGN KEY (categoria_id) REFERENCES categorias (id) ON UPDATE CASCADE ON DELETE RESTRICT,
   CONSTRAINT ck_habitaciones_capacidad CHECK (capacidad BETWEEN 1 AND 10),
   CONSTRAINT ck_habitaciones_precio CHECK (precio_noche > 0),
-  CONSTRAINT ck_habitaciones_estado CHECK (estado_operativo IN ('OPERATIVA', 'MANTENIMIENTO', 'FUERA_DE_SERVICIO')),
-  INDEX ix_habitaciones_catalogo (activo, estado_operativo, categoria_id),
+  CONSTRAINT ck_habitaciones_estado CHECK (estado IN ('DISPONIBLE', 'RESERVADA', 'OCUPADA', 'MANTENIMIENTO', 'FUERA_DE_SERVICIO')),
+  INDEX ix_habitaciones_catalogo (activo, estado, categoria_id),
   INDEX ix_habitaciones_precio (precio_noche)
 ) ENGINE = InnoDB;
 

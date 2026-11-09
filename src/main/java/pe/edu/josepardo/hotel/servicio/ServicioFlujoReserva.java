@@ -29,6 +29,7 @@ public class ServicioFlujoReserva {
     private final MaquinaEstadosReserva maquina;
     private final ServicioAuditoria auditoria;
     private final ApplicationEventPublisher publicador;
+    private final ServicioEstadoHabitacion estadoHabitacion;
 
     public ServicioFlujoReserva(
             RepositorioReserva repositorioReserva,
@@ -37,7 +38,8 @@ public class ServicioFlujoReserva {
             RepositorioPago repositorioPago,
             MaquinaEstadosReserva maquina,
             ServicioAuditoria auditoria,
-            ApplicationEventPublisher publicador) {
+            ApplicationEventPublisher publicador,
+            ServicioEstadoHabitacion estadoHabitacion) {
         this.repositorioReserva = repositorioReserva;
         this.repositorioHistorial = repositorioHistorial;
         this.repositorioUsuario = repositorioUsuario;
@@ -45,6 +47,7 @@ public class ServicioFlujoReserva {
         this.maquina = maquina;
         this.auditoria = auditoria;
         this.publicador = publicador;
+        this.estadoHabitacion = estadoHabitacion;
     }
 
     public void registrarInicio(Reserva reserva, Actor actor, Long usuarioId) {
@@ -59,6 +62,7 @@ public class ServicioFlujoReserva {
         }
         reserva.setEstado(destino);
         guardarHistorial(reserva, origen, destino, actor, usuarioId, motivo);
+        estadoHabitacion.recalcular(reserva.getDetalles().stream().map(detalle -> detalle.getHabitacion().getId()).toList());
     }
 
     @Transactional

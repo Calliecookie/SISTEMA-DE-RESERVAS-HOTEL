@@ -12,7 +12,8 @@ public record PropiedadesHotel(
         Correo correo,
         Seguridad seguridad,
         AdministradorInicial administradorInicial,
-        Demostracion demostracion) {
+        Demostracion demostracion,
+        Tareas tareas) {
 
     public record Almacenamiento(String ruta) {
     }
@@ -66,7 +67,15 @@ public record PropiedadesHotel(
             int maximoIntentosAcceso,
             int minutosBloqueoAcceso,
             int minutosValidezCodigo,
-            int maximoIntentosCodigo) {
+            int maximoIntentosCodigo,
+            String claveRecuperacionAdmin) {
+
+        public boolean tieneClaveRecuperacionAdmin() {
+            return claveRecuperacionAdmin != null && claveRecuperacionAdmin.trim().length() >= 12;
+        }
+    }
+
+    public record Tareas(boolean habilitadas, boolean eliminarNoPagadas) {
     }
 
     public record AdministradorInicial(String correo, String contrasena, String nombres, String apellidos) {

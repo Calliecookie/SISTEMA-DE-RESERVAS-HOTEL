@@ -41,19 +41,19 @@ INSERT INTO caracteristicas (id, nombre, icono) VALUES
   (13, 'Servicio a la habitación', 'conserje'),
   (14, 'Calefacción', 'termometro');
 
-INSERT INTO habitaciones (id, numero, nombre, categoria_id, descripcion, capacidad, precio_noche, estado_operativo, imagen_principal) VALUES
-  (1, '101', 'Estándar Patio', 1, 'Habitación tranquila con vista al patio interior, ideal para viajes de trabajo o escapadas cortas.', 2, 150.00, 'OPERATIVA', '/recursos/imagenes/habitaciones/room-in-hotel.jpg'),
-  (2, '102', 'Estándar Jardín', 1, 'Luz natural durante toda la mañana y acceso directo al jardín del primer piso.', 2, 165.00, 'OPERATIVA', '/recursos/imagenes/habitaciones/umass-hotel-room.jpg'),
-  (3, '103', 'Estándar Individual', 1, 'Pensada para una persona que viaja ligero: cama amplia, escritorio y todo a mano.', 1, 120.00, 'OPERATIVA', '/recursos/imagenes/habitaciones/hotel-room-with-queen-size-bed.jpg'),
-  (4, '201', 'Superior Ciudad', 2, 'Segundo piso con vista a la ciudad, escritorio amplio y mayor aislamiento acústico.', 2, 220.00, 'OPERATIVA', '/recursos/imagenes/habitaciones/hotel-room-interior-at-hotel-radisson-blu-oulu.jpg'),
-  (5, '202', 'Superior Balcón', 2, 'Balcón privado para tomar el desayuno al aire libre y ver caer la tarde.', 3, 260.00, 'OPERATIVA', '/recursos/imagenes/habitaciones/bedroom-hotel-interior-with-open-door-window-51536308276.jpg'),
-  (6, '203', 'Superior Ejecutiva', 2, 'Mesa de trabajo, sillón de lectura y conexión estable para quienes viajan por negocios.', 2, 240.00, 'OPERATIVA', '/recursos/imagenes/habitaciones/mitsui-garden-hotel-kanazawa-moderate-double-bedroom-20200103-001.jpg'),
-  (7, '301', 'Matrimonial Sol', 3, 'Cama king orientada al amanecer, con detalles de bienvenida para celebrar en pareja.', 2, 290.00, 'OPERATIVA', '/recursos/imagenes/habitaciones/hotel-room-at-brahe-ensuite.jpg'),
-  (8, '302', 'Matrimonial Terraza', 3, 'Terraza privada y tina de hidromasaje para una estancia sin prisas.', 2, 340.00, 'OPERATIVA', '/recursos/imagenes/habitaciones/hotel-room-interior-at-apartment-hotel-ona-cala-pi-club-mallorca-spain.jpg'),
-  (9, '401', 'Familiar Andina', 4, 'Dos ambientes conectados, camas para cuatro personas y cuna a pedido.', 4, 380.00, 'OPERATIVA', '/recursos/imagenes/habitaciones/bridal-tea-house-hotel-modern-family-room.jpg'),
-  (10, '402', 'Familiar Grande', 4, 'Nuestra habitación más amplia para grupos: seis camas y dos baños completos.', 6, 520.00, 'OPERATIVA', '/recursos/imagenes/habitaciones/bedroom-efteling-loonsche-land-hotel.jpg'),
-  (11, '501', 'Suite Inti', 5, 'Sala independiente, tina de hidromasaje y la mejor vista del hotel.', 3, 620.00, 'OPERATIVA', '/recursos/imagenes/habitaciones/bedroom-s-pardoes-suite-efteling-hotel.jpg'),
-  (12, '502', 'Suite Wasi', 5, 'Dos dormitorios, comedor privado y atención personalizada durante toda la estancia.', 5, 780.00, 'OPERATIVA', '/recursos/imagenes/habitaciones/living-room-s-pardoes-suite-efteling-hotel.jpg'),
+INSERT INTO habitaciones (id, numero, nombre, categoria_id, descripcion, capacidad, precio_noche, estado, imagen_principal) VALUES
+  (1, '101', 'Estándar Patio', 1, 'Habitación tranquila con vista al patio interior, ideal para viajes de trabajo o escapadas cortas.', 2, 150.00, 'DISPONIBLE', '/recursos/imagenes/habitaciones/room-in-hotel.jpg'),
+  (2, '102', 'Estándar Jardín', 1, 'Luz natural durante toda la mañana y acceso directo al jardín del primer piso.', 2, 165.00, 'DISPONIBLE', '/recursos/imagenes/habitaciones/umass-hotel-room.jpg'),
+  (3, '103', 'Estándar Individual', 1, 'Pensada para una persona que viaja ligero: cama amplia, escritorio y todo a mano.', 1, 120.00, 'DISPONIBLE', '/recursos/imagenes/habitaciones/hotel-room-with-queen-size-bed.jpg'),
+  (4, '201', 'Superior Ciudad', 2, 'Segundo piso con vista a la ciudad, escritorio amplio y mayor aislamiento acústico.', 2, 220.00, 'DISPONIBLE', '/recursos/imagenes/habitaciones/hotel-room-interior-at-hotel-radisson-blu-oulu.jpg'),
+  (5, '202', 'Superior Balcón', 2, 'Balcón privado para tomar el desayuno al aire libre y ver caer la tarde.', 3, 260.00, 'DISPONIBLE', '/recursos/imagenes/habitaciones/bedroom-hotel-interior-with-open-door-window-51536308276.jpg'),
+  (6, '203', 'Superior Ejecutiva', 2, 'Mesa de trabajo, sillón de lectura y conexión estable para quienes viajan por negocios.', 2, 240.00, 'DISPONIBLE', '/recursos/imagenes/habitaciones/mitsui-garden-hotel-kanazawa-moderate-double-bedroom-20200103-001.jpg'),
+  (7, '301', 'Matrimonial Sol', 3, 'Cama king orientada al amanecer, con detalles de bienvenida para celebrar en pareja.', 2, 290.00, 'DISPONIBLE', '/recursos/imagenes/habitaciones/hotel-room-at-brahe-ensuite.jpg'),
+  (8, '302', 'Matrimonial Terraza', 3, 'Terraza privada y tina de hidromasaje para una estancia sin prisas.', 2, 340.00, 'DISPONIBLE', '/recursos/imagenes/habitaciones/hotel-room-interior-at-apartment-hotel-ona-cala-pi-club-mallorca-spain.jpg'),
+  (9, '401', 'Familiar Andina', 4, 'Dos ambientes conectados, camas para cuatro personas y cuna a pedido.', 4, 380.00, 'DISPONIBLE', '/recursos/imagenes/habitaciones/bridal-tea-house-hotel-modern-family-room.jpg'),
+  (10, '402', 'Familiar Grande', 4, 'Nuestra habitación más amplia para grupos: seis camas y dos baños completos.', 6, 520.00, 'DISPONIBLE', '/recursos/imagenes/habitaciones/bedroom-efteling-loonsche-land-hotel.jpg'),
+  (11, '501', 'Suite Inti', 5, 'Sala independiente, tina de hidromasaje y la mejor vista del hotel.', 3, 620.00, 'DISPONIBLE', '/recursos/imagenes/habitaciones/bedroom-s-pardoes-suite-efteling-hotel.jpg'),
+  (12, '502', 'Suite Wasi', 5, 'Dos dormitorios, comedor privado y atención personalizada durante toda la estancia.', 5, 780.00, 'DISPONIBLE', '/recursos/imagenes/habitaciones/living-room-s-pardoes-suite-efteling-hotel.jpg'),
   (13, '104', 'Estándar Claustro', 1, 'Habitación en mantenimiento programado. Volverá a estar disponible pronto.', 2, 150.00, 'MANTENIMIENTO', '/recursos/imagenes/habitaciones/room-in-hotel.jpg');
 
 INSERT INTO habitacion_caracteristicas (habitacion_id, caracteristica_id) VALUES

@@ -1,25 +1,41 @@
-import { abrirModal, api, confirmar, conCarga, datosFormulario, enviarFormulario, esc, errorCarga, esqueletoTabla, icono, moneda, mostrarError, toast, urlImagen, vacio } from './nucleo.js';
+import { abrirModal, api, confirmar, conCarga, datosFormulario, enviarFormulario, esc, errorCarga, esqueletoTabla, icono, insigniaHabitacion, moneda, mostrarError, toast, urlImagen, vacio } from './nucleo.js';
 
 const filtros = document.querySelector('[data-filtros]');
 const tabla = document.querySelector('[data-tabla]');
 const acciones = document.querySelector('[data-acciones-cabecera]');
+const resumenEstados = document.querySelector('[data-resumen-estados]');
 let habitaciones = [];
 let categorias = [];
 let rasgos = [];
 
-const ESTADOS = [['OPERATIVA', 'Operativa'], ['MANTENIMIENTO', 'En mantenimiento'], ['FUERA_DE_SERVICIO', 'Fuera de servicio']];
+// Reservada y Ocupada no se eligen: el sistema las asigna según las reservas pagadas y los ingresos.
+const ESTADOS = [['DISPONIBLE', 'Disponible (en servicio)'], ['MANTENIMIENTO', 'En mantenimiento'], ['FUERA_DE_SERVICIO', 'Fuera de servicio']];
+const MANUALES = ESTADOS.map(([valor]) => valor);
 const campo = (nombre, etiqueta, control) => `<div class="campo" data-campo="${nombre}"><label class="campo__etiqueta" for="c-${nombre}">${etiqueta}</label>${control}<span class="campo__error"></span></div>`;
 
+function pintarResumen() {
+  if (!resumenEstados) {
+    return;
+  }
+  const activas = habitaciones.filter((item) => item.activo);
+  const contar = (estado) => activas.filter((item) => item.estado === estado).length;
+  resumenEstados.textContent = `${activas.length} habitaciones activas: ${contar('DISPONIBLE')} disponibles, ${contar('RESERVADA')} reservadas, `
+    + `${contar('OCUPADA')} ocupadas y ${contar('MANTENIMIENTO') + contar('FUERA_DE_SERVICIO')} fuera de servicio o en mantenimiento.`;
+}
+
 function pintar() {
+  pintarResumen();
   const texto = filtros.busqueda.value.trim().toLowerCase();
-  const lista = habitaciones.filter((item) => `${item.numero} ${item.nombre} ${item.categoria}`.toLowerCase().includes(texto));
+  const estado = filtros.estado?.value || '';
+  const lista = habitaciones.filter((item) => `${item.numero} ${item.nombre} ${item.categoria}`.toLowerCase().includes(texto)
+    && (!estado || item.estado === estado));
   tabla.innerHTML = lista.length ? `<table class="tabla">
     <thead><tr><th>Foto</th><th>Número</th><th>Nombre</th><th>Categoría</th><th class="derecha">Capacidad</th><th class="derecha">Precio</th><th>Estado</th><th><span class="oculto-visual">Acciones</span></th></tr></thead>
     <tbody>${lista.map((item) => `<tr>
       <td><img class="tabla__miniatura" data-foto src="${esc(urlImagen(item.imagen))}" alt="" width="56" height="42" loading="lazy"></td>
       <td><strong>${esc(item.numero)}</strong></td><td>${esc(item.nombre)}</td><td>${esc(item.categoria)}</td>
       <td class="derecha">${item.capacidad}</td><td class="derecha">${moneda(item.precioNoche)}</td>
-      <td><span class="insignia insignia--${item.activo ? (item.estadoOperativo === 'OPERATIVA' ? 'exito' : 'advertencia') : 'neutra'}">${item.activo ? esc(item.estadoEtiqueta) : 'Desactivada'}</span></td>
+      <td>${item.activo ? insigniaHabitacion(item.estado, item.estadoEtiqueta) : '<span class="insignia insignia--neutra">Desactivada</span>'}</td>
       <td><div class="tabla__acciones">
         <button class="boton boton--fantasma boton--icono" type="button" data-editar="${item.id}" aria-label="Editar ${esc(item.numero)}">${icono('lapiz')}</button>
         <button class="boton boton--fantasma boton--icono" type="button" data-activar="${item.id}" aria-label="${item.activo ? 'Desactivar' : 'Activar'} ${esc(item.numero)}">${icono('encender')}</button>
@@ -53,7 +69,7 @@ function formulario(item) {
       <div class="formulario__fila formulario__fila--3">
         ${campo('numero', 'Número', `<input class="entrada" id="c-numero" name="numero" maxlength="10" value="${esc(item?.numero)}" required>`)}
         ${campo('categoriaId', 'Categoría', `<select class="entrada" id="c-categoriaId" name="categoriaId" required><option value="">Selecciona</option>${categorias.map((categoria) => `<option value="${categoria.id}" ${item?.categoriaId === categoria.id ? 'selected' : ''}>${esc(categoria.nombre)}</option>`).join('')}</select>`)}
-        ${campo('estadoOperativo', 'Estado operativo', `<select class="entrada" id="c-estadoOperativo" name="estadoOperativo">${ESTADOS.map(([valor, texto]) => `<option value="${valor}" ${item?.estadoOperativo === valor ? 'selected' : ''}>${texto}</option>`).join('')}</select>`)}
+        ${campo('estado', 'Estado', `<select class="entrada" id="c-estado" name="estado">${ESTADOS.map(([valor, texto]) => `<option value="${valor}" ${(MANUALES.includes(item?.estado) ? item.estado : 'DISPONIBLE') === valor ? 'selected' : ''}>${texto}</option>`).join('')}</select>${item && !MANUALES.includes(item.estado) ? `<span class="campo__ayuda">Ahora está ${esc(item.estadoEtiqueta.toLowerCase())} por una reserva.</span>` : ''}`)}
       </div>
       ${campo('nombre', 'Nombre', `<input class="entrada" id="c-nombre" name="nombre" maxlength="120" value="${esc(item?.nombre)}" required>`)}
       ${campo('descripcion', 'Descripción', `<textarea class="entrada" id="c-descripcion" name="descripcion" maxlength="600" required>${esc(item?.descripcion)}</textarea>`)}
@@ -80,7 +96,7 @@ function formulario(item) {
       descripcion: datos.descripcion,
       capacidad: datos.capacidad ? Number(datos.capacidad) : null,
       precioNoche: datos.precioNoche || null,
-      estadoOperativo: datos.estadoOperativo,
+      estado: datos.estado,
       imagenUrl: datos.imagenUrl || null,
       caracteristicaIds: [...form.querySelectorAll('[name="rasgo"]:checked')].map((casilla) => Number(casilla.value)),
     };

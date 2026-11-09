@@ -15,7 +15,8 @@
           <input class="entrada" type="password" name="contrasena" autocomplete="current-password" required></label>
         <button class="boton boton--acento boton--ancho" type="submit">Iniciar sesión</button>
       </form>
-      <p class="acceso__pie"><a class="enlace" th:href="@{/recuperar-contrasena}">Olvidé mi contraseña</a></p>
+      <p class="acceso__pie"><a class="enlace" th:href="@{/recuperar-contrasena}">Olvidé mi contraseña</a>
+        · <a class="enlace" th:href="@{/recuperar-contrasena/administrador}">Soy administrador y olvidé mi contraseña</a></p>
       <p class="acceso__pie">¿Aún no tienes cuenta? <a class="enlace" th:href="@{/registro}">Crea una cuenta</a></p>
     </div>
   </div>

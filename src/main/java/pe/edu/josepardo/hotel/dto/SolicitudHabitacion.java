@@ -17,7 +17,7 @@ public record SolicitudHabitacion(
         @NotBlank(message = "Ingresa la descripción.") @Size(max = 600, message = "La descripción no puede superar 600 caracteres.") String descripcion,
         @NotNull(message = "Ingresa la capacidad.") @Min(value = 1, message = "La capacidad mínima es 1.") @Max(value = 10, message = "La capacidad máxima es 10.") Integer capacidad,
         @NotNull(message = "Ingresa el precio por noche.") @DecimalMin(value = "1.00", message = "El precio debe ser mayor a cero.") @Digits(integer = 8, fraction = 2, message = "El precio no es válido.") BigDecimal precioNoche,
-        @NotBlank(message = "Selecciona el estado operativo.") String estadoOperativo,
+        @NotBlank(message = "Selecciona el estado de la habitación.") String estado,
         @Size(max = 500, message = "La URL de imagen es demasiado larga.") String imagenUrl,
         Set<Long> caracteristicaIds) {
 }

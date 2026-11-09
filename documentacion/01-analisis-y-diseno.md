@@ -32,10 +32,13 @@ El Prompt Maestro recomienda PHP, pero el sílabo fija Java y Spring. Se eligió
 | 4a | PayPal no admite soles (`PEN`) | Se cobra en dólares con un tipo de cambio configurable. El importe en soles sigue siendo el oficial del sistema |
 | 4b | No hay API pública oficial de Yape para comercios | Pago con QR o número configurados, número de operación y verificación manual |
 | 5 | El estado "Entregado" proviene de un sistema de ventas | Significa **habitación entregada al huésped**, es decir, ingreso registrado |
-| 6 | "Stock" no aplica a habitaciones únicas | El reporte 4 cuenta inventario y ocupación por fecha |
+| 6 | "Stock" no aplica a habitaciones únicas | La tabla `habitaciones` usa el campo `estado` en lugar de stock: Disponible, Reservada, Ocupada, En mantenimiento o Fuera de servicio. Al pagarse una reserva la habitación pasa a Reservada, al ingresar el huésped a Ocupada y al salir o cancelarse vuelve a Disponible. El reporte 4 muestra ese estado y la ocupación por fecha |
 | 7 | "Cambiar fechas" y "fechas por reserva" | Las fechas pertenecen a la reserva, por lo que todas las habitaciones de un carrito comparten estancia |
 | 8 | Ingresos reales y reservas canceladas ya pagadas | Cancelar una reserva pagada marca el pago como `REEMBOLSADO` y deja de contar como ingreso |
 | 9 | Precios e impuestos | `precio_noche` no incluye IGV. El catálogo lo indica como "+ IGV" |
+| 10 | "Los pedidos no cancelados al final del día serán eliminados" | "Cancelar" se entiende como pagar. El plazo de pago vence a las 23:59 del día en que se hizo la reserva y el cierre diario (23:59) da de baja y elimina los pedidos no pagados, salvo los que tienen un pago declarado por verificar |
+| 11 | El administrador olvida su contraseña y el correo no está configurado | Además del código por correo, puede usar la clave de recuperación `ADMIN_CLAVE_RECUPERACION` en `/recuperar-contrasena/administrador` |
+| 12 | Total en letras | El comprobante imprime al pie "SON: … CON xx/100 SOLES" |
 
 ## 3. Descripción del problema
 
@@ -278,7 +281,7 @@ Cada tabla usa `id` como clave primaria, salvo `configuraciones` (`clave`) y `ha
 | clientes | id, usuario_id (FK, UNIQUE), dni (UNIQUE), telefono, direccion, dni_verificado, origen_datos, creado_en, actualizado_en |
 | categorias | id, nombre (UNIQUE), descripcion, activo, creado_en, actualizado_en |
 | caracteristicas | id, nombre (UNIQUE), icono |
-| habitaciones | id, numero (UNIQUE), nombre, categoria_id (FK), descripcion, capacidad, precio_noche, estado_operativo, imagen_principal, activo, creado_en, actualizado_en |
+| habitaciones | id, numero (UNIQUE), nombre, categoria_id (FK), descripcion, capacidad, precio_noche, estado, imagen_principal, activo, creado_en, actualizado_en |
 | habitacion_caracteristicas | habitacion_id (FK), caracteristica_id (FK) |
 | reservas | id, codigo (UNIQUE), cliente_id (FK), fecha_entrada, fecha_salida, cantidad_huespedes, subtotal, descuento, impuesto, total, estado, metodo_pago, fecha_pago, expira_en, observaciones, creado_en, actualizado_en |
 | detalle_reservas | id, reserva_id (FK), habitacion_id (FK), cantidad_huespedes, precio_noche, noches, subtotal, descuento, impuesto, total |

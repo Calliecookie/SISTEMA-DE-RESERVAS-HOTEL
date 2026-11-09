@@ -35,7 +35,7 @@ public class ConsultaReportes {
     }
 
     public record DisponibilidadHabitacion(
-            String numero, String nombre, String categoria, String estadoOperativo, boolean activa, String situacion) {
+            String numero, String nombre, String categoria, String estado, boolean activa, String situacion) {
     }
 
     public record VentaCategoria(String categoria, long reservas, BigDecimal ingresos) {
@@ -168,7 +168,7 @@ public class ConsultaReportes {
                 .addValue("fechaSalida", fecha.plusDays(1))
                 .addValue("ahora", LocalDateTime.now());
         String sql = """
-                SELECT h.numero, h.nombre, cat.nombre AS categoria, h.estado_operativo, h.activo,
+                SELECT h.numero, h.nombre, cat.nombre AS categoria, h.estado, h.activo,
                        EXISTS (
                          SELECT 1 FROM detalle_reservas de
                          JOIN reservas re ON re.id = de.reserva_id
@@ -183,11 +183,13 @@ public class ConsultaReportes {
                 """;
         return jdbc.query(sql, parametros, (fila, indice) -> {
             boolean activa = fila.getBoolean("activo");
-            String estado = fila.getString("estado_operativo");
+            String estado = fila.getString("estado");
             String situacion;
             if (!activa) {
                 situacion = "Inactiva";
-            } else if (!"OPERATIVA".equals(estado)) {
+            } else if ("MANTENIMIENTO".equals(estado)) {
+                situacion = "En mantenimiento";
+            } else if ("FUERA_DE_SERVICIO".equals(estado)) {
                 situacion = "Fuera de servicio";
             } else if (fila.getBoolean("ocupada")) {
                 situacion = "Ocupada";

@@ -71,6 +71,11 @@ public class ControladorVistas {
         return "cliente/recuperar";
     }
 
+    @GetMapping("/recuperar-contrasena/administrador")
+    public String recuperarAdministrador() {
+        return "administrador/recuperar";
+    }
+
     @GetMapping("/mi-cuenta")
     public String cuenta() {
         return "cliente/cuenta";

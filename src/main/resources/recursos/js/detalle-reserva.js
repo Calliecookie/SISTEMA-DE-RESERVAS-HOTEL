@@ -9,6 +9,36 @@ const ETIQUETAS = {
   CANCELAR: 'Cancelar reserva',
 };
 
+const ETAPAS = [
+  ['PENDIENTE', 'Pendiente de pago'],
+  ['PAGADO', 'Pagado'],
+  ['CONFIRMADO', 'Confirmado'],
+  ['ENTREGADO', 'Entregado (huésped en el hotel)'],
+  ['FINALIZADO', 'Finalizado'],
+];
+
+const ETIQUETAS_ESTADO = {
+  PAGADO: 'Pagado',
+  CONFIRMADO: 'Confirmado',
+  ENTREGADO: 'Entregado (registrar ingreso)',
+  FINALIZADO: 'Finalizado (registrar salida)',
+  CANCELADO: 'Cancelado',
+};
+
+export function seguimientoReserva(reserva) {
+  if (reserva.estado === 'CANCELADO' || reserva.estado === 'EXPIRADO') {
+    const texto = reserva.estado === 'CANCELADO'
+      ? 'Esta reserva fue cancelada.'
+      : 'El plazo de pago venció y la reserva se dio de baja.';
+    return `<div class="aviso aviso--advertencia" role="status">${texto}</div>`;
+  }
+  const actual = ETAPAS.findIndex(([estado]) => estado === reserva.estado);
+  return `<ol class="pasos seguimiento" aria-label="Avance de la reserva">${ETAPAS.map(([estado, etiqueta], indice) => {
+    const clase = indice === actual ? 'pasos__item--actual' : indice < actual ? 'pasos__item--hecho' : '';
+    return `<li class="pasos__item ${clase}" ${indice === actual ? 'aria-current="step"' : ''}><span class="pasos__numero">Paso ${indice + 1}</span>${etiqueta}</li>`;
+  }).join('')}</ol>`;
+}
+
 export function contenidoDetalle(reserva) {
   const lineas = reserva.lineas.map((linea) => `
     <tr><td>${esc(linea.numero)}</td><td>${esc(linea.nombre)}</td><td>${esc(linea.categoria)}</td>
@@ -29,6 +59,7 @@ export function contenidoDetalle(reserva) {
   return `
     <div class="detalle-reserva">
       <p>${insigniaEstado(reserva.estado, reserva.estadoEtiqueta)}</p>
+      ${seguimientoReserva(reserva)}
       <div class="detalle-reserva__columnas">
         <section><h3>Cliente</h3><dl class="lista-datos">
           <div class="lista-datos__fila"><dt>Nombre</dt><dd>${esc(reserva.cliente)}</dd></div>
@@ -165,7 +196,54 @@ export function abrirDetalleReserva(codigo, { alCambiar } = {}) {
   cargar();
 }
 
-export const filaReserva = (reserva) => `
+async function pedirDatosCambio(codigo, estado) {
+  if (estado === 'CANCELADO') {
+    const motivo = await pedirMotivo({
+      titulo: 'Cancelar reserva',
+      mensaje: 'La habitación quedará libre. Si ya se cobró, realiza la devolución por el mismo medio de pago.',
+      textoConfirmar: 'Cancelar reserva',
+    });
+    return motivo ? { estado, motivo } : null;
+  }
+  if (estado === 'PAGADO') {
+    const reserva = (await api(`/api/operaciones/reservas/${encodeURIComponent(codigo)}`)).datos;
+    const declarado = reserva.pagos.find((pago) => pago.estado === 'DECLARADO');
+    if (declarado) {
+      const aceptado = await confirmar({
+        titulo: 'Marcar como pagado',
+        mensaje: `Confirma que recibiste ${moneda(reserva.total)} por ${declarado.metodoEtiqueta}.`,
+        textoConfirmar: 'Confirmar pago',
+      });
+      return aceptado ? { estado } : null;
+    }
+    const pago = await pedirPagoPresencial();
+    return pago ? { estado, ...pago } : null;
+  }
+  const aceptado = await confirmar({
+    titulo: 'Actualizar estado',
+    mensaje: `La reserva ${codigo} pasará a "${ETIQUETAS_ESTADO[estado] || estado}". El cliente verá el cambio en su cuenta.`,
+    textoConfirmar: 'Actualizar estado',
+  });
+  return aceptado ? { estado } : null;
+}
+
+export async function cambiarEstadoReserva(codigo, estado) {
+  const cuerpo = await pedirDatosCambio(codigo, estado);
+  if (!cuerpo) {
+    return null;
+  }
+  return api(`/api/operaciones/reservas/${encodeURIComponent(codigo)}/estado`, { metodo: 'PATCH', cuerpo });
+}
+
+const selectorEstado = (reserva) => (reserva.estadosSiguientes?.length
+  ? `<label class="oculto-visual" for="estado-${esc(reserva.codigo)}">Actualizar estado de ${esc(reserva.codigo)}</label>
+    <select class="entrada entrada--compacta" id="estado-${esc(reserva.codigo)}" data-cambio-estado="${esc(reserva.codigo)}">
+      <option value="">Cambiar a…</option>
+      ${reserva.estadosSiguientes.map((estado) => `<option value="${estado}">${esc(ETIQUETAS_ESTADO[estado] || estado)}</option>`).join('')}
+    </select>`
+  : '<span class="texto-sm texto-suave">Sin cambios</span>');
+
+export const filaReserva = (reserva, { cambioEstado = false } = {}) => `
   <tr class="fila-accion" data-codigo="${esc(reserva.codigo)}" tabindex="0">
     <td><strong>${esc(reserva.codigo)}</strong></td>
     <td>${esc(reserva.cliente)}<br><span class="texto-suave">DNI ${esc(reserva.dni)}</span></td>
@@ -174,19 +252,47 @@ export const filaReserva = (reserva) => `
     <td>${insigniaEstado(reserva.estado, reserva.estadoEtiqueta)}</td>
     <td>${esc(reserva.metodoPagoEtiqueta || 'Sin definir')}</td>
     <td class="derecha">${moneda(reserva.total)}</td>
+    ${cambioEstado ? `<td>${selectorEstado(reserva)}</td>` : ''}
   </tr>`;
 
 export const cabeceraReservas = '<thead><tr><th>Reserva</th><th>Cliente</th><th>Habitaciones</th><th>Entrada</th><th>Estado</th><th>Pago</th><th class="derecha">Total</th></tr></thead>';
+export const cabeceraReservasConCambio = '<thead><tr><th>Reserva</th><th>Cliente</th><th>Habitaciones</th><th>Entrada</th><th>Estado</th><th>Pago</th><th class="derecha">Total</th><th>Actualizar estado</th></tr></thead>';
 
 export function activarFilas(contenedor, alCambiar) {
   const abrir = (fila) => abrirDetalleReserva(fila.dataset.codigo, { alCambiar });
+  contenedor.addEventListener('change', async (evento) => {
+    const selector = evento.target.closest('[data-cambio-estado]');
+    if (!selector || !selector.value) {
+      return;
+    }
+    const estado = selector.value;
+    selector.disabled = true;
+    try {
+      const respuesta = await cambiarEstadoReserva(selector.dataset.cambioEstado, estado);
+      if (respuesta) {
+        toast(respuesta.mensaje);
+        alCambiar?.();
+      }
+    } catch (error) {
+      mostrarError(error);
+    } finally {
+      selector.value = '';
+      selector.disabled = false;
+    }
+  });
   contenedor.addEventListener('click', (evento) => {
+    if (evento.target.closest('[data-cambio-estado], label')) {
+      return;
+    }
     const fila = evento.target.closest('[data-codigo]');
     if (fila) {
       abrir(fila);
     }
   });
   contenedor.addEventListener('keydown', (evento) => {
+    if (evento.target.closest('[data-cambio-estado]')) {
+      return;
+    }
     const fila = evento.target.closest('[data-codigo]');
     if (fila && (evento.key === 'Enter' || evento.key === ' ')) {
       evento.preventDefault();

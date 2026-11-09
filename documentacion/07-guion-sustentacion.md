@@ -36,8 +36,11 @@ Presenta el problema: una disponibilidad que depende de las fechas no se resuelv
 
 1. Confirma la reserva.
 2. Paga con Yape y escribe un número de operación.
-3. Abre el comprobante.
+3. Abre el comprobante y señala el total en letras al pie ("SON: … CON xx/100 SOLES").
 4. Si configuraste SMTP, muestra el correo.
+5. En *Habitaciones* del panel, muestra que la habitación pagada pasó de **Disponible** a **Reservada**: es el equivalente al stock que disminuye.
+
+**Di:** "Los pedidos que no se pagan vencen a las 23:59 y el cierre del día los elimina."
 
 **Di:** "El PDF y el correo se procesan después de confirmar la transacción. Si falla el correo, la reserva no se pierde."
 
@@ -50,6 +53,8 @@ Presenta el problema: una disponibilidad que depende de las fechas no se resuelv
 3. Intenta eliminar una habitación con reservas.
 4. Crea un trabajador.
 5. Abre la auditoría.
+6. En *Reservas*, usa la columna **Actualizar estado** para pasar una reserva de Pagado a Confirmado y luego a Entregado. Muestra en la cuenta del cliente cómo avanza la barra de seguimiento y cómo la habitación pasa a Ocupada.
+7. Cierra sesión y abre *Soy administrador y olvidé mi contraseña* en la pantalla de ingreso: código por correo o clave de recuperación (`ADMIN_CLAVE_RECUPERACION`).
 
 ## Quinta revisión: ventas (2 minutos)
 

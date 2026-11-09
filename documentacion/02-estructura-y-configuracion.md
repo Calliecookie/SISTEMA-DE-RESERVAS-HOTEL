@@ -87,6 +87,8 @@ Copia `.env.example` como `.env`. El archivo `.env` nunca se sube a Git.
 |---|---|---|
 | `BD_URL`, `BD_USUARIO`, `BD_CONTRASENA` | Sí | Conexión a MySQL |
 | `ADMIN_INICIAL_CORREO`, `ADMIN_INICIAL_CONTRASENA` | Primer arranque | Crea el administrador. La contraseña necesita 10 caracteres, letras y números |
+| `ADMIN_CLAVE_RECUPERACION` | Recuperación del administrador | Clave de al menos 12 caracteres para restablecer la contraseña del administrador sin correo. Vacía, desactiva ese método |
+| `TAREA_CIERRE_DIA_CRON`, `TAREA_ELIMINAR_NO_PAGADAS` | Cierre del día | Hora del cierre (por defecto `0 59 23 * * *`) y si se eliminan los pedidos no pagados |
 | `DEMO_HABILITADA`, `DEMO_CONTRASENA` | No | Crea datos y cuentas de demostración |
 | `URL_PUBLICA` | Para PayPal | Dirección pública, incluido el contexto si lo hay |
 | `SESION_COOKIE_SEGURA` | Producción | `true` cuando el sitio usa HTTPS |

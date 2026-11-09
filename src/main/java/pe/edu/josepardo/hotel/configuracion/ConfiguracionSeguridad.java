@@ -55,7 +55,8 @@ public class ConfiguracionSeguridad {
                         .requestMatchers("/recursos/**", "/imagenes/**", "/error").permitAll()
                         .requestMatchers(HttpMethod.GET,
                                 "/", "/habitaciones", "/habitaciones/*", "/carrito",
-                                "/ingresar", "/registro", "/recuperar-contrasena", "/creditos").permitAll()
+                                "/ingresar", "/registro", "/recuperar-contrasena", "/recuperar-contrasena/administrador",
+                                "/creditos").permitAll()
                         .requestMatchers("/api/publico/**", "/api/autenticacion/**", "/api/carrito/**").permitAll()
                         .requestMatchers("/api/cliente/**", "/mi-cuenta", "/mi-cuenta/**", "/pagos/paypal/**").hasRole("CLIENTE")
                         .requestMatchers("/api/operaciones/**", "/trabajador", "/trabajador/**")

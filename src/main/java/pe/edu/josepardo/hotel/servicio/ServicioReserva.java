@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -119,8 +120,11 @@ public class ServicioReserva {
         reserva.setImpuesto(importes.impuesto());
         reserva.setTotal(importes.total());
         reserva.setEstado(EstadoReserva.PENDIENTE);
-        reserva.setExpiraEn(LocalDateTime.now().plusHours(
-                configuracion.entero(ServicioConfiguracion.HORAS_EXPIRACION, 24)));
+        // El pedido que no se paga hasta el final del día se elimina en el cierre diario.
+        LocalDateTime ahora = LocalDateTime.now();
+        LocalDateTime plazo = ahora.plusHours(configuracion.entero(ServicioConfiguracion.HORAS_EXPIRACION, 24));
+        LocalDateTime finDelDia = ahora.toLocalDate().atTime(LocalTime.of(23, 59));
+        reserva.setExpiraEn(plazo.isBefore(finDelDia) ? plazo : finDelDia);
         reserva.setObservaciones(limpiar(observaciones));
 
         int totalHuespedes = 0;

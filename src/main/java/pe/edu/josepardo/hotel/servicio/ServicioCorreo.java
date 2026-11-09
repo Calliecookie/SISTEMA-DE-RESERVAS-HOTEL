@@ -4,6 +4,7 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import org.slf4j.Logger;
@@ -25,6 +26,7 @@ import pe.edu.josepardo.hotel.configuracion.PropiedadesHotel;
 import pe.edu.josepardo.hotel.modelo.Comprobante;
 import pe.edu.josepardo.hotel.modelo.EstadoEnvioCorreo;
 import pe.edu.josepardo.hotel.repositorio.RepositorioComprobante;
+import pe.edu.josepardo.hotel.repositorio.RepositorioReserva;
 
 @Service
 public class ServicioCorreo {
@@ -40,6 +42,7 @@ public class ServicioCorreo {
     private final PropiedadesHotel.Correo propiedades;
     private final ServicioConfiguracion configuracion;
     private final RepositorioComprobante repositorioComprobante;
+    private final RepositorioReserva repositorioReserva;
     private final ServicioAlmacenamiento almacenamiento;
     private final TransactionTemplate transaccion;
 
@@ -50,6 +53,7 @@ public class ServicioCorreo {
             PropiedadesHotel propiedades,
             ServicioConfiguracion configuracion,
             RepositorioComprobante repositorioComprobante,
+            RepositorioReserva repositorioReserva,
             ServicioAlmacenamiento almacenamiento,
             PlatformTransactionManager gestorTransacciones) {
         this.proveedorRemitente = proveedorRemitente;
@@ -58,6 +62,7 @@ public class ServicioCorreo {
         this.propiedades = propiedades.correo();
         this.configuracion = configuracion;
         this.repositorioComprobante = repositorioComprobante;
+        this.repositorioReserva = repositorioReserva;
         this.almacenamiento = almacenamiento;
         this.transaccion = new TransactionTemplate(gestorTransacciones);
         this.transaccion.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
@@ -83,6 +88,36 @@ public class ServicioCorreo {
                 enviar(destino, "Tu código de recuperación · " + hotel, cuerpo, null, null);
             } catch (MessagingException | MailException | UnsupportedEncodingException excepcion) {
                 REGISTRO.error("No se pudo enviar el código de recuperación: {}", excepcion.getMessage());
+            }
+        });
+    }
+
+    public void notificarCambioEstado(Long reservaId, String estadoEtiqueta, String motivo) {
+        if (!estaHabilitado()) {
+            return;
+        }
+        String[] datos = transaccion.execute(estado -> repositorioReserva.findById(reservaId)
+                .map(reserva -> new String[] {
+                    reserva.getCliente().getUsuario().getCorreo(),
+                    reserva.getCliente().getUsuario().getNombres(),
+                    reserva.getCodigo()})
+                .orElse(null));
+        if (datos == null) {
+            return;
+        }
+        String hotel = configuracion.texto(ServicioConfiguracion.HOTEL_NOMBRE);
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("nombre", datos[1]);
+        variables.put("codigo", datos[2]);
+        variables.put("estado", estadoEtiqueta);
+        variables.put("motivo", motivo);
+        variables.put("hotel", hotel);
+        String cuerpo = renderizar("correo/cambio-estado", variables);
+        ejecutor.execute(() -> {
+            try {
+                enviar(datos[0], "Tu reserva " + datos[2] + " está " + estadoEtiqueta.toLowerCase() + " · " + hotel, cuerpo, null, null);
+            } catch (MessagingException | MailException | UnsupportedEncodingException excepcion) {
+                REGISTRO.error("No se pudo avisar el cambio de estado de {}: {}", datos[2], excepcion.getMessage());
             }
         });
     }

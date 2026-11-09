@@ -9,7 +9,7 @@ Verificado el 2 de noviembre de 2026 en Linux con JDK 21, Maven 3.9, MySQL 8.0.4
 | Verificación | Resultado |
 |---|---|
 | Compilación con Maven | Aprobada |
-| 103 pruebas automatizadas: 30 unitarias y 73 de integración contra MySQL, incluida la concurrencia de reservas | Aprobadas |
+| 116 pruebas automatizadas: 32 unitarias y 84 de integración contra MySQL, incluida la concurrencia de reservas | Aprobadas (9 de noviembre de 2026) |
 | Comprobantes PDF y reportes en PDF y Excel | Generados y revisados |
 | Envío de correo con el comprobante adjunto | Verificado con un servidor SMTP de pruebas (GreenMail) |
 | Recorrido de las 21 pantallas de los tres roles en Chromium, escritorio y móvil | Sin errores de JavaScript, respuestas fallidas, imágenes rotas ni desborde horizontal |
@@ -34,7 +34,9 @@ cp .env.example .env
 mvn spring-boot:run
 ```
 
-Antes de arrancar, completa `BD_CONTRASENA`, `ADMIN_INICIAL_CONTRASENA` y `DEMO_CONTRASENA` en `.env`. Luego abre `http://localhost:8080`.
+Antes de arrancar, completa `BD_CONTRASENA`, `ADMIN_INICIAL_CONTRASENA`, `ADMIN_CLAVE_RECUPERACION` y `DEMO_CONTRASENA` en `.env`. Luego abre `http://localhost:8080`.
+
+Si ya tenías la base creada con la versión anterior, ejecuta una vez `mysql -u root -p < base-datos/migracion-estado-habitaciones.sql`.
 
 ## Funciones
 
@@ -42,7 +44,11 @@ Antes de arrancar, completa `BD_CONTRASENA`, `ADMIN_INICIAL_CONTRASENA` y `DEMO_
 
 **Trabajador:** pagos por verificar, llegadas, salidas e ingreso y salida de huéspedes.
 
-**Administrador:** dashboard, habitaciones, categorías, clientes, usuarios, ventas, seis reportes con PDF y Excel, configuración y auditoría.
+**Administrador:** dashboard, habitaciones con su estado (Disponible, Reservada, Ocupada, En mantenimiento, Fuera de servicio), categorías, clientes, usuarios, ventas, actualización del estado de las reservas desde el listado, seis reportes con PDF y Excel, configuración, auditoría y recuperación de su contraseña por correo o con la clave de recuperación.
+
+**Comprobante:** PDF con el total en letras, enviado al correo del cliente.
+
+**Cierre del día:** a las 23:59 los pedidos no pagados se eliminan y las estancias vencidas se finalizan.
 
 **Pagos:** efectivo, PayPal y Yape. PayPal y Yape aparecen cuando están configurados.
 

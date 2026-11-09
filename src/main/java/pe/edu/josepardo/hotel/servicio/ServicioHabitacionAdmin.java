@@ -13,7 +13,7 @@ import pe.edu.josepardo.hotel.dto.SolicitudHabitacion;
 import pe.edu.josepardo.hotel.excepcion.ExcepcionNegocio;
 import pe.edu.josepardo.hotel.modelo.Caracteristica;
 import pe.edu.josepardo.hotel.modelo.Categoria;
-import pe.edu.josepardo.hotel.modelo.EstadoOperativoHabitacion;
+import pe.edu.josepardo.hotel.modelo.EstadoHabitacion;
 import pe.edu.josepardo.hotel.modelo.Habitacion;
 import pe.edu.josepardo.hotel.repositorio.RepositorioCaracteristica;
 import pe.edu.josepardo.hotel.repositorio.RepositorioCategoria;
@@ -32,6 +32,7 @@ public class ServicioHabitacionAdmin {
     private final RepositorioDetalleReserva repositorioDetalle;
     private final ServicioAlmacenamiento almacenamiento;
     private final ServicioAuditoria auditoria;
+    private final ServicioEstadoHabitacion estadoHabitacion;
 
     public ServicioHabitacionAdmin(
             RepositorioHabitacion repositorio,
@@ -39,13 +40,15 @@ public class ServicioHabitacionAdmin {
             RepositorioCaracteristica repositorioCaracteristica,
             RepositorioDetalleReserva repositorioDetalle,
             ServicioAlmacenamiento almacenamiento,
-            ServicioAuditoria auditoria) {
+            ServicioAuditoria auditoria,
+            ServicioEstadoHabitacion estadoHabitacion) {
         this.repositorio = repositorio;
         this.repositorioCategoria = repositorioCategoria;
         this.repositorioCaracteristica = repositorioCaracteristica;
         this.repositorioDetalle = repositorioDetalle;
         this.almacenamiento = almacenamiento;
         this.auditoria = auditoria;
+        this.estadoHabitacion = estadoHabitacion;
     }
 
     @Transactional(readOnly = true)
@@ -74,6 +77,7 @@ public class ServicioHabitacionAdmin {
         Habitacion habitacion = new Habitacion();
         aplicar(habitacion, solicitud, numero);
         repositorio.save(habitacion);
+        actualizarEstado(habitacion);
         auditoria.registrar(usuarioId, "CREAR_HABITACION", "habitaciones", habitacion.getId(), numero);
         return aDto(habitacion);
     }
@@ -86,6 +90,7 @@ public class ServicioHabitacionAdmin {
             throw ExcepcionNegocio.conflicto("HABITACION_DUPLICADA", "Ya existe una habitación con ese número.");
         }
         aplicar(habitacion, solicitud, numero);
+        actualizarEstado(habitacion);
         auditoria.registrar(usuarioId, "EDITAR_HABITACION", "habitaciones", id, numero);
         return aDto(habitacion);
     }
@@ -126,12 +131,17 @@ public class ServicioHabitacionAdmin {
     private void aplicar(Habitacion habitacion, SolicitudHabitacion solicitud, String numero) {
         Categoria categoria = repositorioCategoria.findById(solicitud.categoriaId())
                 .orElseThrow(() -> ExcepcionNegocio.solicitudInvalida("La categoría seleccionada no existe."));
-        EstadoOperativoHabitacion estado;
+        EstadoHabitacion estado;
         try {
-            estado = EstadoOperativoHabitacion.valueOf(solicitud.estadoOperativo());
+            estado = EstadoHabitacion.valueOf(solicitud.estado());
         } catch (IllegalArgumentException excepcion) {
-            throw ExcepcionNegocio.solicitudInvalida("El estado operativo no es válido.");
+            throw ExcepcionNegocio.solicitudInvalida("El estado de la habitación no es válido.");
         }
+        // Reservada y Ocupada los asigna el sistema; si llegan del formulario equivalen a "en servicio".
+        if (!EstadoHabitacion.MANUALES.contains(estado)) {
+            estado = EstadoHabitacion.DISPONIBLE;
+        }
+        boolean seguiaEnServicio = habitacion.getEstado() != null && habitacion.getEstado().admiteReservas();
         String imagen = solicitud.imagenUrl() == null ? "" : solicitud.imagenUrl().trim();
         if (!imagen.isEmpty() && !imagen.matches(PATRON_IMAGEN)) {
             throw ExcepcionNegocio.solicitudInvalida("Sube una imagen o usa una URL de Wikimedia Commons.");
@@ -147,11 +157,20 @@ public class ServicioHabitacionAdmin {
         habitacion.setDescripcion(solicitud.descripcion().trim());
         habitacion.setCapacidad(solicitud.capacidad());
         habitacion.setPrecioNoche(solicitud.precioNoche());
-        habitacion.setEstadoOperativo(estado);
+        if (estado != EstadoHabitacion.DISPONIBLE || !seguiaEnServicio) {
+            habitacion.setEstado(estado);
+        }
         if (!imagen.isEmpty()) {
             habitacion.setImagenPrincipal(imagen);
         }
         habitacion.setCaracteristicas(new HashSet<>(caracteristicas));
+    }
+
+    private void actualizarEstado(Habitacion habitacion) {
+        if (habitacion.getEstado() == EstadoHabitacion.DISPONIBLE) {
+            estadoHabitacion.recalcular(List.of(habitacion.getId()));
+            habitacion.setEstado(estadoHabitacion.estadoActual(habitacion.getId()));
+        }
     }
 
     private Habitacion buscarCompleta(Long id) {
@@ -171,8 +190,8 @@ public class ServicioHabitacionAdmin {
                 habitacion.getDescripcion(),
                 habitacion.getCapacidad(),
                 habitacion.getPrecioNoche(),
-                habitacion.getEstadoOperativo().name(),
-                habitacion.getEstadoOperativo().getEtiqueta(),
+                habitacion.getEstado().name(),
+                habitacion.getEstado().getEtiqueta(),
                 habitacion.getImagenPrincipal(),
                 habitacion.isActivo(),
                 caracteristicas.stream().map(Caracteristica::getId).toList(),

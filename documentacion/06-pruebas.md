@@ -2,7 +2,7 @@
 
 ## Estado actual
 
-**Las pruebas de integración aún no se han ejecutado.** Se escribieron sin acceso a Maven Central, MySQL ni al computador del autor. Consulta la sección "Estado de verificación" del `README.md`.
+Las 116 pruebas (32 unitarias y 84 de integración contra MySQL 8) se ejecutaron y aprobaron el 9 de noviembre de 2026. Para la base de pruebas se usa `PRUEBA_BD_CONTRASENA` si tu usuario de MySQL tiene contraseña.
 
 ## Cómo ejecutarlas
 
@@ -17,6 +17,7 @@ Ver `03-instalacion.md`. Maven ejecuta todas las clases con sufijo `Prueba`.
 | Consulta de Factiliza | `AutenticacionPrueba` | Respuesta correcta con token, fallo, límite de consultas |
 | Inicio de sesión | `AutenticacionPrueba` | Redirección por rol, bloqueo, mensajes iguales |
 | Recuperación de contraseña | `RecuperacionPrueba` | Flujo completo, reutilización, vencimiento, intentos, enumeración |
+| Recuperación del administrador | `RecuperacionAdministradorPrueba` | Clave correcta, clave incorrecta, rol distinto, límite de intentos, auditoría |
 | Protección de rutas | `SeguridadRutasPrueba` | Sin sesión, CSRF, cabeceras |
 | Permisos por rol | `SeguridadRutasPrueba` | Matriz por rol, reservas ajenas |
 | Registro de habitaciones | `AdministracionPrueba` | Ciclo completo, duplicados, imágenes |
@@ -33,6 +34,10 @@ Ver `03-instalacion.md`. Maven ejecuta todas las clases con sufijo `Prueba`.
 | Reportes | `AdministracionPrueba` | Ingresos reales, seis reportes, exportación |
 | Operaciones simultáneas | `ReservaPrueba` | 16 solicitudes por una habitación, orden cruzado |
 | Pagos | `PagosPrueba` | Efectivo, Yape, PayPal, monto alterado, reembolso |
+| Estado de habitaciones (en lugar de stock) | `EstadosPrueba` | Reservada al pagar, Ocupada al ingresar, Disponible al salir o cancelar, mantenimiento |
+| Actualizar estado de reservas | `EstadosPrueba` | Pendiente → Pagado → Confirmado → Entregado → Finalizado, cancelación con motivo, transiciones inválidas, cliente sin permiso |
+| Cierre del día | `EstadosPrueba` | Elimina pedidos no pagados, conserva los pagados, finaliza estancias vencidas |
+| Total en letras | `ConversorNumeroLetrasPrueba`, `ReservaPrueba` | Reglas del castellano y texto dentro del PDF |
 | Protección de tráfico | `ControlTraficoPrueba`, `ReglasSeguridadPrueba` | Límite, bloqueo, memoria, IP real |
 
 Factiliza y PayPal se prueban contra un servidor HTTP local que imita sus respuestas documentadas. Esas pruebas validan la integración del sistema, no la conexión real con esos servicios. Para eso hacen falta tus credenciales.

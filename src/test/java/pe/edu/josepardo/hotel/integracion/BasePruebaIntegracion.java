@@ -75,7 +75,7 @@ abstract class BasePruebaIntegracion {
             sentencia.execute("SET FOREIGN_KEY_CHECKS = 1");
         }
         jdbc.update("UPDATE configuraciones SET valor = '' WHERE clave IN ('paypal_tipo_cambio', 'yape_numero', 'yape_titular', 'yape_qr')");
-        jdbc.update("UPDATE habitaciones SET estado_operativo = 'OPERATIVA', activo = TRUE WHERE id <> 13");
+        jdbc.update("UPDATE habitaciones SET estado = 'DISPONIBLE', activo = TRUE WHERE id <> 13");
         limitador.reiniciarTodo();
         FACTILIZA.reiniciar();
         PAYPAL.reiniciar();

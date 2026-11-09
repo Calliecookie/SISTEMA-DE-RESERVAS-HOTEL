@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,9 +18,12 @@ import pe.edu.josepardo.hotel.dto.Pagina;
 import pe.edu.josepardo.hotel.dto.ReservaDetalleDto;
 import pe.edu.josepardo.hotel.dto.ReservaResumenDto;
 import pe.edu.josepardo.hotel.dto.RespuestaApi;
+import pe.edu.josepardo.hotel.dto.SolicitudCambioEstado;
 import pe.edu.josepardo.hotel.dto.SolicitudMotivo;
 import pe.edu.josepardo.hotel.dto.SolicitudPago;
 import pe.edu.josepardo.hotel.seguridad.UsuarioAutenticado;
+import pe.edu.josepardo.hotel.modelo.EstadoReserva;
+import pe.edu.josepardo.hotel.servicio.ServicioCambioEstadoReserva;
 import pe.edu.josepardo.hotel.servicio.ServicioConsultaReservas;
 import pe.edu.josepardo.hotel.servicio.ServicioFlujoReserva;
 import pe.edu.josepardo.hotel.servicio.ServicioPago;
@@ -33,16 +37,19 @@ public class ControladorOperacionesApi {
     private final ServicioConsultaReservas servicioConsulta;
     private final ServicioFlujoReserva servicioFlujo;
     private final ServicioPago servicioPago;
+    private final ServicioCambioEstadoReserva servicioCambioEstado;
 
     public ControladorOperacionesApi(
             ServicioPanel servicioPanel,
             ServicioConsultaReservas servicioConsulta,
             ServicioFlujoReserva servicioFlujo,
-            ServicioPago servicioPago) {
+            ServicioPago servicioPago,
+            ServicioCambioEstadoReserva servicioCambioEstado) {
         this.servicioPanel = servicioPanel;
         this.servicioConsulta = servicioConsulta;
         this.servicioFlujo = servicioFlujo;
         this.servicioPago = servicioPago;
+        this.servicioCambioEstado = servicioCambioEstado;
     }
 
     @GetMapping("/resumen")
@@ -58,9 +65,20 @@ public class ControladorOperacionesApi {
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaDesde,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaHasta,
             @RequestParam(required = false) Integer pagina,
-            @RequestParam(required = false) Integer tamano) {
+            @RequestParam(required = false) Integer tamano,
+            @AuthenticationPrincipal UsuarioAutenticado usuario) {
         return RespuestaApi.exito(servicioConsulta.listar(
-                new FiltroReservas(busqueda, estado, metodoPago, fechaDesde, fechaHasta, pagina, tamano)));
+                new FiltroReservas(busqueda, estado, metodoPago, fechaDesde, fechaHasta, pagina, tamano),
+                usuario.getActor()));
+    }
+
+    @PatchMapping("/reservas/{codigo}/estado")
+    public RespuestaApi<Void> cambiarEstado(
+            @PathVariable String codigo,
+            @Valid @RequestBody SolicitudCambioEstado solicitud,
+            @AuthenticationPrincipal UsuarioAutenticado usuario) {
+        EstadoReserva nuevo = servicioCambioEstado.cambiar(codigo, solicitud, usuario);
+        return RespuestaApi.exito("La reserva " + codigo + " ahora está " + nuevo.getEtiqueta().toLowerCase() + ".");
     }
 
     @GetMapping("/reservas/{codigo}")

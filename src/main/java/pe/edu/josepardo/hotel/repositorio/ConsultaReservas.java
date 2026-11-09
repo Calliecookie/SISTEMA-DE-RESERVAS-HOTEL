@@ -232,6 +232,7 @@ public class ConsultaReservas {
                 metodo == null ? null : MetodoPago.valueOf(metodo).getEtiqueta(),
                 fechaHora(fila, "fecha_pago"),
                 fechaHora(fila, "creado_en"),
-                fechaHora(fila, "expira_en"));
+                fechaHora(fila, "expira_en"),
+                List.of());
     }
 }

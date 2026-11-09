@@ -23,6 +23,7 @@ table { width: 100%; border-collapse: collapse; }
 .totales td { padding: 3px 4px; }
 .total td { font-size: 12pt; font-weight: 700; border-top: 1px solid #1B2A4E; padding-top: 6px; color: #1B2A4E; }
 .estado { font-weight: 600; }
+.letras { margin-top: 10px; padding: 7px 10px; border: 1px solid #DCDFE0; font-weight: 600; font-size: 9.5pt; color: #1B2A4E; }
 .nota { margin-top: 26px; padding: 9px 10px; background: #F5F6F6; font-size: 8.5pt; color: #5A6368; }
 </style>
 </head>
@@ -78,6 +79,7 @@ table { width: 100%; border-collapse: collapse; }
     <tr><td>IGV (<span th:text="${porcentajeImpuesto}">18</span> %)</td><td class="derecha" th:text="${impuesto}">0</td></tr>
     <tr class="total"><td>Total</td><td class="derecha" th:text="${total}">0</td></tr>
   </table>
+  <div class="letras" th:text="${totalLetras}">SON: CERO CON 00/100 SOLES</div>
 </div>
 <div class="bloque">Estado del pago: <span class="estado" th:text="${estadoPago}">Pendiente</span></div>
 <div class="nota">Este documento acredita tu reserva. No es un comprobante de pago electrónico ante SUNAT.</div>

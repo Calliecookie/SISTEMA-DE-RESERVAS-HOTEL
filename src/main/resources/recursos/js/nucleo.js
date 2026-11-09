@@ -341,13 +341,27 @@ const TONOS_ESTADO = {
 export const insigniaEstado = (estado, etiqueta) =>
   `<span class="insignia insignia--${TONOS_ESTADO[estado] || 'neutra'}">${esc(etiqueta)}</span>`;
 
+export const TONOS_HABITACION = {
+  DISPONIBLE: 'exito',
+  RESERVADA: 'info',
+  OCUPADA: 'error',
+  MANTENIMIENTO: 'advertencia',
+  FUERA_DE_SERVICIO: 'neutra',
+};
+
+export const insigniaHabitacion = (estado, etiqueta) =>
+  `<span class="insignia insignia--${TONOS_HABITACION[estado] || 'neutra'}">${esc(etiqueta)}</span>`;
+
 export function insigniaDisponibilidad(habitacion) {
-  if (habitacion.estadoOperativo !== 'OPERATIVA') {
-    return '<span class="insignia insignia--neutra">En mantenimiento</span>';
+  if (!['DISPONIBLE', 'RESERVADA', 'OCUPADA'].includes(habitacion.estado)) {
+    return insigniaHabitacion(habitacion.estado, habitacion.estadoEtiqueta);
   }
-  return habitacion.disponible
-    ? '<span class="insignia insignia--exito">Disponible</span>'
-    : '<span class="insignia insignia--error">Ocupada</span>';
+  if (habitacion.disponible) {
+    return insigniaHabitacion('DISPONIBLE', 'Disponible');
+  }
+  return habitacion.estado === 'OCUPADA'
+    ? insigniaHabitacion('OCUPADA', 'Ocupada')
+    : insigniaHabitacion('RESERVADA', 'Reservada');
 }
 
 export function actualizarContadorCarrito(cantidad) {

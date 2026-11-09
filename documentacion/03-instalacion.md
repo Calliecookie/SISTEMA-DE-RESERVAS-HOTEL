@@ -32,6 +32,7 @@ BD_USUARIO=root
 BD_CONTRASENA=tu_contrasena
 ADMIN_INICIAL_CORREO=admin@hotelintiwasi.pe
 ADMIN_INICIAL_CONTRASENA=elige-una-clave-2026
+ADMIN_CLAVE_RECUPERACION=otra-clave-larga-para-recuperar-2026
 DEMO_HABILITADA=true
 DEMO_CONTRASENA=elige-otra-clave-2026
 ```
@@ -130,6 +131,10 @@ El cliente paga desde su app y registra el número de operación. Un trabajador 
 ## Tarea programada
 
 La expiración de reservas corre dentro de la aplicación cada 60 segundos. No necesita cron. Se ajusta con `TAREA_EXPIRACION_MS` y se desactiva con `TAREAS_HABILITADAS=false`.
+
+El cierre del día corre a las 23:59 (`TAREA_CIERRE_DIA_CRON`): da de baja y elimina los pedidos que no se pagaron, finaliza las estancias cuya salida ya pasó y recalcula el estado de las habitaciones. Para conservar los pedidos expirados en lugar de borrarlos usa `TAREA_ELIMINAR_NO_PAGADAS=false`.
+
+Si el administrador olvida su contraseña, entra a `/recuperar-contrasena/administrador` (enlace en la pantalla de ingreso). Puede pedir un código por correo o, si el correo no está configurado, usar la clave `ADMIN_CLAVE_RECUPERACION`.
 
 ## Ejecutar las pruebas
 

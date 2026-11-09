@@ -17,7 +17,7 @@ import pe.edu.josepardo.hotel.configuracion.PropiedadesHotel;
 import pe.edu.josepardo.hotel.modelo.Actor;
 import pe.edu.josepardo.hotel.modelo.Cliente;
 import pe.edu.josepardo.hotel.modelo.DetalleReserva;
-import pe.edu.josepardo.hotel.modelo.EstadoOperativoHabitacion;
+import pe.edu.josepardo.hotel.modelo.EstadoHabitacion;
 import pe.edu.josepardo.hotel.modelo.EstadoPago;
 import pe.edu.josepardo.hotel.modelo.EstadoReserva;
 import pe.edu.josepardo.hotel.modelo.Habitacion;
@@ -60,6 +60,7 @@ public class InicializadorDemostracion implements ApplicationRunner {
     private final CalculadoraImportes calculadora;
     private final ServicioConfiguracion configuracion;
     private final PropiedadesHotel.Demostracion propiedades;
+    private final ServicioEstadoHabitacion estadoHabitacion;
 
     public InicializadorDemostracion(
             RepositorioUsuario repositorioUsuario,
@@ -71,7 +72,8 @@ public class InicializadorDemostracion implements ApplicationRunner {
             PasswordEncoder codificador,
             CalculadoraImportes calculadora,
             ServicioConfiguracion configuracion,
-            PropiedadesHotel propiedades) {
+            PropiedadesHotel propiedades,
+            ServicioEstadoHabitacion estadoHabitacion) {
         this.repositorioUsuario = repositorioUsuario;
         this.repositorioCliente = repositorioCliente;
         this.repositorioHabitacion = repositorioHabitacion;
@@ -82,6 +84,7 @@ public class InicializadorDemostracion implements ApplicationRunner {
         this.calculadora = calculadora;
         this.configuracion = configuracion;
         this.propiedades = propiedades.demostracion();
+        this.estadoHabitacion = estadoHabitacion;
     }
 
     @Override
@@ -104,7 +107,7 @@ public class InicializadorDemostracion implements ApplicationRunner {
                     "huesped" + (i + 1) + "@hotelintiwasi.pe", hash, CLIENTES[i][0], CLIENTES[i][1], CLIENTES[i][2]));
         }
         List<Habitacion> habitaciones = repositorioHabitacion.findAll().stream()
-                .filter(habitacion -> habitacion.getEstadoOperativo() == EstadoOperativoHabitacion.OPERATIVA)
+                .filter(habitacion -> habitacion.getEstado() == EstadoHabitacion.DISPONIBLE)
                 .toList();
         if (habitaciones.isEmpty()) {
             REGISTRO.warn("No hay habitaciones. Ejecuta base-datos/datos-iniciales.sql antes de la demostración.");
@@ -112,6 +115,7 @@ public class InicializadorDemostracion implements ApplicationRunner {
         }
         generarHistorial(clientes, habitaciones);
         generarOperacionDelDia(clientes, habitaciones);
+        estadoHabitacion.recalcularTodas();
         REGISTRO.info("Datos de demostración creados");
     }
 

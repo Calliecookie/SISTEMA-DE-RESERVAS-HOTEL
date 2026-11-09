@@ -25,7 +25,7 @@ public class MaquinaEstadosReserva {
         agregar(EstadoReserva.PAGADO, EstadoReserva.CANCELADO, personal);
         agregar(EstadoReserva.CONFIRMADO, EstadoReserva.ENTREGADO, personal);
         agregar(EstadoReserva.CONFIRMADO, EstadoReserva.CANCELADO, EnumSet.of(Actor.ADMINISTRADOR));
-        agregar(EstadoReserva.ENTREGADO, EstadoReserva.FINALIZADO, personal);
+        agregar(EstadoReserva.ENTREGADO, EstadoReserva.FINALIZADO, personalYSistema);
     }
 
     private void agregar(EstadoReserva origen, EstadoReserva destino, Set<Actor> actores) {

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es-PE" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{componentes/cabeza :: cabeza('Recuperar acceso de administrador', 'publico')}"></head>
+<body>
+<header th:replace="~{componentes/barra :: barra}"></header>
+<main class="acceso">
+  <div class="acceso__formulario">
+    <div class="acceso__caja">
+      <h1 class="acceso__titulo">Recupera el acceso al panel</h1>
+      <p class="texto-suave" data-indicacion>Elige cómo quieres verificar que eres el administrador.</p>
+      <div class="selector-metodo" role="tablist" aria-label="Método de recuperación">
+        <button class="selector-metodo__opcion" type="button" role="tab" aria-selected="true" data-metodo="correo">Código por correo</button>
+        <button class="selector-metodo__opcion" type="button" role="tab" aria-selected="false" data-metodo="clave">Clave de recuperación</button>
+      </div>
+      <div class="aviso aviso--advertencia oculto" data-aviso-metodo role="status"></div>
+
+      <section data-panel="correo">
+        <form class="formulario" data-paso="solicitar" novalidate>
+          <div class="campo" data-campo="correo"><label class="campo__etiqueta" for="correo">Correo del administrador</label><input class="entrada" id="correo" type="email" name="correo" autocomplete="username" required><span class="campo__error"></span></div>
+          <button class="boton boton--acento boton--ancho" type="submit">Enviar código</button>
+        </form>
+        <form class="formulario oculto" data-paso="verificar" novalidate>
+          <div class="campo" data-campo="codigo"><label class="campo__etiqueta" for="codigo">Código de 6 dígitos</label><input class="entrada" id="codigo" name="codigo" inputmode="numeric" maxlength="6" autocomplete="one-time-code" required><span class="campo__error"></span></div>
+          <button class="boton boton--acento boton--ancho" type="submit">Verificar código</button>
+        </form>
+        <form class="formulario oculto" data-paso="restablecer" novalidate>
+          <div class="campo" data-campo="contrasena"><label class="campo__etiqueta" for="contrasena">Nueva contraseña</label><input class="entrada" id="contrasena" type="password" name="contrasena" autocomplete="new-password" required><span class="campo__ayuda">Mínimo 8 caracteres, con letras y números.</span><span class="campo__error"></span></div>
+          <div class="campo" data-campo="confirmacion"><label class="campo__etiqueta" for="confirmacion">Confirma la contraseña</label><input class="entrada" id="confirmacion" type="password" name="confirmacion" autocomplete="new-password" required><span class="campo__error"></span></div>
+          <button class="boton boton--acento boton--ancho" type="submit">Guardar contraseña</button>
+        </form>
+      </section>
+
+      <section class="oculto" data-panel="clave">
+        <form class="formulario" data-formulario-clave novalidate>
+          <div class="campo" data-campo="correo"><label class="campo__etiqueta" for="clave-correo">Correo del administrador</label><input class="entrada" id="clave-correo" type="email" name="correo" autocomplete="username" required><span class="campo__error"></span></div>
+          <div class="campo" data-campo="clave"><label class="campo__etiqueta" for="clave">Clave de recuperación</label><input class="entrada" id="clave" type="password" name="clave" autocomplete="off" required><span class="campo__ayuda">Es el valor de ADMIN_CLAVE_RECUPERACION en el archivo .env del servidor.</span><span class="campo__error"></span></div>
+          <div class="campo" data-campo="contrasena"><label class="campo__etiqueta" for="clave-contrasena">Nueva contraseña</label><input class="entrada" id="clave-contrasena" type="password" name="contrasena" autocomplete="new-password" required><span class="campo__ayuda">Mínimo 10 caracteres, con letras y números.</span><span class="campo__error"></span></div>
+          <div class="campo" data-campo="confirmacion"><label class="campo__etiqueta" for="clave-confirmacion">Confirma la contraseña</label><input class="entrada" id="clave-confirmacion" type="password" name="confirmacion" autocomplete="new-password" required><span class="campo__error"></span></div>
+          <button class="boton boton--acento boton--ancho" type="submit">Restablecer contraseña</button>
+        </form>
+      </section>
+
+      <p class="acceso__pie"><a class="enlace" th:href="@{/ingresar}">Volver a iniciar sesión</a></p>
+    </div>
+  </div>
+  <div class="acceso__arte" aria-hidden="true"><div class="puerta"><div class="puerta__sol"><svg th:replace="~{componentes/icono :: icono('sol')}"></svg></div></div></div>
+</main>
+<script type="module" th:src="@{/recursos/js/recuperar-administrador.js}"></script>
+</body>
+</html>

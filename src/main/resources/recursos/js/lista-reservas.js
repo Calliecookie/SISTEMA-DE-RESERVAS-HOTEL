@@ -1,7 +1,7 @@
 import { consulta, datosFormulario, debounce, errorCarga, esqueletoTabla, paginar, vacio } from './nucleo.js';
-import { activarFilas, cabeceraReservas, filaReserva } from './detalle-reserva.js';
+import { activarFilas, cabeceraReservas, cabeceraReservasConCambio, filaReserva } from './detalle-reserva.js';
 
-export function iniciarListaReservas({ obtener, alCargar, alFallar }) {
+export function iniciarListaReservas({ obtener, alCargar, alFallar, cambioEstado = false }) {
   const filtros = document.querySelector('[data-filtros]');
   const tabla = document.querySelector('[data-tabla]');
   const paginacion = document.querySelector('[data-paginacion]');
@@ -18,7 +18,7 @@ export function iniciarListaReservas({ obtener, alCargar, alFallar }) {
       const elementos = resultado.pagina.elementos;
       alCargar?.(resultado);
       tabla.innerHTML = elementos.length
-        ? `<table class="tabla">${cabeceraReservas}<tbody>${elementos.map(filaReserva).join('')}</tbody></table>`
+        ? `<table class="tabla">${cambioEstado ? cabeceraReservasConCambio : cabeceraReservas}<tbody>${elementos.map((reserva) => filaReserva(reserva, { cambioEstado })).join('')}</tbody></table>`
         : vacio({ titulo: 'No hay reservas con esos filtros', texto: 'Cambia los filtros para ver más resultados.' });
       paginar(paginacion, resultado.pagina, cargar);
     } catch (error) {

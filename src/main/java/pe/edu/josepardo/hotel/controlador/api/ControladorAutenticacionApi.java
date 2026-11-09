@@ -3,14 +3,17 @@ package pe.edu.josepardo.hotel.controlador.api;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pe.edu.josepardo.hotel.dto.MetodosRecuperacionDto;
 import pe.edu.josepardo.hotel.dto.RespuestaApi;
 import pe.edu.josepardo.hotel.dto.ResultadoDni;
 import pe.edu.josepardo.hotel.dto.SolicitudConsultaDni;
 import pe.edu.josepardo.hotel.dto.SolicitudRecuperacion;
+import pe.edu.josepardo.hotel.dto.SolicitudRecuperacionAdmin;
 import pe.edu.josepardo.hotel.dto.SolicitudRegistro;
 import pe.edu.josepardo.hotel.dto.SolicitudRestablecer;
 import pe.edu.josepardo.hotel.dto.SolicitudVerificarCodigo;
@@ -60,6 +63,18 @@ public class ControladorAutenticacionApi {
             @Valid @RequestBody SolicitudVerificarCodigo solicitud, HttpServletRequest peticion, HttpSession sesion) {
         servicioRecuperacion.verificar(solicitud.correo(), solicitud.codigo(), resolutorIp.resolver(peticion), sesion);
         return RespuestaApi.exito("Código verificado. Crea tu nueva contraseña.");
+    }
+
+    @GetMapping("/recuperacion/metodos")
+    public RespuestaApi<MetodosRecuperacionDto> metodosRecuperacion() {
+        return RespuestaApi.exito(servicioRecuperacion.metodos());
+    }
+
+    @PostMapping("/recuperacion/administrador")
+    public RespuestaApi<Void> restablecerAdministrador(
+            @Valid @RequestBody SolicitudRecuperacionAdmin solicitud, HttpServletRequest peticion) {
+        servicioRecuperacion.restablecerAdministrador(solicitud, resolutorIp.resolver(peticion));
+        return RespuestaApi.exito("La contraseña del administrador se actualizó. Ya puedes iniciar sesión.");
     }
 
     @PostMapping("/recuperacion/restablecer")

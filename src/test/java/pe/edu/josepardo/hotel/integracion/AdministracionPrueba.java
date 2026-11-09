@@ -56,7 +56,7 @@ class AdministracionPrueba extends BasePruebaIntegracion {
     private String cuerpoHabitacion(String numero) throws Exception {
         return json.writeValueAsString(Map.of("numero", numero, "nombre", "Prueba", "categoriaId", 1,
                 "descripcion", "Descripción de prueba", "capacidad", 2, "precioNoche", "199.90",
-                "estadoOperativo", "OPERATIVA", "caracteristicaIds", List.of(1, 2)));
+                "estado", "DISPONIBLE", "caracteristicaIds", List.of(1, 2)));
     }
 
     @Test

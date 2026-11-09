@@ -127,3 +127,8 @@
 .texto-legal { max-width: 70ch; }
 .texto-legal h1 { color: var(--color-primario); font-size: var(--texto-3xl); margin-bottom: var(--espacio-4); }
 .texto-legal li { padding-block: var(--espacio-1); }
+
+.selector-metodo { display: grid; grid-template-columns: 1fr 1fr; gap: var(--espacio-1); padding: var(--espacio-1); border-radius: var(--radio-md); background: var(--color-superficie-alterna); border: 1px solid var(--color-borde); }
+.selector-metodo__opcion { padding: var(--espacio-2) var(--espacio-3); border: 0; border-radius: var(--radio-sm); background: transparent; color: var(--color-texto-suave); font: inherit; font-size: var(--texto-sm); font-weight: 600; cursor: pointer; }
+.selector-metodo__opcion[aria-selected="true"] { background: var(--color-superficie); color: var(--color-primario); box-shadow: var(--sombra-sm); }
+.selector-metodo__opcion:focus-visible { outline: 2px solid var(--color-acento); outline-offset: 2px; }

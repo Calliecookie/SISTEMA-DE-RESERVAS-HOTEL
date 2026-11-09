@@ -47,7 +47,7 @@ public class ConsultaDashboard {
                 .addValue("fechaSalida", hoy.plusDays(1))
                 .addValue("ahora", LocalDateTime.now());
         Long total = jdbc.queryForObject(
-                "SELECT COUNT(*) FROM habitaciones h WHERE h.activo = TRUE AND h.estado_operativo = 'OPERATIVA' AND NOT "
+                "SELECT COUNT(*) FROM habitaciones h WHERE h.activo = TRUE AND h.estado IN ('DISPONIBLE', 'RESERVADA', 'OCUPADA') AND NOT "
                         + FragmentosSql.BLOQUEA_DISPONIBILIDAD,
                 parametros, Long.class);
         return total == null ? 0 : total;

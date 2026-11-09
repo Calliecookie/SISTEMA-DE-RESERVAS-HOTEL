@@ -56,6 +56,17 @@ public class ServicioAlmacenamiento {
         return Files.isRegularFile(resolverSeguro(carpetaComprobantes, nombre));
     }
 
+    public void eliminarComprobante(String nombre) {
+        if (nombre == null || nombre.isBlank()) {
+            return;
+        }
+        try {
+            Files.deleteIfExists(resolverSeguro(carpetaComprobantes, nombre));
+        } catch (IOException excepcion) {
+            throw new IllegalStateException("No se pudo eliminar el comprobante", excepcion);
+        }
+    }
+
     public String guardarImagen(MultipartFile archivo) {
         if (archivo == null || archivo.isEmpty()) {
             throw ExcepcionNegocio.solicitudInvalida("Selecciona una imagen.");

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es-PE">
+<body style="margin:0;padding:24px;background:#F5F6F6;font-family:Arial,Helvetica,sans-serif;color:#1A2024;">
+  <table role="presentation" width="100%" style="max-width:520px;margin:0 auto;background:#FFFFFF;border:1px solid #DCDFE0;border-radius:10px;">
+    <tr><td style="padding:24px;">
+      <h1 style="margin:0 0 12px;font-size:20px;color:#1B2A4E;" th:text="${hotel}">Hotel</h1>
+      <p>Hola, <span th:text="${nombre}">cliente</span>:</p>
+      <p>El estado de tu reserva <strong th:text="${codigo}">código</strong> cambió a <strong th:text="${estado}">estado</strong>.</p>
+      <p th:if="${motivo}">Detalle: <span th:text="${motivo}">motivo</span></p>
+      <p>Puedes ver el avance de tu reserva en cualquier momento desde tu cuenta.</p>
+    </td></tr>
+  </table>
+</body>
+</html>

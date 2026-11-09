@@ -42,6 +42,8 @@ hotel:
     habilitado: false
   tareas:
     habilitadas: false
+  seguridad:
+    clave-recuperacion-admin: Clave-Maestra-Prueba-2026
   demostracion:
     habilitada: false
 

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import pe.edu.josepardo.hotel.dto.CaracteristicaDto;
 import pe.edu.josepardo.hotel.dto.FiltroCatalogo;
 import pe.edu.josepardo.hotel.dto.HabitacionCatalogoDto;
+import pe.edu.josepardo.hotel.modelo.EstadoHabitacion;
 import pe.edu.josepardo.hotel.dto.Pagina;
 
 @Repository
@@ -40,8 +41,8 @@ public class ConsultaCatalogo {
         parametros.addValue("limite", tamano).addValue("desplazamiento", pagina * tamano);
         String sql = """
                 SELECT h.id, h.numero, h.nombre, h.categoria_id, cat.nombre AS categoria, h.descripcion,
-                       h.capacidad, h.precio_noche, h.imagen_principal, h.estado_operativo,
-                       CASE WHEN h.estado_operativo = 'OPERATIVA' AND NOT
+                       h.capacidad, h.precio_noche, h.imagen_principal, h.estado,
+                       CASE WHEN h.estado IN ('DISPONIBLE', 'RESERVADA', 'OCUPADA') AND NOT
                 """ + FragmentosSql.BLOQUEA_DISPONIBILIDAD + " THEN 1 ELSE 0 END AS disponible" + origen
                 + " ORDER BY " + construirOrden(filtro.orden()) + " LIMIT :limite OFFSET :desplazamiento";
         List<FilaHabitacion> filas = jdbc.query(sql, parametros, (fila, indice) -> mapear(fila));
@@ -60,8 +61,8 @@ public class ConsultaCatalogo {
                 .addValue("ahora", LocalDateTime.now());
         String sql = """
                 SELECT h.id, h.numero, h.nombre, h.categoria_id, cat.nombre AS categoria, h.descripcion,
-                       h.capacidad, h.precio_noche, h.imagen_principal, h.estado_operativo,
-                       CASE WHEN h.estado_operativo = 'OPERATIVA' AND NOT
+                       h.capacidad, h.precio_noche, h.imagen_principal, h.estado,
+                       CASE WHEN h.estado IN ('DISPONIBLE', 'RESERVADA', 'OCUPADA') AND NOT
                 """ + FragmentosSql.BLOQUEA_DISPONIBILIDAD + """
                  THEN 1 ELSE 0 END AS disponible
                 FROM habitaciones h
@@ -80,7 +81,7 @@ public class ConsultaCatalogo {
         List<String> condiciones = new ArrayList<>();
         condiciones.add("h.activo = TRUE");
         condiciones.add("cat.activo = TRUE");
-        condiciones.add("h.estado_operativo <> 'FUERA_DE_SERVICIO'");
+        condiciones.add("h.estado <> 'FUERA_DE_SERVICIO'");
         if (filtro.busqueda() != null && !filtro.busqueda().isBlank()) {
             condiciones.add("""
                     (LOWER(h.nombre) LIKE :busqueda OR LOWER(h.numero) LIKE :busqueda
@@ -105,7 +106,7 @@ public class ConsultaCatalogo {
             parametros.addValue("capacidad", filtro.capacidad());
         }
         if (Boolean.TRUE.equals(filtro.soloDisponibles())) {
-            condiciones.add("h.estado_operativo = 'OPERATIVA'");
+            condiciones.add("h.estado IN ('DISPONIBLE', 'RESERVADA', 'OCUPADA')");
             condiciones.add("NOT " + FragmentosSql.BLOQUEA_DISPONIBILIDAD);
         }
         return String.join(" AND ", condiciones);
@@ -155,7 +156,7 @@ public class ConsultaCatalogo {
                 fila.getInt("capacidad"),
                 fila.getBigDecimal("precio_noche"),
                 fila.getString("imagen_principal"),
-                fila.getString("estado_operativo"),
+                fila.getString("estado"),
                 fila.getInt("disponible") == 1);
     }
 
@@ -169,13 +170,13 @@ public class ConsultaCatalogo {
             int capacidad,
             BigDecimal precioNoche,
             String imagen,
-            String estadoOperativo,
+            String estado,
             boolean disponible) {
 
         HabitacionCatalogoDto aDto(List<CaracteristicaDto> caracteristicas) {
             return new HabitacionCatalogoDto(
                     id, numero, nombre, categoriaId, categoria, descripcion, capacidad,
-                    precioNoche, imagen, estadoOperativo, disponible, caracteristicas);
+                    precioNoche, imagen, estado, EstadoHabitacion.valueOf(estado).getEtiqueta(), disponible, caracteristicas);
         }
     }
 }

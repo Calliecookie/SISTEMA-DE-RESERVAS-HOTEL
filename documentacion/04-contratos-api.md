@@ -69,6 +69,8 @@ Las operaciones que cambian datos requieren el token CSRF en la cabecera `X-CSRF
 | POST | `/api/autenticacion/recuperacion/solicitar` | `solicitarCodigo` | Público |
 | POST | `/api/autenticacion/recuperacion/verificar` | `verificarCodigo` | Público |
 | POST | `/api/autenticacion/recuperacion/restablecer` | `restablecer` | Público |
+| GET | `/api/autenticacion/recuperacion/metodos` | `metodosRecuperacion` | Público |
+| POST | `/api/autenticacion/recuperacion/administrador` | `restablecerAdministrador` | Público (requiere la clave de recuperación) |
 | GET | `/api/carrito` | `obtener` | Público |
 | PUT | `/api/carrito/estancia` | `cambiarEstancia` | Público |
 | POST | `/api/carrito/items` | `agregar` | Público |
@@ -93,6 +95,7 @@ Las operaciones que cambian datos requieren el token CSRF en la cabecera `X-CSRF
 | POST | `/api/operaciones/reservas/{codigo}/confirmar` | `confirmar` | Trabajador, Administrador |
 | POST | `/api/operaciones/reservas/{codigo}/ingreso` | `registrarIngreso` | Trabajador, Administrador |
 | POST | `/api/operaciones/reservas/{codigo}/salida` | `registrarSalida` | Trabajador, Administrador |
+| PATCH | `/api/operaciones/reservas/{codigo}/estado` | `cambiarEstado` | Trabajador, Administrador |
 | POST | `/api/operaciones/reservas/{codigo}/cancelar` | `cancelar` | Trabajador, Administrador |
 | GET | `/api/publico/categorias` | `categorias` | Público |
 | GET | `/api/publico/habitaciones` | `habitaciones` | Público |
@@ -100,3 +103,31 @@ Las operaciones que cambian datos requieren el token CSRF en la cabecera `X-CSRF
 | GET | `/api/publico/habitaciones/{id}/disponibilidad` | `disponibilidad` | Público |
 | GET | `/api/administracion/reportes/{clave}` | `reporte` | Administrador |
 | GET | `/api/administracion/reportes/{clave}/exportar` | `exportar` | Administrador |
+
+## Actualizar el estado de una reserva
+
+`PATCH /api/operaciones/reservas/{codigo}/estado`
+
+```json
+{ "estado": "PAGADO", "metodo": "EFECTIVO", "numeroOperacion": null, "motivo": null }
+```
+
+| `estado` | Datos adicionales | Efecto |
+|---|---|---|
+| `PAGADO` | `metodo` (`EFECTIVO` o `YAPE`) y `numeroOperacion` para Yape, si el cliente no declaró el pago | Confirma el pago, emite el comprobante y la habitación pasa a Reservada |
+| `CONFIRMADO` | Ninguno | Confirma la reserva |
+| `ENTREGADO` | Ninguno | Registra el ingreso del huésped; la habitación pasa a Ocupada |
+| `FINALIZADO` | Ninguno | Registra la salida; la habitación vuelve a Disponible |
+| `CANCELADO` | `motivo` obligatorio | Cancela, reembolsa si estaba pagada y libera la habitación |
+
+El listado `GET /api/operaciones/reservas` incluye `estadosSiguientes` con los estados permitidos para cada reserva. Si la transición no está permitida responde `409 TRANSICION_NO_PERMITIDA`. Con el correo activo, el cliente recibe un aviso de cada cambio.
+
+## Recuperación de la contraseña del administrador
+
+`POST /api/autenticacion/recuperacion/administrador`
+
+```json
+{ "correo": "admin@hotelintiwasi.pe", "clave": "<ADMIN_CLAVE_RECUPERACION>", "contrasena": "NuevaClave2026", "confirmacion": "NuevaClave2026" }
+```
+
+Solo funciona con cuentas de rol Administrador y si `ADMIN_CLAVE_RECUPERACION` tiene al menos 12 caracteres. Admite 5 intentos por IP cada 15 minutos. Los intentos fallidos y el restablecimiento quedan en la auditoría.

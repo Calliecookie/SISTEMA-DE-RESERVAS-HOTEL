@@ -13,7 +13,7 @@ import pe.edu.josepardo.hotel.dto.IndicadorReporte;
 import pe.edu.josepardo.hotel.dto.PuntoSerie;
 import pe.edu.josepardo.hotel.dto.TablaReporte;
 import pe.edu.josepardo.hotel.excepcion.ExcepcionNegocio;
-import pe.edu.josepardo.hotel.modelo.EstadoOperativoHabitacion;
+import pe.edu.josepardo.hotel.modelo.EstadoHabitacion;
 import pe.edu.josepardo.hotel.modelo.EstadoReserva;
 import pe.edu.josepardo.hotel.modelo.MetodoPago;
 import pe.edu.josepardo.hotel.repositorio.ConsultaReportes;
@@ -201,21 +201,21 @@ public class ServicioReportes {
         long disponibles = contar(inventario, "Disponible");
         long ocupadas = contar(inventario, "Ocupada");
         long reservadas = contar(inventario, "Reservada");
-        long fuera = contar(inventario, "Fuera de servicio");
+        long fuera = contar(inventario, "Fuera de servicio") + contar(inventario, "En mantenimiento");
         List<List<Object>> filas = new ArrayList<>();
         for (ConsultaReportes.DisponibilidadHabitacion habitacion : inventario) {
             filas.add(List.of(
                     habitacion.numero(),
                     habitacion.nombre(),
                     habitacion.categoria(),
-                    EstadoOperativoHabitacion.valueOf(habitacion.estadoOperativo()).getEtiqueta(),
+                    EstadoHabitacion.valueOf(habitacion.estado()).getEtiqueta(),
                     habitacion.situacion()));
         }
         return new TablaReporte(
                 "disponibilidad",
-                "Stock y disponibilidad",
+                "Estado de habitaciones y disponibilidad",
                 "Situación al " + Formato.fecha(fecha),
-                List.of(columna("Número"), columna("Habitación"), columna("Categoría"), columna("Estado operativo"), columna("Situación")),
+                List.of(columna("Número"), columna("Habitación"), columna("Categoría"), columna("Estado actual"), columna("Situación en la fecha")),
                 filas,
                 List.of(
                         new IndicadorReporte("Total de habitaciones", String.valueOf(inventario.size())),
@@ -223,12 +223,12 @@ public class ServicioReportes {
                         new IndicadorReporte("Disponibles", String.valueOf(disponibles)),
                         new IndicadorReporte("Ocupadas", String.valueOf(ocupadas)),
                         new IndicadorReporte("Reservadas", String.valueOf(reservadas)),
-                        new IndicadorReporte("Fuera de servicio", String.valueOf(fuera))),
+                        new IndicadorReporte("Mantenimiento o fuera de servicio", String.valueOf(fuera))),
                 List.of(
                         new PuntoSerie("Disponibles", BigDecimal.valueOf(disponibles)),
                         new PuntoSerie("Ocupadas", BigDecimal.valueOf(ocupadas)),
                         new PuntoSerie("Reservadas", BigDecimal.valueOf(reservadas)),
-                        new PuntoSerie("Fuera de servicio", BigDecimal.valueOf(fuera))),
+                        new PuntoSerie("No operativas", BigDecimal.valueOf(fuera))),
                 "segmentada");
     }
 

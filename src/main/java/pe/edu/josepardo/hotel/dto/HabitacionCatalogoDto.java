@@ -13,7 +13,8 @@ public record HabitacionCatalogoDto(
         int capacidad,
         BigDecimal precioNoche,
         String imagen,
-        String estadoOperativo,
+        String estado,
+        String estadoEtiqueta,
         boolean disponible,
         List<CaracteristicaDto> caracteristicas) {
 }

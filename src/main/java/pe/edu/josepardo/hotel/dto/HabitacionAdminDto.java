@@ -13,7 +13,7 @@ public record HabitacionAdminDto(
         String descripcion,
         int capacidad,
         BigDecimal precioNoche,
-        String estadoOperativo,
+        String estado,
         String estadoEtiqueta,
         String imagen,
         boolean activo,
