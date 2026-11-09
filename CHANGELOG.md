@@ -7,6 +7,7 @@ Todas las versiones del Sistema de Reservas Hotel Inti Wasi. El formato sigue [K
 - Un cambio grande (nuevos módulos, cambios en la base de datos o en el flujo principal) sube la versión mayor: 2.0 → **3.0**.
 - Un cambio pequeño (ajustes, correcciones, mejoras puntuales) sube la versión menor: 2.0 → **2.1**.
 - Cada versión se trabaja en una rama con el número y un título que resume la mejora, por ejemplo `v2.1-filtro-de-reservas-por-habitacion`.
+- Cada versión queda en su propia rama, independiente: `main` conserva la versión 1.0 y las versiones nuevas no se unen a `main`. Una versión nueva parte de la rama de la versión anterior.
 
 ## [2.0.0] - 2026-11-09
 
