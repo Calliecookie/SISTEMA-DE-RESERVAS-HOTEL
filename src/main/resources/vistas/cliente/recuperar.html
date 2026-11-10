@@ -8,6 +8,7 @@
     <div class="acceso__caja">
       <h1 class="acceso__titulo">Recupera tu contraseña</h1>
       <p class="texto-suave" data-indicacion>Te enviaremos un código de 6 dígitos a tu correo.</p>
+      <div class="aviso aviso--advertencia oculto" data-aviso-correo role="status">El envío de correos está desactivado en este servidor (modo de prueba), así que el código no llegará. Pide a un administrador que restablezca tu contraseña; si eres administrador, usa la <a class="enlace" th:href="@{/recuperar-contrasena/administrador}">clave de recuperación</a>.</div>
       <form class="formulario" data-paso="solicitar" novalidate>
         <div class="campo" data-campo="correo"><label class="campo__etiqueta" for="correo">Correo electrónico</label><input class="entrada" id="correo" type="email" name="correo" autocomplete="email" required><span class="campo__error"></span></div>
         <button class="boton boton--acento boton--ancho" type="submit">Enviar código</button>

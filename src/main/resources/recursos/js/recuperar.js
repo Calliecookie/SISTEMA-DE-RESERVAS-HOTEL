@@ -46,3 +46,7 @@ pasos.restablecer.addEventListener('submit', async (evento) => {
     setTimeout(() => location.assign(ruta('/ingresar')), 1200);
   }
 });
+
+api('/api/autenticacion/recuperacion/metodos')
+  .then((respuesta) => document.querySelector('[data-aviso-correo]')?.classList.toggle('oculto', respuesta.datos.correo))
+  .catch(() => {});

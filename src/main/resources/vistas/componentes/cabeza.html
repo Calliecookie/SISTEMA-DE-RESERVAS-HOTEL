@@ -11,6 +11,8 @@
   <meta sec:authorize="hasRole('CLIENTE')" name="rol" content="CLIENTE">
   <meta sec:authorize="hasRole('TRABAJADOR')" name="rol" content="TRABAJADOR">
   <meta sec:authorize="hasRole('ADMINISTRADOR')" name="rol" content="ADMINISTRADOR">
+  <meta name="color-scheme" content="light dark">
+  <script th:src="@{/recursos/js/tema.js}"></script>
   <link rel="icon" type="image/svg+xml" th:href="@{/recursos/imagenes/favicon.svg}">
   <link rel="stylesheet" th:href="@{/recursos/css/tokens.css}">
   <link rel="stylesheet" th:href="@{/recursos/css/base.css}">

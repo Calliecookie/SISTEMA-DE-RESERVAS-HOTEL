@@ -42,3 +42,7 @@ table { border-collapse: collapse; width: 100%; }
     scroll-behavior: auto !important;
   }
 }
+
+html { transition: background-color var(--transicion-suave); }
+body { transition: background-color var(--transicion-suave), color var(--transicion-suave); }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 1ms !important; transition-duration: 1ms !important; scroll-behavior: auto !important; } }

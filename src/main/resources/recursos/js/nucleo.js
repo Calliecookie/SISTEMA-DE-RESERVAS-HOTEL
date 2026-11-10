@@ -371,6 +371,18 @@ export function actualizarContadorCarrito(cantidad) {
   });
 }
 
+export function alternarTema() {
+  const oscuro = document.documentElement.dataset.tema !== 'oscuro';
+  document.documentElement.dataset.tema = oscuro ? 'oscuro' : 'claro';
+  try {
+    localStorage.setItem('tema', oscuro ? 'oscuro' : 'claro');
+  } catch {
+    document.documentElement.dataset.temaGuardado = 'no';
+  }
+  document.querySelectorAll('[data-alternar-tema]').forEach((boton) => boton.setAttribute('aria-pressed', String(oscuro)));
+  document.dispatchEvent(new CustomEvent('tema:cambio', { detail: { oscuro } }));
+}
+
 function prepararInterfaz() {
   const botonMenu = document.querySelector('[data-alternar-menu]');
   botonMenu?.addEventListener('click', () => {
@@ -386,6 +398,13 @@ function prepararInterfaz() {
   }, true);
   if (document.querySelector('[data-contador-carrito]')) {
     api('/api/carrito').then((respuesta) => actualizarContadorCarrito(respuesta.datos.cantidadItems)).catch(() => {});
+  }
+  document.querySelectorAll('[data-alternar-tema]').forEach((boton) => {
+    boton.setAttribute('aria-pressed', String(document.documentElement.dataset.tema === 'oscuro'));
+    boton.addEventListener('click', alternarTema);
+  });
+  if (document.querySelector('[data-lateral]')) {
+    import('./paleta.js').then((modulo) => modulo.iniciarPaleta()).catch(() => {});
   }
   const parametros = new URLSearchParams(location.search);
   if (parametros.get('sesion') === 'cerrada') {

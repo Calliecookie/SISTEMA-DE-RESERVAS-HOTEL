@@ -5,9 +5,12 @@ const REPORTES = [
   ['ventas-fechas', 'Ventas por fechas'],
   ['ventas-cliente', 'Ventas por cliente'],
   ['habitaciones-solicitadas', 'Habitaciones más solicitadas'],
-  ['disponibilidad', 'Stock y disponibilidad'],
+  ['disponibilidad', 'Estado y disponibilidad'],
   ['ventas-categoria', 'Ventas por categoría'],
   ['ingresos-generales', 'Ingresos generales'],
+  ['ocupacion', 'Ocupación y RevPAR'],
+  ['metodos-pago', 'Métodos de pago'],
+  ['anticipacion', 'Anticipación'],
 ];
 
 const pestanas = document.querySelector('[data-pestanas]');
@@ -58,8 +61,9 @@ function pintarGrafico(reporte) {
     grafico.innerHTML = '<p class="texto-suave texto-sm">No hay datos para graficar en este periodo.</p>';
     return;
   }
-  const esConteo = reporte.clave === 'habitaciones-solicitadas';
-  const formato = esConteo ? (valor) => `${Number(valor)}` : moneda;
+  const esConteo = ['habitaciones-solicitadas', 'anticipacion'].includes(reporte.clave);
+  const esPorcentaje = reporte.clave === 'ocupacion';
+  const formato = esPorcentaje ? (valor) => `${Number(valor)} %` : esConteo ? (valor) => `${Number(valor)}` : moneda;
   if (reporte.tipoGrafico === 'linea') {
     graficoLinea(grafico, reporte.serie, formato);
   } else if (reporte.tipoGrafico === 'barras') {

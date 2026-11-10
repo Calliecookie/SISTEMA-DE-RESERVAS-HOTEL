@@ -24,6 +24,9 @@
       <form sec:authorize="isAuthenticated()" th:action="@{/salir}" method="post">
         <button class="boton boton--fantasma boton--compacto" type="submit">Cerrar sesión</button>
       </form>
+      <button class="boton boton--fantasma boton--icono conmutador-tema" type="button" data-alternar-tema aria-label="Cambiar entre tema claro y oscuro" aria-pressed="false">
+        <svg th:replace="~{componentes/icono :: icono('sol')}"></svg><svg th:replace="~{componentes/icono :: icono('luna')}"></svg>
+      </button>
     </nav>
   </div>
 </header>

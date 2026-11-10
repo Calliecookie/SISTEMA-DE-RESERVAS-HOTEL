@@ -1,6 +1,7 @@
 import { actualizarContadorCarrito, api, esc, icono, insigniaDisponibilidad, moneda, mostrarError, ruta, toast, urlImagen } from './nucleo.js';
 
-export function tarjetaHabitacion(habitacion) {
+export function tarjetaHabitacion(habitacion, opciones = {}) {
+  const comparar = opciones && opciones.comparar ? opciones.comparar : null;
   const rasgos = habitacion.caracteristicas.slice(0, 3)
     .map((rasgo) => `<li>${icono(rasgo.icono)}${esc(rasgo.nombre)}</li>`).join('');
   const enlace = ruta(`/habitaciones/${habitacion.id}`);
@@ -21,6 +22,7 @@ export function tarjetaHabitacion(habitacion) {
       <div class="habitacion__acciones">
         <button class="boton boton--acento boton--ancho" type="button" data-reservar="${habitacion.id}" data-capacidad="${habitacion.capacidad}"
           ${habitacion.disponible ? '' : 'disabled'}>${habitacion.disponible ? 'Reservar' : 'No disponible'}</button>
+        ${comparar ? `<label class="casilla-comparar"><input type="checkbox" data-comparar="${habitacion.id}" ${comparar.has(habitacion.id) ? 'checked' : ''}>${icono('comparar')}Comparar</label>` : ''}
       </div>
     </article>`;
 }

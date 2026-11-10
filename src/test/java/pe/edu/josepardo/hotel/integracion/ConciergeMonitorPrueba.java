@@ -223,6 +223,9 @@ class ConciergeMonitorPrueba extends BasePruebaIntegracion {
         mvc.perform(get("/api/operaciones/buscar").param("q", "100%").with(admin))
                 .andExpect(jsonPath("$.datos", hasSize(0)));
         mvc.perform(get("/api/operaciones/mapa")).andExpect(status().isUnauthorized());
+        mvc.perform(get("/administracion/monitor").with(admin)).andExpect(status().isOk());
+        mvc.perform(get("/trabajador/monitor").with(recepcion)).andExpect(status().isOk());
+        mvc.perform(get("/administracion/monitor").with(recepcion)).andExpect(status().isForbidden());
         mvc.perform(get("/api/operaciones/planificador")
                         .with(user(autenticado(repositorioUsuario.findById(clienteId).orElseThrow()))))
                 .andExpect(status().isForbidden());

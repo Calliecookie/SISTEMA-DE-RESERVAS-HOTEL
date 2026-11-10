@@ -14,6 +14,7 @@ import pe.edu.josepardo.hotel.servicio.ServicioPago;
 public class ControladorVistas {
 
     private static final Map<String, String> VISTAS_ADMINISTRACION = Map.of(
+            "monitor", "Mapa de habitaciones",
             "habitaciones", "Habitaciones",
             "categorias", "Categorías",
             "usuarios", "Usuarios",
@@ -108,6 +109,13 @@ public class ControladorVistas {
         modelo.addAttribute("seccion", "reservas");
         modelo.addAttribute("titulo", "Reservas");
         return "administrador/reservas";
+    }
+
+    @GetMapping("/trabajador/monitor")
+    public String monitorTrabajador(Model modelo) {
+        modelo.addAttribute("seccion", "monitor");
+        modelo.addAttribute("titulo", "Mapa de habitaciones");
+        return "administrador/monitor";
     }
 
     @GetMapping("/administracion")

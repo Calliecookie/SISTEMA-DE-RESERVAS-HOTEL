@@ -72,6 +72,15 @@ Presenta el problema: una disponibilidad que depende de las fechas no se resuelv
 
 **Di:** "Los ingresos se calculan con pagos confirmados. Las reservas pendientes, canceladas o reembolsadas no cuentan."
 
+## Novedades de la versión 3.0 (2 minutos)
+
+1. En el dashboard, muestra la tarjeta **Ventas efectuadas** y entra al detalle de una venta; luego la tarjeta **Reportes**.
+2. Pulsa `Ctrl+K`, escribe un código de reserva y ábrelo con Enter.
+3. Abre **Mapa de habitaciones**: filtra por "Ocupadas", pulsa una puerta y revisa el planificador.
+4. En el sitio público, abre una habitación ocupada: elige fechas en el calendario y muestra la cotización con IGV, la próxima fecha libre y las alternativas.
+5. En el catálogo, marca tres habitaciones y pulsa **Comparar**.
+6. Cambia entre tema claro y oscuro.
+
 ## Seguridad (1 minuto)
 
 Menciona Argon2id, CSRF, CSP, control por rol, validación de propiedad, límites de intentos y las tres capas contra DDoS. Aclara que la capa de aplicación no detiene un ataque masivo.

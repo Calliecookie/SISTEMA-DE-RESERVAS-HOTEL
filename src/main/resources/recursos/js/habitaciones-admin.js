@@ -162,4 +162,5 @@ acciones.innerHTML = `<button class="boton boton--acento" type="button" data-nue
 acciones.querySelector('[data-nueva]').addEventListener('click', () => formulario(null));
 filtros.addEventListener('input', pintar);
 filtros.addEventListener('submit', (evento) => evento.preventDefault());
+filtros.busqueda.value = new URLSearchParams(location.search).get('busqueda') || '';
 cargar();

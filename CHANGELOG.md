@@ -11,7 +11,7 @@ Todas las versiones del Sistema de Reservas Hotel Inti Wasi. El formato sigue [K
 
 ## [3.0.0] - 2026-11-10
 
-Versión grande: agrega el concierge para el cliente, el monitor en vivo para el personal y tres reportes de gestión hotelera. Esta entrada cubre el servidor (Java, SQL y plantillas); la interfaz que usa estos servicios se incorpora en la misma versión.
+Versión grande: agrega el concierge para el cliente, el monitor en vivo para el personal y tres reportes de gestión hotelera. Incluye el servidor y la interfaz que usa esos servicios.
 
 ### Novedades
 
@@ -23,6 +23,18 @@ Versión grande: agrega el concierge para el cliente, el monitor en vivo para el
 - **Búsqueda rápida del panel.** `GET /api/operaciones/buscar` encuentra reservas, habitaciones y clientes para la paleta de comandos. Los clientes solo se muestran al administrador.
 - **Tres reportes nuevos**, exportables a PDF y Excel como los demás: Ocupación, tarifa promedio (ADR) y RevPAR; Ingresos por método de pago; Anticipación de la reserva. El centro de reportes pasa de seis a nueve.
 - **Dashboard ampliado.** Ventas efectuadas (total y del mes), ticket promedio, ingresos del mes anterior, ocupación de hoy, tarifa promedio y RevPAR de los últimos 30 días, pagos por verificar, llegadas y salidas pendientes, pronóstico de ocupación a 14 días y cantidad de habitaciones por estado.
+
+### Interfaz
+
+- **Tema claro y oscuro.** Sigue la preferencia del sistema y se cambia con un botón en la barra pública y en el panel; la elección se recuerda en el navegador.
+- **Dashboard tipo bento.** Tarjeta destacada de **Ventas efectuadas** que lleva al listado con el detalle de cada venta, tarjeta de **Reportes**, anillo de ocupación con tarifa media y RevPAR, pronóstico de 14 días y barra de estados de las habitaciones.
+- **Mapa de habitaciones** (`/administracion/monitor` y `/trabajador/monitor`). Puertas por piso con el color de su situación, avisos "Llega hoy" y "Sale hoy", filtro por situación y actualización automática cada 30 segundos. Al pulsar una puerta se abre el detalle de la reserva.
+- **Planificador de ocupación.** Grilla de habitaciones por días con cada reserva en su tramo, navegación por semanas y ocupación diaria.
+- **Paleta de comandos.** `Ctrl+K` (o `Cmd+K`) busca reservas, habitaciones y clientes, y salta a cualquier sección del panel con el teclado.
+- **Ficha de habitación.** Calendario de disponibilidad para elegir las fechas, cotización en vivo con IGV y descuento, aviso de noches que faltan para el descuento y, si no hay disponibilidad, próxima fecha libre y alternativas afines.
+- **Comparador en el catálogo.** Hasta cuatro habitaciones lado a lado con precio de la estancia, disponibilidad y servicios.
+- **Centro de reportes** con los nueve reportes.
+- La página de recuperación avisa cuando el envío de correos está desactivado.
 
 ### Cambios
 

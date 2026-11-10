@@ -7,10 +7,13 @@
     <span th:text="${hotel?.nombre}">Hotel Inti Wasi</span>
   </a>
   <nav class="lateral__enlaces" aria-label="Panel">
+    <button class="lateral__buscador" type="button" data-abrir-paleta aria-label="Abrir búsqueda rápida"><svg th:replace="~{componentes/icono :: icono('buscar')}"></svg><span>Buscar o ir a</span><kbd>Ctrl K</kbd></button>
     <th:block sec:authorize="hasRole('ADMINISTRADOR')">
       <a class="lateral__enlace" th:classappend="${seccion == 'dashboard'} ? 'lateral__enlace--actual'" th:href="@{/administracion}"><svg th:replace="~{componentes/icono :: icono('tablero')}"></svg>Dashboard</a>
     </th:block>
     <a class="lateral__enlace" th:classappend="${seccion == 'operacion'} ? 'lateral__enlace--actual'" th:href="@{/trabajador}"><svg th:replace="~{componentes/icono :: icono('conserje')}"></svg>Operación del día</a>
+    <a sec:authorize="hasRole('TRABAJADOR')" class="lateral__enlace" th:classappend="${seccion == 'monitor'} ? 'lateral__enlace--actual'" th:href="@{/trabajador/monitor}"><svg th:replace="~{componentes/icono :: icono('mapa')}"></svg>Mapa de habitaciones</a>
+    <a sec:authorize="hasRole('ADMINISTRADOR')" class="lateral__enlace" th:classappend="${seccion == 'monitor'} ? 'lateral__enlace--actual'" th:href="@{/administracion/monitor}"><svg th:replace="~{componentes/icono :: icono('mapa')}"></svg>Mapa de habitaciones</a>
     <a sec:authorize="hasRole('TRABAJADOR')" class="lateral__enlace" th:classappend="${seccion == 'reservas'} ? 'lateral__enlace--actual'" th:href="@{/trabajador/reservas}"><svg th:replace="~{componentes/icono :: icono('lista')}"></svg>Reservas</a>
     <th:block sec:authorize="hasRole('ADMINISTRADOR')">
       <a class="lateral__enlace" th:classappend="${seccion == 'reservas'} ? 'lateral__enlace--actual'" th:href="@{/administracion/reservas}"><svg th:replace="~{componentes/icono :: icono('lista')}"></svg>Reservas</a>
@@ -38,7 +41,12 @@
     </button>
     <h1 class="panel__titulo" th:text="${titulo}">Panel</h1>
   </div>
-  <div class="panel__acciones" data-acciones-cabecera></div>
+  <div class="panel__herramientas">
+    <div class="panel__acciones" data-acciones-cabecera></div>
+    <button class="boton boton--secundario boton--icono conmutador-tema" type="button" data-alternar-tema aria-label="Cambiar entre tema claro y oscuro" aria-pressed="false">
+        <svg th:replace="~{componentes/icono :: icono('sol')}"></svg><svg th:replace="~{componentes/icono :: icono('luna')}"></svg>
+      </button>
+  </div>
 </header>
 </body>
 </html>

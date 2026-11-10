@@ -79,4 +79,5 @@ tabla.addEventListener('click', (evento) => {
 
 filtros.addEventListener('input', debounce(() => cargar(0), 300));
 filtros.addEventListener('submit', (evento) => evento.preventDefault());
+filtros.busqueda.value = new URLSearchParams(location.search).get('busqueda') || '';
 cargar();
