@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pe.edu.josepardo.hotel.dto.ColumnaReporte;
@@ -16,6 +17,7 @@ import pe.edu.josepardo.hotel.excepcion.ExcepcionNegocio;
 import pe.edu.josepardo.hotel.modelo.EstadoHabitacion;
 import pe.edu.josepardo.hotel.modelo.EstadoReserva;
 import pe.edu.josepardo.hotel.modelo.MetodoPago;
+import pe.edu.josepardo.hotel.repositorio.ConsultaOcupacion;
 import pe.edu.josepardo.hotel.repositorio.ConsultaReportes;
 
 @Service
@@ -24,11 +26,15 @@ public class ServicioReportes {
     private static final long DIAS_MAXIMOS = 3660;
     private static final long DIAS_PARA_AGRUPAR_POR_MES = 62;
     private static final int LIMITE_RANKING = 20;
+    private static final long DIAS_MAXIMOS_OCUPACION = 366;
+    private static final BigDecimal CIEN = new BigDecimal("100");
 
     private final ConsultaReportes consulta;
+    private final ConsultaOcupacion consultaOcupacion;
 
-    public ServicioReportes(ConsultaReportes consulta) {
+    public ServicioReportes(ConsultaReportes consulta, ConsultaOcupacion consultaOcupacion) {
         this.consulta = consulta;
+        this.consultaOcupacion = consultaOcupacion;
     }
 
     @Transactional(readOnly = true)
@@ -41,6 +47,9 @@ public class ServicioReportes {
             case "disponibilidad" -> disponibilidad(filtro);
             case "ventas-categoria" -> ventasPorCategoria(filtro);
             case "ingresos-generales" -> ingresosGenerales(filtro);
+            case "ocupacion" -> ocupacion(filtro);
+            case "metodos-pago" -> metodosDePago(filtro);
+            case "anticipacion" -> anticipacion(filtro);
             default -> throw ExcepcionNegocio.noEncontrado("El reporte no existe.");
         };
     }
@@ -284,6 +293,137 @@ public class ServicioReportes {
                         new IndicadorReporte("Por cobrar", Formato.moneda(resumen.porCobrar()))),
                 serie,
                 "barras");
+    }
+
+    private TablaReporte ocupacion(FiltroReporte filtro) {
+        long dias = ChronoUnit.DAYS.between(filtro.desde(), filtro.hasta()) + 1;
+        if (dias > DIAS_MAXIMOS_OCUPACION) {
+            throw ExcepcionNegocio.solicitudInvalida("El reporte de ocupación admite un rango máximo de un año.");
+        }
+        long habitaciones = consultaOcupacion.habitacionesEnServicio();
+        List<ConsultaOcupacion.NocheVendida> ventas =
+                consultaOcupacion.nochesVendidas(filtro.desde(), filtro.hasta().plusDays(1));
+        List<List<Object>> filas = new ArrayList<>();
+        List<PuntoSerie> serie = new ArrayList<>();
+        long nochesTotales = 0;
+        BigDecimal ingresosTotales = BigDecimal.ZERO;
+        for (LocalDate fecha = filtro.desde(); !fecha.isAfter(filtro.hasta()); fecha = fecha.plusDays(1)) {
+            LocalDate dia = fecha;
+            long vendidas = 0;
+            BigDecimal ingresos = BigDecimal.ZERO;
+            for (ConsultaOcupacion.NocheVendida venta : ventas) {
+                if (!dia.isBefore(venta.entrada()) && dia.isBefore(venta.salida())) {
+                    vendidas++;
+                    ingresos = ingresos.add(venta.tarifaNeta());
+                }
+            }
+            ingresos = ingresos.setScale(2, RoundingMode.HALF_UP);
+            BigDecimal porcentaje = razon(BigDecimal.valueOf(vendidas * 100), habitaciones);
+            filas.add(List.of(
+                    Formato.fecha(dia), vendidas, porcentaje, ingresos, razon(ingresos, vendidas), razon(ingresos, habitaciones)));
+            serie.add(new PuntoSerie(dia.toString(), porcentaje));
+            nochesTotales += vendidas;
+            ingresosTotales = ingresosTotales.add(ingresos);
+        }
+        long nochesDisponibles = habitaciones * dias;
+        return new TablaReporte(
+                "ocupacion",
+                "Ocupación, tarifa promedio y RevPAR",
+                rango(filtro),
+                List.of(columna("Fecha"), numero("Habitaciones vendidas"), new ColumnaReporte("Ocupación", "porcentaje"),
+                        moneda("Ingreso por alojamiento"), moneda("Tarifa promedio (ADR)"), moneda("RevPAR")),
+                filas,
+                List.of(
+                        new IndicadorReporte("Ocupación promedio",
+                                Formato.porcentaje(razon(BigDecimal.valueOf(nochesTotales * 100), nochesDisponibles))),
+                        new IndicadorReporte("Noches vendidas", String.valueOf(nochesTotales)),
+                        new IndicadorReporte("Tarifa promedio (ADR)", Formato.moneda(razon(ingresosTotales, nochesTotales))),
+                        new IndicadorReporte("RevPAR", Formato.moneda(razon(ingresosTotales, nochesDisponibles)))),
+                serie,
+                "linea");
+    }
+
+    private TablaReporte metodosDePago(FiltroReporte filtro) {
+        List<ConsultaReportes.VentaMetodo> metodos = consulta.ventasPorMetodo(filtro.desde(), filtro.hasta());
+        BigDecimal total = metodos.stream()
+                .map(ConsultaReportes.VentaMetodo::ingresos)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        long operaciones = metodos.stream().mapToLong(ConsultaReportes.VentaMetodo::operaciones).sum();
+        List<List<Object>> filas = new ArrayList<>();
+        List<PuntoSerie> serie = new ArrayList<>();
+        for (ConsultaReportes.VentaMetodo metodo : metodos) {
+            String etiqueta = MetodoPago.valueOf(metodo.metodo()).getEtiqueta();
+            filas.add(List.of(
+                    etiqueta,
+                    metodo.operaciones(),
+                    metodo.ingresos(),
+                    razon(metodo.ingresos().multiply(CIEN), total),
+                    razon(metodo.ingresos(), metodo.operaciones())));
+            serie.add(new PuntoSerie(etiqueta, metodo.ingresos()));
+        }
+        return new TablaReporte(
+                "metodos-pago",
+                "Ingresos por método de pago",
+                rango(filtro),
+                List.of(columna("Método de pago"), numero("Operaciones"), moneda("Ingresos"),
+                        new ColumnaReporte("Participación", "porcentaje"), moneda("Ticket promedio")),
+                filas,
+                List.of(
+                        new IndicadorReporte("Operaciones cobradas", String.valueOf(operaciones)),
+                        new IndicadorReporte("Ingresos", Formato.moneda(total)),
+                        new IndicadorReporte("Método preferido", metodos.isEmpty()
+                                ? "Sin datos"
+                                : MetodoPago.valueOf(metodos.get(0).metodo()).getEtiqueta())),
+                serie,
+                "barras-horizontales");
+    }
+
+    private TablaReporte anticipacion(FiltroReporte filtro) {
+        List<ConsultaReportes.Anticipacion> tramos = consulta.anticipacion(filtro.desde(), filtro.hasta());
+        long reservas = tramos.stream().mapToLong(ConsultaReportes.Anticipacion::reservas).sum();
+        BigDecimal ingresos = tramos.stream()
+                .map(ConsultaReportes.Anticipacion::ingresos)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        List<List<Object>> filas = new ArrayList<>();
+        List<PuntoSerie> serie = new ArrayList<>();
+        ConsultaReportes.Anticipacion principal = null;
+        for (ConsultaReportes.Anticipacion tramo : tramos) {
+            filas.add(List.of(
+                    tramo.tramo(),
+                    tramo.reservas(),
+                    razon(BigDecimal.valueOf(tramo.reservas() * 100), reservas),
+                    tramo.nochesPromedio().setScale(1, RoundingMode.HALF_UP).toPlainString(),
+                    tramo.ingresos()));
+            serie.add(new PuntoSerie(tramo.tramo(), BigDecimal.valueOf(tramo.reservas())));
+            if (principal == null || tramo.reservas() > principal.reservas()) {
+                principal = tramo;
+            }
+        }
+        return new TablaReporte(
+                "anticipacion",
+                "Anticipación de la reserva",
+                "Estancias con entrada " + rango(filtro).toLowerCase(Locale.ROOT),
+                List.of(columna("Anticipación"), numero("Reservas"), new ColumnaReporte("Participación", "porcentaje"),
+                        columna("Noches promedio"), moneda("Ingresos")),
+                filas,
+                List.of(
+                        new IndicadorReporte("Reservas analizadas", String.valueOf(reservas)),
+                        new IndicadorReporte("Anticipación más frecuente", principal == null ? "Sin datos" : principal.tramo()),
+                        new IndicadorReporte("Ingresos", Formato.moneda(ingresos))),
+                serie,
+                "barras");
+    }
+
+    private BigDecimal razon(BigDecimal numerador, long denominador) {
+        return denominador == 0
+                ? BigDecimal.ZERO.setScale(2)
+                : numerador.divide(BigDecimal.valueOf(denominador), 2, RoundingMode.HALF_UP);
+    }
+
+    private BigDecimal razon(BigDecimal numerador, BigDecimal denominador) {
+        return denominador.signum() == 0
+                ? BigDecimal.ZERO.setScale(2)
+                : numerador.divide(denominador, 2, RoundingMode.HALF_UP);
     }
 
     private String texto(String valor) {

@@ -77,7 +77,6 @@ public class ServicioConsultaReservas {
         return consulta.listar(filtro, null, pagina(filtro.pagina()), tamano(filtro.tamano()));
     }
 
-    /** Listado del personal con los estados a los que puede pasar cada reserva. */
     @Transactional(readOnly = true)
     public Pagina<ReservaResumenDto> listar(FiltroReservas filtro, Actor actor) {
         Pagina<ReservaResumenDto> resultado = listar(filtro);

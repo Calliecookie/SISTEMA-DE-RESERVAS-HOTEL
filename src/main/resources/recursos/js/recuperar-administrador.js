@@ -89,7 +89,7 @@ formularioClave.addEventListener('submit', async (evento) => {
   try {
     metodos = (await api('/api/autenticacion/recuperacion/metodos')).datos;
   } catch {
-    // Si la consulta falla se muestran ambos métodos sin aviso.
+    metodos = { correo: true, claveAdministrador: true };
   }
   elegir(!metodos.correo && metodos.claveAdministrador ? 'clave' : 'correo');
 })();

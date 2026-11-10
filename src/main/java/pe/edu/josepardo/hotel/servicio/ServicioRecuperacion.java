@@ -86,10 +86,6 @@ public class ServicioRecuperacion {
         return new MetodosRecuperacionDto(servicioCorreo.estaHabilitado(), seguridad.tieneClaveRecuperacionAdmin());
     }
 
-    /**
-     * Recuperación del administrador cuando no puede recibir el código por correo: valida la clave
-     * de recuperación definida en ADMIN_CLAVE_RECUPERACION (solo la conoce quien administra el servidor).
-     */
     @Transactional(noRollbackFor = ExcepcionNegocio.class)
     public void restablecerAdministrador(SolicitudRecuperacionAdmin solicitud, String ip) {
         limitador.exigir("admin-recuperacion-ip:" + ip, 5, Duration.ofMinutes(15));

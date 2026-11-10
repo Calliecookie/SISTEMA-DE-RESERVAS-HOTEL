@@ -137,7 +137,6 @@ public class ServicioHabitacionAdmin {
         } catch (IllegalArgumentException excepcion) {
             throw ExcepcionNegocio.solicitudInvalida("El estado de la habitación no es válido.");
         }
-        // Reservada y Ocupada los asigna el sistema; si llegan del formulario equivalen a "en servicio".
         if (!EstadoHabitacion.MANUALES.contains(estado)) {
             estado = EstadoHabitacion.DISPONIBLE;
         }

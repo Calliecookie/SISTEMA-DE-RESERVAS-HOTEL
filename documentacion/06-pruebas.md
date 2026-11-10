@@ -2,7 +2,7 @@
 
 ## Estado actual
 
-Las 116 pruebas (32 unitarias y 84 de integración contra MySQL 8) se ejecutaron y aprobaron el 9 de noviembre de 2026. Para la base de pruebas se usa `PRUEBA_BD_CONTRASENA` si tu usuario de MySQL tiene contraseña.
+Las 125 pruebas (32 unitarias y 93 de integración contra MySQL 8) se ejecutaron y aprobaron el 10 de noviembre de 2026. Maven las corre en la zona horaria `America/Lima`, igual que la aplicación. Para la base de pruebas se usa `PRUEBA_BD_CONTRASENA` si tu usuario de MySQL tiene contraseña.
 
 ## Cómo ejecutarlas
 
@@ -37,6 +37,9 @@ Ver `03-instalacion.md`. Maven ejecuta todas las clases con sufijo `Prueba`.
 | Estado de habitaciones (en lugar de stock) | `EstadosPrueba` | Reservada al pagar, Ocupada al ingresar, Disponible al salir o cancelar, mantenimiento |
 | Actualizar estado de reservas | `EstadosPrueba` | Pendiente → Pagado → Confirmado → Entregado → Finalizado, cancelación con motivo, transiciones inválidas, cliente sin permiso |
 | Cierre del día | `EstadosPrueba` | Elimina pedidos no pagados, conserva los pagados, finaliza estancias vencidas |
+| Cotizador, alternativas y calendario | `ConciergeMonitorPrueba` | Importes con IGV y descuento, límites, próxima fecha libre, afinidad, noches ocupadas |
+| Mapa, planificador y búsqueda rápida | `ConciergeMonitorPrueba` | Situación por habitación, tramos por día, resultados por rol |
+| Reportes de ocupación, métodos de pago y anticipación | `ConciergeMonitorPrueba` | Cifras, exportación a PDF y Excel, rango máximo |
 | Total en letras | `ConversorNumeroLetrasPrueba`, `ReservaPrueba` | Reglas del castellano y texto dentro del PDF |
 | Protección de tráfico | `ControlTraficoPrueba`, `ReglasSeguridadPrueba` | Límite, bloqueo, memoria, IP real |
 

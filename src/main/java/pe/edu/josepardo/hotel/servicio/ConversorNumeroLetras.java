@@ -3,10 +3,6 @@ package pe.edu.josepardo.hotel.servicio;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-/**
- * Convierte un importe en soles al texto que se imprime al pie de la boleta,
- * por ejemplo 1250.50 → "SON: MIL DOSCIENTOS CINCUENTA CON 50/100 SOLES".
- */
 public final class ConversorNumeroLetras {
 
     private static final String[] UNIDADES = {
@@ -102,7 +98,6 @@ public final class ConversorNumeroLetras {
         return DECENAS[numero / 10] + (unidad > 0 ? " Y " + UNIDADES[unidad] : "");
     }
 
-    /** "VEINTIUNO MIL" → "VEINTIÚN MIL", "TREINTA Y UNO MIL" → "TREINTA Y UN MIL". */
     private static String apocopar(String texto) {
         if (texto.endsWith("VEINTIUNO")) {
             return texto.substring(0, texto.length() - "VEINTIUNO".length()) + "VEINTIÚN";

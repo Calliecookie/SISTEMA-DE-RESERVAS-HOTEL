@@ -4,33 +4,45 @@
 <meta charset="UTF-8"/>
 <title th:text="${numero}">Comprobante</title>
 <style>
-@page { size: A4; margin: 16mm; }
-body { font-family: Inter, sans-serif; font-size: 10pt; color: #1A2024; line-height: 1.45; }
+@page { size: A4; margin: 0 0 14mm 0; }
+body { font-family: Inter, sans-serif; font-size: 10pt; color: #1A2024; line-height: 1.45; margin: 0; }
 table { width: 100%; border-collapse: collapse; }
+.franja { height: 9mm; background: #1B2A4E; }
+.franja-sol { height: 1.6mm; background: #D9A21B; }
+.hoja { padding: 9mm 16mm 0 16mm; }
 .cabecera td { vertical-align: top; }
-.logo { width: 52px; height: 52px; }
-.hotel { font-size: 15pt; font-weight: 700; color: #1B2A4E; }
+.logo { width: 54px; height: 54px; }
+.hotel { font-size: 16pt; font-weight: 700; color: #1B2A4E; }
 .suave { color: #5A6368; }
 .documento { text-align: right; }
-.documento-titulo { font-size: 12pt; font-weight: 700; color: #A8174A; }
-.bloque { margin-top: 18px; }
-.titulo { font-weight: 600; color: #1B2A4E; border-bottom: 1px solid #DCDFE0; padding-bottom: 4px; margin-bottom: 6px; }
+.documento-titulo { font-size: 12pt; font-weight: 700; color: #A8174A; text-transform: uppercase; letter-spacing: 0.6pt; }
+.numero { font-size: 11pt; font-weight: 600; color: #1B2A4E; }
+.sello { display: inline-block; margin-top: 6px; padding: 3px 10px; border: 1.2pt solid #B26A00; color: #B26A00; font-size: 8.5pt; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8pt; }
+.sello-pagado { border-color: #1E7A4C; color: #1E7A4C; }
+.bloque { margin-top: 16px; }
+.titulo { font-size: 8.5pt; font-weight: 700; color: #1B2A4E; text-transform: uppercase; letter-spacing: 0.8pt; border-bottom: 1px solid #DCDFE0; padding-bottom: 4px; margin-bottom: 6px; }
 .datos td { padding: 2px 0; width: 50%; }
-.detalle th { text-align: left; font-size: 9pt; color: #5A6368; border-bottom: 1px solid #DCDFE0; padding: 6px 4px; }
-.detalle td { padding: 7px 4px; border-bottom: 1px solid #ECEEEE; }
+.detalle th { text-align: left; font-size: 8.5pt; color: #FFFFFF; background: #1B2A4E; padding: 7px 6px; }
+.detalle td { padding: 8px 6px; border-bottom: 1px solid #ECEEEE; }
 .derecha, .detalle th.derecha { text-align: right; }
-.totales { width: 45%; margin-left: 55%; margin-top: 10px; }
-.totales td { padding: 3px 4px; }
-.total td { font-size: 12pt; font-weight: 700; border-top: 1px solid #1B2A4E; padding-top: 6px; color: #1B2A4E; }
-.estado { font-weight: 600; }
-.letras { margin-top: 10px; padding: 7px 10px; border: 1px solid #DCDFE0; font-weight: 600; font-size: 9.5pt; color: #1B2A4E; }
-.nota { margin-top: 26px; padding: 9px 10px; background: #F5F6F6; font-size: 8.5pt; color: #5A6368; }
+.totales { width: 46%; margin-left: 54%; margin-top: 10px; }
+.totales td { padding: 3px 6px; }
+.total td { font-size: 12.5pt; font-weight: 700; border-top: 1.2pt solid #1B2A4E; padding-top: 7px; color: #1B2A4E; }
+.letras { margin-top: 12px; padding: 8px 12px; border-left: 3pt solid #D9A21B; background: #FBF6E9; font-weight: 600; font-size: 9.5pt; color: #1B2A4E; }
+.pago { margin-top: 14px; }
+.pago td { padding: 2px 0; width: 50%; }
+.estado { font-weight: 700; }
+.nota { margin-top: 24px; padding: 9px 12px; background: #F5F6F6; font-size: 8.5pt; color: #5A6368; }
+.despedida { margin-top: 18px; text-align: center; font-size: 9pt; color: #1B2A4E; }
 </style>
 </head>
 <body>
+<div class="franja"></div>
+<div class="franja-sol"></div>
+<div class="hoja">
 <table class="cabecera">
   <tr>
-    <td style="width: 62px;"><img class="logo" th:src="${logo}" alt="Logotipo"/></td>
+    <td style="width: 64px;"><img class="logo" th:src="${logo}" alt="Logotipo"/></td>
     <td>
       <div class="hotel" th:text="${hotel.nombre}">Hotel</div>
       <div class="suave">RUC <span th:text="${hotel.ruc}">RUC</span></div>
@@ -39,8 +51,9 @@ table { width: 100%; border-collapse: collapse; }
     </td>
     <td class="documento">
       <div class="documento-titulo">Comprobante de reserva</div>
-      <div th:text="${numero}">Número</div>
+      <div class="numero" th:text="${numero}">Número</div>
       <div class="suave">Emitido el <span th:text="${emision}">Fecha</span></div>
+      <div class="sello" th:classappend="${pagado} ? 'sello-pagado'" th:text="${estadoPago}">Estado</div>
     </td>
   </tr>
 </table>
@@ -81,7 +94,14 @@ table { width: 100%; border-collapse: collapse; }
   </table>
   <div class="letras" th:text="${totalLetras}">SON: CERO CON 00/100 SOLES</div>
 </div>
-<div class="bloque">Estado del pago: <span class="estado" th:text="${estadoPago}">Pendiente</span></div>
+<table class="pago">
+  <tr>
+    <td>Estado del pago: <span class="estado" th:text="${estadoPago}">Pendiente</span></td>
+    <td>Forma de pago: <span th:text="${metodoPago}">Por definir</span><span th:if="${fechaPago != ''}" th:text="${', ' + fechaPago}"></span></td>
+  </tr>
+</table>
 <div class="nota">Este documento acredita tu reserva. No es un comprobante de pago electrónico ante SUNAT.</div>
+<div class="despedida">Gracias por elegir <span th:text="${hotel.nombre}">el hotel</span>. Te esperamos en la casa del sol.</div>
+</div>
 </body>
 </html>

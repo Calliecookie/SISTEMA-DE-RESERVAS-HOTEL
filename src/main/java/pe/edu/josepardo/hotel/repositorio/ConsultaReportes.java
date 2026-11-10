@@ -41,6 +41,12 @@ public class ConsultaReportes {
     public record VentaCategoria(String categoria, long reservas, BigDecimal ingresos) {
     }
 
+    public record VentaMetodo(String metodo, long operaciones, BigDecimal ingresos) {
+    }
+
+    public record Anticipacion(String tramo, long reservas, BigDecimal nochesPromedio, BigDecimal ingresos) {
+    }
+
     public record ResumenIngresos(long pagadas, long pendientes, BigDecimal ingresos, BigDecimal porCobrar) {
     }
 
@@ -104,6 +110,44 @@ public class ConsultaReportes {
                 fila.getString("correo"),
                 fila.getLong("operaciones"),
                 fila.getBigDecimal("total")));
+    }
+
+    public List<VentaMetodo> ventasPorMetodo(LocalDate desde, LocalDate hasta) {
+        String sql = "SELECT p.metodo, COUNT(p.id) AS operaciones, SUM(p.monto) AS total " + ORIGEN_PAGOS
+                + " GROUP BY p.metodo ORDER BY total DESC";
+        return jdbc.query(sql, rango(desde, hasta), (fila, indice) -> new VentaMetodo(
+                fila.getString("metodo"), fila.getLong("operaciones"), fila.getBigDecimal("total")));
+    }
+
+    public List<Anticipacion> anticipacion(LocalDate desde, LocalDate hasta) {
+        String sql = """
+                SELECT t.tramo, COUNT(*) AS reservas, AVG(t.noches) AS noches_promedio, SUM(t.total) AS ingresos
+                FROM (
+                  SELECT CASE
+                           WHEN DATEDIFF(r.fecha_entrada, DATE(r.creado_en)) <= 0 THEN '1. El mismo día'
+                           WHEN DATEDIFF(r.fecha_entrada, DATE(r.creado_en)) <= 3 THEN '2. De 1 a 3 días'
+                           WHEN DATEDIFF(r.fecha_entrada, DATE(r.creado_en)) <= 7 THEN '3. De 4 a 7 días'
+                           WHEN DATEDIFF(r.fecha_entrada, DATE(r.creado_en)) <= 14 THEN '4. De 8 a 14 días'
+                           WHEN DATEDIFF(r.fecha_entrada, DATE(r.creado_en)) <= 30 THEN '5. De 15 a 30 días'
+                           ELSE '6. Más de 30 días'
+                         END AS tramo,
+                         DATEDIFF(r.fecha_salida, r.fecha_entrada) AS noches,
+                         r.total
+                  FROM reservas r
+                  WHERE r.estado IN ('PAGADO', 'CONFIRMADO', 'ENTREGADO', 'FINALIZADO')
+                    AND r.fecha_entrada >= :desde AND r.fecha_entrada < :hasta
+                ) t
+                GROUP BY t.tramo
+                ORDER BY t.tramo
+                """;
+        MapSqlParameterSource parametros = new MapSqlParameterSource()
+                .addValue("desde", desde)
+                .addValue("hasta", hasta.plusDays(1));
+        return jdbc.query(sql, parametros, (fila, indice) -> new Anticipacion(
+                fila.getString("tramo").substring(3),
+                fila.getLong("reservas"),
+                fila.getBigDecimal("noches_promedio"),
+                fila.getBigDecimal("ingresos")));
     }
 
     public List<HistorialCliente> historialCliente(Long clienteId) {

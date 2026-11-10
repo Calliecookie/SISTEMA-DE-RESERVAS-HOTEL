@@ -3,14 +3,6 @@ package pe.edu.josepardo.hotel.modelo;
 import java.util.EnumSet;
 import java.util.Set;
 
-/**
- * Estado actual de una habitación. Reemplaza al "stock" de un producto: una habitación es única,
- * así que en lugar de restar unidades se cambia su estado.
- *
- * <p>DISPONIBLE, MANTENIMIENTO y FUERA_DE_SERVICIO los fija el administrador. RESERVADA y OCUPADA
- * los asigna el sistema según las reservas: RESERVADA cuando tiene una reserva pagada o confirmada
- * vigente y OCUPADA cuando el huésped ya ingresó.
- */
 public enum EstadoHabitacion {
     DISPONIBLE("Disponible"),
     RESERVADA("Reservada"),

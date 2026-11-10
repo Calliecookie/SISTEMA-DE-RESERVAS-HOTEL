@@ -35,6 +35,10 @@ public final class Formato {
         return valor == null ? "" : valor.format(FECHA_HORA);
     }
 
+    public static String importeEnLetras(BigDecimal valor) {
+        return ConversorNumeroLetras.importeEnSoles(valor);
+    }
+
     public static String porcentaje(BigDecimal valor) {
         return decimal(valor) + " %";
     }

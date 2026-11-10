@@ -25,7 +25,6 @@ import pe.edu.josepardo.hotel.modelo.Rol;
 import pe.edu.josepardo.hotel.servicio.ServicioCierreDiario;
 import pe.edu.josepardo.hotel.servicio.ServicioReserva;
 
-/** Estado de las habitaciones (en lugar de stock), cambios de estado de reservas y cierre del día. */
 class EstadosPrueba extends BasePruebaIntegracion {
 
     @Autowired
@@ -129,7 +128,6 @@ class EstadosPrueba extends BasePruebaIntegracion {
 
         String codigoOtra = reservar(LocalDate.now(), 8L);
         cambiar(codigoOtra, Map.of("estado", "PAGADO", "metodo", "EFECTIVO")).andExpect(status().isOk());
-        // Al volver a "Disponible" una habitación con reserva pagada, el sistema la mantiene Reservada.
         String cuerpoOcho = json.writeValueAsString(Map.of("numero", "302", "nombre", "Matrimonial Terraza", "categoriaId", 3,
                 "descripcion", "Terraza privada", "capacidad", 2, "precioNoche", "340.00",
                 "estado", "DISPONIBLE", "caracteristicaIds", List.of(1)));

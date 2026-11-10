@@ -8,7 +8,6 @@ let habitaciones = [];
 let categorias = [];
 let rasgos = [];
 
-// Reservada y Ocupada no se eligen: el sistema las asigna según las reservas pagadas y los ingresos.
 const ESTADOS = [['DISPONIBLE', 'Disponible (en servicio)'], ['MANTENIMIENTO', 'En mantenimiento'], ['FUERA_DE_SERVICIO', 'Fuera de servicio']];
 const MANUALES = ESTADOS.map(([valor]) => valor);
 const campo = (nombre, etiqueta, control) => `<div class="campo" data-campo="${nombre}"><label class="campo__etiqueta" for="c-${nombre}">${etiqueta}</label>${control}<span class="campo__error"></span></div>`;

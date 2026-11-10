@@ -9,11 +9,6 @@ import pe.edu.josepardo.hotel.modelo.EstadoReserva;
 import pe.edu.josepardo.hotel.repositorio.RepositorioReserva;
 import pe.edu.josepardo.hotel.seguridad.UsuarioAutenticado;
 
-/**
- * Punto único para que el personal actualice el estado de la reserva de un cliente:
- * Pendiente → Pagado → Confirmado → Entregado (ingreso) → Finalizado, o Cancelado.
- * Cada paso reutiliza las reglas del flujo (pagos, comprobantes, historial y estado de habitaciones).
- */
 @Service
 public class ServicioCambioEstadoReserva {
 
@@ -56,7 +51,6 @@ public class ServicioCambioEstadoReserva {
             default -> throw ExcepcionNegocio.solicitudInvalida(
                     "El estado " + destino.getEtiqueta() + " lo asigna el sistema.");
         }
-        // Pagado y Cancelado ya generan un comprobante nuevo que se envía al cliente por correo.
         if (destino != EstadoReserva.PAGADO && destino != EstadoReserva.CANCELADO) {
             repositorioReserva.buscarPorCodigo(codigo).ifPresent(reserva -> publicador.publishEvent(
                     new EventoEstadoReservaCambiado(reserva.getId(), destino.getEtiqueta(), motivo.isEmpty() ? null : motivo)));

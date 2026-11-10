@@ -139,8 +139,11 @@ public class ServicioComprobante {
         variables.put("impuesto", Formato.moneda(reserva.getImpuesto()));
         variables.put("porcentajeImpuesto", Formato.decimal(configuracion.parametrosImporte().porcentajeImpuesto()));
         variables.put("total", Formato.moneda(reserva.getTotal()));
-        variables.put("totalLetras", ConversorNumeroLetras.importeEnSoles(reserva.getTotal()));
+        variables.put("totalLetras", Formato.importeEnLetras(reserva.getTotal()));
         variables.put("estadoPago", comprobante.getEstadoPago());
+        variables.put("pagado", "Pagado".equals(comprobante.getEstadoPago()));
+        variables.put("metodoPago", reserva.getMetodoPago() == null ? "Por definir" : reserva.getMetodoPago().getEtiqueta());
+        variables.put("fechaPago", reserva.getFechaPago() == null ? "" : Formato.fechaHora(reserva.getFechaPago()));
         variables.put("emision", Formato.fechaHora(comprobante.getFechaEmision()));
         return generadorPdf.generar("documentos/comprobante", variables);
     }

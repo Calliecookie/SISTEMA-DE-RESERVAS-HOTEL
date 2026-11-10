@@ -120,7 +120,6 @@ public class ServicioReserva {
         reserva.setImpuesto(importes.impuesto());
         reserva.setTotal(importes.total());
         reserva.setEstado(EstadoReserva.PENDIENTE);
-        // El pedido que no se paga hasta el final del día se elimina en el cierre diario.
         LocalDateTime ahora = LocalDateTime.now();
         LocalDateTime plazo = ahora.plusHours(configuracion.entero(ServicioConfiguracion.HORAS_EXPIRACION, 24));
         LocalDateTime finDelDia = ahora.toLocalDate().atTime(LocalTime.of(23, 59));

@@ -53,6 +53,33 @@ public class ConsultaDashboard {
         return total == null ? 0 : total;
     }
 
+    public long ventasEfectuadas(LocalDateTime desde) {
+        if (desde == null) {
+            return contar("SELECT COUNT(*) FROM pagos WHERE estado = 'CONFIRMADO'", Map.of());
+        }
+        return contar("SELECT COUNT(*) FROM pagos WHERE estado = 'CONFIRMADO' AND fecha_pago >= :desde",
+                Map.of("desde", desde));
+    }
+
+    public long pagosPorVerificar() {
+        return contar("""
+                SELECT COUNT(DISTINCT r.id)
+                FROM reservas r
+                JOIN pagos p ON p.reserva_id = r.id
+                WHERE r.estado = 'PENDIENTE' AND p.estado = 'DECLARADO'
+                """, Map.of());
+    }
+
+    public long llegadasPendientes(LocalDate fecha) {
+        return contar("SELECT COUNT(*) FROM reservas WHERE estado IN ('PAGADO', 'CONFIRMADO') AND fecha_entrada <= :fecha",
+                Map.of("fecha", fecha));
+    }
+
+    public long salidasPendientes(LocalDate fecha) {
+        return contar("SELECT COUNT(*) FROM reservas WHERE estado = 'ENTREGADO' AND fecha_salida <= :fecha",
+                Map.of("fecha", fecha));
+    }
+
     public long reservasPorEstados(List<String> estados) {
         return contar("SELECT COUNT(*) FROM reservas WHERE estado IN (:estados)", Map.of("estados", estados));
     }

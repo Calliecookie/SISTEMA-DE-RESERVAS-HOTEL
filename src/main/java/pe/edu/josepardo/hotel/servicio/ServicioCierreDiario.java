@@ -16,10 +16,6 @@ import pe.edu.josepardo.hotel.modelo.EstadoReserva;
 import pe.edu.josepardo.hotel.repositorio.RepositorioPago;
 import pe.edu.josepardo.hotel.repositorio.RepositorioReserva;
 
-/**
- * Cierre del día: los pedidos (reservas) que el cliente no pagó se dan de baja y se eliminan,
- * las estancias cuya fecha de salida ya pasó se finalizan y se recalcula el estado de las habitaciones.
- */
 @Service
 public class ServicioCierreDiario {
 
@@ -74,7 +70,6 @@ public class ServicioCierreDiario {
         return resultado;
     }
 
-    /** Pedidos pendientes sin un pago por verificar: al final del día ya no se esperan. */
     private int expirarPendientes() {
         List<Long> ids = jdbc.queryForList("""
                 SELECT r.id FROM reservas r
@@ -103,7 +98,6 @@ public class ServicioCierreDiario {
         return total;
     }
 
-    /** Huéspedes que siguen "Entregado" después de su fecha de salida. */
     private int finalizarEstancias() {
         List<Long> ids = jdbc.queryForList(
                 "SELECT id FROM reservas WHERE estado = 'ENTREGADO' AND fecha_salida <= :hoy",
@@ -125,7 +119,6 @@ public class ServicioCierreDiario {
         return total;
     }
 
-    /** Elimina los pedidos expirados que nunca se pagaron, junto con sus detalles y comprobantes. */
     private int eliminarExpiradas() {
         List<Long> ids = jdbc.queryForList("""
                 SELECT r.id FROM reservas r

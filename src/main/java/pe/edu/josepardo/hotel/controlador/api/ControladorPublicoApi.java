@@ -9,13 +9,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pe.edu.josepardo.hotel.dto.CalendarioDto;
 import pe.edu.josepardo.hotel.dto.CategoriaDto;
+import pe.edu.josepardo.hotel.dto.CotizacionDto;
 import pe.edu.josepardo.hotel.dto.DisponibilidadDto;
 import pe.edu.josepardo.hotel.dto.FiltroCatalogo;
 import pe.edu.josepardo.hotel.dto.HabitacionCatalogoDto;
 import pe.edu.josepardo.hotel.dto.Pagina;
 import pe.edu.josepardo.hotel.dto.RespuestaApi;
+import pe.edu.josepardo.hotel.dto.SugerenciasDto;
 import pe.edu.josepardo.hotel.servicio.ServicioCatalogo;
+import pe.edu.josepardo.hotel.servicio.ServicioConcierge;
 import pe.edu.josepardo.hotel.servicio.ServicioDisponibilidad;
 
 @RestController
@@ -24,10 +28,39 @@ public class ControladorPublicoApi {
 
     private final ServicioCatalogo servicioCatalogo;
     private final ServicioDisponibilidad servicioDisponibilidad;
+    private final ServicioConcierge servicioConcierge;
 
-    public ControladorPublicoApi(ServicioCatalogo servicioCatalogo, ServicioDisponibilidad servicioDisponibilidad) {
+    public ControladorPublicoApi(
+            ServicioCatalogo servicioCatalogo,
+            ServicioDisponibilidad servicioDisponibilidad,
+            ServicioConcierge servicioConcierge) {
         this.servicioCatalogo = servicioCatalogo;
         this.servicioDisponibilidad = servicioDisponibilidad;
+        this.servicioConcierge = servicioConcierge;
+    }
+
+    @GetMapping("/cotizacion")
+    public RespuestaApi<CotizacionDto> cotizacion(
+            @RequestParam List<Long> ids,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaEntrada,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaSalida) {
+        return RespuestaApi.exito(servicioConcierge.cotizar(ids, fechaEntrada, fechaSalida));
+    }
+
+    @GetMapping("/habitaciones/{id}/sugerencias")
+    public RespuestaApi<SugerenciasDto> sugerencias(
+            @PathVariable Long id,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaEntrada,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaSalida) {
+        return RespuestaApi.exito(servicioConcierge.sugerir(id, fechaEntrada, fechaSalida));
+    }
+
+    @GetMapping("/habitaciones/{id}/calendario")
+    public RespuestaApi<CalendarioDto> calendario(
+            @PathVariable Long id,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate desde,
+            @RequestParam(required = false) Integer dias) {
+        return RespuestaApi.exito(servicioConcierge.calendario(id, desde, dias));
     }
 
     @GetMapping("/categorias")

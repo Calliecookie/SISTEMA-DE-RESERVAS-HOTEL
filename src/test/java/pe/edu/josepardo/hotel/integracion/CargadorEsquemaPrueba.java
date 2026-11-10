@@ -13,10 +13,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 
-/**
- * Crea las tablas y los datos iniciales en la base de pruebas apenas existe el DataSource,
- * antes de que arranquen los inicializadores de la aplicación. Se ejecuta una sola vez por JVM.
- */
 @TestConfiguration(proxyBeanMethods = false)
 class CargadorEsquemaPrueba {
 

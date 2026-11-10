@@ -2,7 +2,7 @@
 
 Plataforma web para reservar habitaciones en línea y administrar la operación de un hotel. Proyecto de la unidad didáctica Taller de Programación Web, IESTP "José Pardo", 2026-II.
 
-**Versión 2.0.0** (9 de noviembre de 2026). Las novedades y correcciones están en el [registro de cambios](CHANGELOG.md).
+**Versión 3.0.0** (10 de noviembre de 2026). Las novedades y correcciones están en el [registro de cambios](CHANGELOG.md).
 
 ## Estado de verificación
 
@@ -11,7 +11,7 @@ Verificado el 2 de noviembre de 2026 en Linux con JDK 21, Maven 3.9, MySQL 8.0.4
 | Verificación | Resultado |
 |---|---|
 | Compilación con Maven | Aprobada |
-| 116 pruebas automatizadas: 32 unitarias y 84 de integración contra MySQL, incluida la concurrencia de reservas | Aprobadas (9 de noviembre de 2026) |
+| 125 pruebas automatizadas: 32 unitarias y 93 de integración contra MySQL, incluida la concurrencia de reservas | Aprobadas (10 de noviembre de 2026) |
 | Comprobantes PDF y reportes en PDF y Excel | Generados y revisados |
 | Envío de correo con el comprobante adjunto | Verificado con un servidor SMTP de pruebas (GreenMail) |
 | Recorrido de las 21 pantallas de los tres roles en Chromium, escritorio y móvil | Sin errores de JavaScript, respuestas fallidas, imágenes rotas ni desborde horizontal |

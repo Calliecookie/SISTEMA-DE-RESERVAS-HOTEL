@@ -9,17 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pe.edu.josepardo.hotel.modelo.EstadoHabitacion;
 
-/**
- * Mantiene el campo {@code habitaciones.estado} sincronizado con las reservas.
- *
- * <ul>
- *   <li>OCUPADA: la habitación tiene una reserva con el huésped dentro (Entregado).</li>
- *   <li>RESERVADA: tiene una reserva Pagada o Confirmada cuya salida aún no pasa.</li>
- *   <li>DISPONIBLE: no tiene ninguna de las anteriores.</li>
- * </ul>
- *
- * Las habitaciones en mantenimiento o fuera de servicio conservan el estado que fijó el administrador.
- */
 @Service
 public class ServicioEstadoHabitacion {
 

@@ -131,3 +131,19 @@ El listado `GET /api/operaciones/reservas` incluye `estadosSiguientes` con los e
 ```
 
 Solo funciona con cuentas de rol Administrador y si `ADMIN_CLAVE_RECUPERACION` tiene al menos 12 caracteres. Admite 5 intentos por IP cada 15 minutos. Los intentos fallidos y el restablecimiento quedan en la auditoría.
+
+## Servicios de la versión 3.0
+
+| Método | Ruta | Acceso | Respuesta |
+|---|---|---|---|
+| GET | `/api/publico/cotizacion?ids=1,2&fechaEntrada=&fechaSalida=` | Público | Líneas por habitación, resumen de importes, promedio por noche, noches que faltan para el descuento y ahorro posible. Máximo 4 habitaciones |
+| GET | `/api/publico/habitaciones/{id}/sugerencias?fechaEntrada=&fechaSalida=` | Público | Si no está libre: próxima entrada y salida posibles y hasta 3 alternativas con afinidad de 0 a 100 y motivos |
+| GET | `/api/publico/habitaciones/{id}/calendario?desde=&dias=` | Público | Disponibilidad día por día. De 7 a 62 días; 42 por defecto |
+| GET | `/api/operaciones/mapa` | Trabajador, Administrador | Habitaciones por piso con situación, huésped, fechas, llegadas y salidas del día, resumen y ocupación |
+| GET | `/api/operaciones/planificador?desde=&dias=` | Trabajador, Administrador | Grilla de habitaciones por días con los tramos de cada reserva y la ocupación diaria. De 7 a 31 días; 14 por defecto |
+| GET | `/api/operaciones/buscar?q=` | Trabajador, Administrador | Reservas y habitaciones que coinciden; los clientes solo para el administrador. Mínimo 2 caracteres |
+| GET | `/api/administracion/reportes/ocupacion` | Administrador | Ocupación, tarifa promedio (ADR) y RevPAR por día. Rango máximo de un año |
+| GET | `/api/administracion/reportes/metodos-pago` | Administrador | Operaciones, ingresos, participación y ticket promedio por método |
+| GET | `/api/administracion/reportes/anticipacion` | Administrador | Reservas por tramo de anticipación, noches promedio e ingresos |
+
+`GET /api/administracion/dashboard` agrega: `ventasEfectuadas`, `ventasEfectuadasMes`, `ingresosMesAnterior`, `ticketPromedioMes`, `ocupacionHoy`, `tarifaPromedio`, `revpar`, `pagosPorVerificar`, `llegadasHoy`, `salidasHoy`, `ocupacionProxima` y `estadosHabitaciones`.
