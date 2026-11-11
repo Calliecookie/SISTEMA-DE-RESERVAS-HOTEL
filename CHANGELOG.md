@@ -47,6 +47,10 @@ Versión grande: agrega el concierge para el cliente, el monitor en vivo para el
 
 - Las pruebas se ejecutan en la zona horaria `America/Lima`, la misma que usa la aplicación. Antes, al correr en UTC, las fechas se guardaban con un día de diferencia solo durante las pruebas.
 
+### Documentación
+
+- Informe de titulación completo en `documentacion/informe/`, en Word y PDF, con índice, 13 diagramas, requerimientos, casos de uso, diseño, presupuesto y matrices de cumplimiento.
+
 ### Pruebas
 
 - 125 pruebas aprobadas (32 unitarias y 93 de integración contra MySQL 8). `ConciergeMonitorPrueba` agrega 9: cotización, límites, sugerencias, calendario, mapa, planificador, búsqueda por rol, dashboard y reportes nuevos con sus exportaciones.

@@ -66,3 +66,4 @@ Si ya tenías la base creada con la versión anterior, ejecuta una vez `mysql -u
 | [Protección contra DDoS](documentacion/05-proteccion-ddos.md) | Capas, límites y alcances |
 | [Pruebas](documentacion/06-pruebas.md) | Matriz de cobertura |
 | [Guion de sustentación](documentacion/07-guion-sustentacion.md) | Demostración de los seis hitos |
+| [Informe de titulación](documentacion/informe/Informe-Proyecto-de-Titulacion-Hotel-Inti-Wasi.docx) | Informe completo en Word, con versión en [PDF](documentacion/informe/Informe-Proyecto-de-Titulacion-Hotel-Inti-Wasi.pdf) |
