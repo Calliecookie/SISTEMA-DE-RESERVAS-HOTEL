@@ -4,10 +4,10 @@ USE hotel_reservas;
 
 INSERT INTO configuraciones (clave, valor, descripcion, tipo) VALUES
   ('hotel_nombre', 'Hotel Inti Wasi', 'Nombre del hotel', 'TEXTO'),
-  ('hotel_ruc', '20000000000', 'RUC del establecimiento', 'TEXTO'),
-  ('hotel_direccion', 'Dirección de ejemplo, Lima, Perú', 'Dirección del hotel', 'TEXTO'),
-  ('hotel_telefono', '+51 900 000 000', 'Teléfono de reservas', 'TEXTO'),
-  ('hotel_correo', 'reservas@ejemplo.pe', 'Correo de reservas', 'TEXTO'),
+  ('hotel_ruc', '20618742095', 'RUC del establecimiento', 'TEXTO'),
+  ('hotel_direccion', 'Calle Inti Raymi 245, San Blas, Cusco, Perú', 'Dirección del hotel', 'TEXTO'),
+  ('hotel_telefono', '+51 984 210 573', 'Teléfono de reservas', 'TEXTO'),
+  ('hotel_correo', 'reservas@hotelintiwasi.pe', 'Correo de reservas', 'TEXTO'),
   ('impuesto_porcentaje', '18.00', 'Porcentaje de IGV', 'DECIMAL'),
   ('horas_expiracion_pendiente', '24', 'Horas para pagar una reserva pendiente', 'NUMERO'),
   ('horas_verificacion_pago', '12', 'Horas para verificar un pago declarado', 'NUMERO'),
