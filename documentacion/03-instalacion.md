@@ -7,19 +7,26 @@
 - MySQL 8
 - Tomcat 10.1, solo si despliegas el archivo WAR
 
-## Ejecutar desde NetBeans (sin configuración de servidor)
+## Ejecutar desde NetBeans (sin configurar nada)
 
-1. Instala JDK 21, MySQL Server 8.0 y MySQL Workbench.
-2. En NetBeans: *File → Open Project* y elige la carpeta del proyecto. El archivo `nbactions.xml` ya indica que **Run** ejecuta `spring-boot:run`, así que no hace falta configurar Tomcat.
-3. En MySQL Workbench abre `base-datos/esquema.sql`, ejecútalo con el rayo y repite con `base-datos/datos-iniciales.sql`.
-4. En la carpeta del proyecto copia `.env.example` como `.env` y completa:
-   - `BD_CONTRASENA`: la clave de tu MySQL.
-   - `ADMIN_INICIAL_CONTRASENA`: mínimo 10 caracteres, con letras y números.
-   - `ADMIN_CLAVE_RECUPERACION`: mínimo 12 caracteres.
-   - `DEMO_CONTRASENA`: mínimo 8 caracteres.
-5. Haz clic en **Run** y abre `http://localhost:8080`. La primera vez la aplicación crea el administrador y los datos de demostración.
+Requisitos: JDK 21 y MySQL 8 encendido, con el usuario `root` sin contraseña.
 
-Si el puerto 8080 está ocupado, agrega `PUERTO=8081` en `.env`.
+1. En NetBeans: *File → Open Project* y elige la carpeta del proyecto.
+2. Pulsa **Run** y abre `http://localhost:8080`.
+
+En el primer arranque la aplicación crea la base `hotel_reservas`, sus tablas, los datos iniciales, el administrador y los datos de demostración. En los siguientes arranques conserva los datos.
+
+| Usuario | Correo | Contraseña |
+|---|---|---|
+| Administrador | `admin@hotelintiwasi.pe` | `AdminHotel2026` |
+| Recepción | `recepcion@hotelintiwasi.pe` | `Demo12345` |
+| Cliente | `cliente@hotelintiwasi.pe` | `Demo12345` |
+
+La clave de recuperación del administrador es `RecuperaIntiWasi2026`. Estas credenciales son de prueba: si publicas el sistema en internet, cámbialas en un archivo `.env`.
+
+**Opcional:** para enviar correos y autocompletar el DNI crea un archivo `.env` al lado del `pom.xml` con `CORREO_HABILITADO`, `CORREO_REMITENTE`, `SMTP_SERVIDOR`, `SMTP_USUARIO`, `SMTP_CONTRASENA` y `FACTILIZA_TOKEN`. Si tu MySQL tiene contraseña, agrega `BD_CONTRASENA`. Para no crear la base automáticamente usa `BD_INICIALIZAR=false`.
+
+La creación manual con los scripts de las secciones siguientes sigue siendo válida.
 
 ## 1. Crear la base de datos
 

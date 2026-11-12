@@ -6,7 +6,7 @@ spring:
       - optional:file:.env[.properties]
       - optional:file:${user.home}/.hotel-reservas/.env[.properties]
   datasource:
-    url: ${BD_URL:jdbc:mysql://localhost:3306/hotel_reservas?useUnicode=true&characterEncoding=utf8&serverTimezone=America/Lima}
+    url: ${BD_URL:jdbc:mysql://localhost:3306/hotel_reservas?useUnicode=true&characterEncoding=utf8&serverTimezone=America/Lima&createDatabaseIfNotExist=true}
     username: ${BD_USUARIO:root}
     password: ${BD_CONTRASENA:}
     hikari:
@@ -84,6 +84,8 @@ server:
       tracking-modes: cookie
 
 hotel:
+  base-datos:
+    inicializar: ${BD_INICIALIZAR:true}
   almacenamiento:
     ruta: ${ALMACENAMIENTO_RUTA:${user.home}/.hotel-reservas/almacenamiento}
   factiliza:
@@ -118,20 +120,20 @@ hotel:
     minutos-bloqueo-acceso: 15
     minutos-validez-codigo: 10
     maximo-intentos-codigo: 5
-    clave-recuperacion-admin: ${ADMIN_CLAVE_RECUPERACION:}
+    clave-recuperacion-admin: ${ADMIN_CLAVE_RECUPERACION:RecuperaIntiWasi2026}
   tareas:
     milisegundos-expiracion: ${TAREA_EXPIRACION_MS:60000}
     habilitadas: ${TAREAS_HABILITADAS:true}
     cron-cierre-dia: ${TAREA_CIERRE_DIA_CRON:0 59 23 * * *}
     eliminar-no-pagadas: ${TAREA_ELIMINAR_NO_PAGADAS:true}
   administrador-inicial:
-    correo: ${ADMIN_INICIAL_CORREO:}
-    contrasena: ${ADMIN_INICIAL_CONTRASENA:}
+    correo: ${ADMIN_INICIAL_CORREO:admin@hotelintiwasi.pe}
+    contrasena: ${ADMIN_INICIAL_CONTRASENA:AdminHotel2026}
     nombres: ${ADMIN_INICIAL_NOMBRES:Administrador}
     apellidos: ${ADMIN_INICIAL_APELLIDOS:General}
   demostracion:
-    habilitada: ${DEMO_HABILITADA:false}
-    contrasena: ${DEMO_CONTRASENA:}
+    habilitada: ${DEMO_HABILITADA:true}
+    contrasena: ${DEMO_CONTRASENA:Demo12345}
 
 logging:
   file:

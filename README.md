@@ -29,14 +29,15 @@ Spring Boot 3.5 es la última línea compatible con Tomcat 10.1. Su soporte grat
 
 ## Inicio rápido
 
+Con JDK 21 y MySQL 8 encendido (usuario `root` sin contraseña), abre el proyecto en NetBeans y pulsa **Run**, o ejecuta:
+
 ```bash
-mysql -u root -p < base-datos/esquema.sql
-mysql -u root -p < base-datos/datos-iniciales.sql
-cp .env.example .env
 mvn spring-boot:run
 ```
 
-Antes de arrancar, completa `BD_CONTRASENA`, `ADMIN_INICIAL_CONTRASENA`, `ADMIN_CLAVE_RECUPERACION` y `DEMO_CONTRASENA` en `.env`. Luego abre `http://localhost:8080`.
+El primer arranque crea la base de datos, las tablas y los datos de demostración. Abre `http://localhost:8080` y entra con `admin@hotelintiwasi.pe` / `AdminHotel2026`.
+
+Si tu MySQL tiene contraseña, o quieres activar el correo y la consulta de DNI, crea un `.env` a partir de `.env.example`.
 
 Si ya tenías la base creada con la versión anterior, ejecuta una vez `mysql -u root -p < base-datos/migracion-estado-habitaciones.sql`.
 

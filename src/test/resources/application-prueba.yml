@@ -18,6 +18,8 @@ spring:
             enable: false
 
 hotel:
+  base-datos:
+    inicializar: false
   url-publica: http://localhost:8080
   almacenamiento:
     ruta: target/almacenamiento-pruebas
