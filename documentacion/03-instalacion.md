@@ -7,6 +7,20 @@
 - MySQL 8
 - Tomcat 10.1, solo si despliegas el archivo WAR
 
+## Ejecutar desde NetBeans (sin configuración de servidor)
+
+1. Instala JDK 21, MySQL Server 8.0 y MySQL Workbench.
+2. En NetBeans: *File → Open Project* y elige la carpeta del proyecto. El archivo `nbactions.xml` ya indica que **Run** ejecuta `spring-boot:run`, así que no hace falta configurar Tomcat.
+3. En MySQL Workbench abre `base-datos/esquema.sql`, ejecútalo con el rayo y repite con `base-datos/datos-iniciales.sql`.
+4. En la carpeta del proyecto copia `.env.example` como `.env` y completa:
+   - `BD_CONTRASENA`: la clave de tu MySQL.
+   - `ADMIN_INICIAL_CONTRASENA`: mínimo 10 caracteres, con letras y números.
+   - `ADMIN_CLAVE_RECUPERACION`: mínimo 12 caracteres.
+   - `DEMO_CONTRASENA`: mínimo 8 caracteres.
+5. Haz clic en **Run** y abre `http://localhost:8080`. La primera vez la aplicación crea el administrador y los datos de demostración.
+
+Si el puerto 8080 está ocupado, agrega `PUERTO=8081` en `.env`.
+
 ## 1. Crear la base de datos
 
 En MySQL Workbench, ejecuta en este orden:
